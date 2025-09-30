@@ -1,0 +1,563 @@
+/* 전체 컨테이너 */
+.main-container {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 30px;
+    font-family: 'Arial', sans-serif;
+    min-height: calc(100vh - 200px);
+}
+
+/* 지역 정보 스타일 */
+.region-info {
+    background: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid #B0DBB4;
+    position: relative;
+}
+
+.region-info h2 {
+    margin: 0;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.region-info h2::before {
+    content: '';
+    font-size: 16px;
+    color: #B0DBB4;
+}
+
+/* 왼쪽 패널 */
+.left-panel {
+    flex: 0 0 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 오른쪽 패널 */
+.right-panel {
+    flex: 1;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* 상세 정보 컨테이너 */
+.detail-container {
+    height: 100%;
+    width: 800px;
+    position: relative;
+}
+
+/* 상세 정보 플레이스홀더 */
+.detail-empty,
+.detail-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #999;
+    text-align: center;
+    padding: 40px;
+    align-content: center;
+}
+
+.detail-empty i,
+.detail-placeholder i {
+    font-size: 100px;
+    margin-bottom: 20px;
+    color: #ddd;
+}
+
+.detail-empty p,
+.detail-placeholder p {
+    font-size: 16px;
+    margin: 0;
+}
+
+/* 상세 정보 내용 */
+.detail-content {
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* 병원 상세 정보 스타일 */
+.hospital-detail-info {
+    max-width: 100%;
+}
+
+.hospital-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.hospital-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-decoration: none;
+}
+
+.hospital-image img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.hospital-info-table {
+    margin-bottom: 30px;
+}
+
+.hospital-info-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.hospital-info-table th,
+.hospital-info-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.hospital-info-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+    width: 25%;
+}
+
+.hospital-info-table td {
+    color: #666;
+}
+
+.hospital-info-table tr:last-child th,
+.hospital-info-table tr:last-child td {
+    border-bottom: none;
+}
+
+.hospital-info-table .hospital_website {
+    color: #005a66;
+    text-decoration: underline;
+}
+
+.hospital-info-table .hospital_phonenumber {
+    font-weight: bold;
+    color: #333;
+}
+
+.hospital-info-table .hospital_address {
+    color: #666;
+}
+
+.hospital-info-table .location {
+    color: #005a66;
+    font-weight: 500;
+}
+
+.hospital-map {
+    margin-top: 30px;
+}
+
+.hospital-map h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.hospital-map .map {
+    width: 100%;
+    height: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* 필터 섹션 */
+.filter-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.filter-row {
+    display: flex;
+    align-items: center;
+}
+
+.filter-checkboxes {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.filter-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 13px;
+    color: #333;
+}
+
+.filter-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.checkmark {
+    padding: 6px 10px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.filter-checkbox input[type="checkbox"]:checked + .checkmark {
+    background: #005a66;
+    color: white;
+    border-color: #005a66;
+}
+
+/* 결과 정보 */
+.result-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 5px;
+}
+
+.total-count {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.btn-best:hover {
+    background: #7FDD7F;
+}
+
+/* 병원 목록 */
+.hospital-list {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    flex: 1;
+    overflow-y: auto;
+
+}
+
+.hospital-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hospital-item:last-child {
+    border-bottom: none;
+}
+
+.hospital-item:hover {
+    background: #f8f9fa;
+}
+
+.hospital-item.active {
+    background: #89c69bcc;
+}
+
+.hospital-heart {
+    margin-right: 12px;
+    font-size: 16px;
+    color: #ccc;
+    transition: color 0.3s ease;
+}
+
+.hospital-item.active .hospital-heart {
+    color: #ff4757;
+}
+
+.hospital-item:hover .hospital-heart {
+    color: #ff4757;
+}
+
+.hospital-name {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.hospital-item.active .hospital-name {
+    font-weight: bold;
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.page-link {
+    display: inline-block;
+    padding: 6px 10px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-size: 12px;
+}
+
+.page-link:hover {
+    background: #f8f9fa;
+    border-color: #005a66;
+}
+
+.page-link.active {
+    background: #005a66;
+    color: white;
+    border-color: #005a66;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+    .main-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .left-panel {
+        flex: none;
+        width: 100%;
+    }
+
+    .right-panel {
+        min-height: 400px;
+    }
+
+    .hospital-info-table th {
+        width: 30%;
+    }
+
+    .region-info {
+        margin-bottom: 12px;
+        padding: 8px 12px;
+    }
+
+    .region-info h2 {
+        font-size: 13px;
+        gap: 5px;
+    }
+
+    .region-info h2::before {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        padding: 10px;
+    }
+
+    .region-info {
+        margin-bottom: 10px;
+        padding: 6px 10px;
+    }
+
+    .region-info h2 {
+        font-size: 12px;
+        gap: 4px;
+    }
+
+    .region-info h2::before {
+        font-size: 12px;
+    }
+
+
+    .filter-checkboxes {
+        gap: 10px;
+    }
+
+    .checkmark {
+        padding: 5px 8px;
+        font-size: 12px;
+    }
+
+    .hospital-item {
+        padding: 10px 12px;
+    }
+
+    .hospital-name {
+        font-size: 13px;
+    }
+
+    .pagination {
+        gap: 5px;
+    }
+
+    .page-link {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+
+    .hospital-info-table th,
+    .hospital-info-table td {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    .hospital-info-table th {
+        width: 35%;
+    }
+
+    .hospital-title {
+        font-size: 20px;
+    }
+
+    .hospital-map .map {
+        height: 250px;
+    }
+    .photo-gallery img {
+        display:block; width:100%; height:auto; border-radius:8px; margin:6px 0;
+    }
+
+}
+
+/* 스크롤바 스타일 */
+.hospital-list::-webkit-scrollbar,
+.detail-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.hospital-list::-webkit-scrollbar-track,
+.detail-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.hospital-list::-webkit-scrollbar-thumb,
+.detail-content::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.hospital-list::-webkit-scrollbar-thumb:hover,
+.detail-content::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 즐겨찾기 확인 모달 스타일 */
+.favorite-confirm-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.favorite-confirm-content {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.favorite-confirm-content h3 {
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+}
+
+.favorite-confirm-content p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0 0 25px 0;
+}
+
+.favorite-confirm-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.favorite-confirm-yes,
+.favorite-confirm-no {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.favorite-confirm-yes {
+    background-color: #005a66;
+    color: white;
+}
+
+.favorite-confirm-yes:hover {
+    background-color: #004850;
+    transform: translateY(-2px);
+}
+
+.favorite-confirm-no {
+    background-color: #f8f9fa;
+    color: #666;
+    border: 1px solid #ddd;
+}
+
+.favorite-confirm-no:hover {
+    background-color: #e9ecef;
+    color: #333;
+}

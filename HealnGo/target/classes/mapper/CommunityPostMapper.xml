@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.ApiRound.mapper.CommunityPostMapper">
+
+    <resultMap id="PostMap" type="com.example.ApiRound.dto.CommunityPostDto">
+        <result property="postId" column="POST_ID"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="authorName" column="AUTHOR_NAME"/>
+        <result property="title" column="TITLE"/>
+        <result property="content" column="CONTENT"/>
+        <result property="createAt" column="CREATE_AT"/>
+        <result property="likeCount" column="LIKE_COUNT"/>
+        <result property="category" column="CATEGORY"/>
+        <result property="isDeleted" column="IS_DELETED"/>
+        <result property="isUpdate" column="IS_UPDATE"/>
+    </resultMap>
+
+    <!-- 목록 -->
+    <select id="findAllPosts" resultMap="PostMap">
+        SELECT
+            p.POST_ID,
+            p.USER_ID,
+            p.TITLE,
+            p.CONTENT,
+            p.CATEGORY,
+            p.CREATE_AT,
+            p.LIKE_COUNT,
+            p.IS_DELETED,
+            p.IS_UPDATE,
+            u.NAME as AUTHOR_NAME
+        FROM COMMUNITY_POST p
+        LEFT JOIN SOCIAL_USER u ON p.USER_ID = u.NAME
+        WHERE p.IS_DELETED = 'N'
+        ORDER BY p.CREATE_AT DESC
+    </select>
+
+    <select id="findPostbyId" parameterType="int" resultMap="PostMap">
+        SELECT
+            p.POST_ID,
+            p.USER_ID,
+            p.TITLE,
+            p.CONTENT,
+            p.CATEGORY,
+            p.CREATE_AT,
+            p.LIKE_COUNT,
+            p.IS_DELETED,
+            p.IS_UPDATE,
+            u.NAME as AUTHOR_NAME
+        FROM COMMUNITY_POST p
+        LEFT JOIN SOCIAL_USER u ON p.USER_ID = u.NAME
+        WHERE p.POST_ID = #{postId}
+        AND p.IS_DELETED = 'N'
+    </select>
+
+    <!-- 작성: POST_ID는 트리거가 채우므로 제외 -->
+    <insert id="insertPost" parameterType="com.example.ApiRound.dto.CommunityPostDto">
+        INSERT INTO COMMUNITY_POST
+        (USER_ID, TITLE, CONTENT, CATEGORY, IS_DELETED, CREATE_AT)
+        VALUES
+        (#{userId}, #{title}, #{content}, #{category}, 'N', SYSTIMESTAMP)
+    </insert>
+
+    <!-- CommunityPostMapper.xml -->
+    <update id="updatePost" parameterType="com.example.ApiRound.dto.CommunityPostDto">
+        UPDATE COMMUNITY_POST
+        SET TITLE = #{title},
+        CONTENT = #{content},
+        IS_UPDATE = 'Y'
+        WHERE POST_ID = #{postId}
+        AND IS_DELETED = 'N'
+    </update>
+
+    <!-- 소프트 삭제 -->
+    <update id="softDeletePost" parameterType="int">
+        UPDATE community_post
+        SET is_deleted = 'Y'
+        WHERE post_id = #{postId}
+        AND is_deleted = 'N'
+    </update>
+
+        <!-- 좋아요 카운트 증가 -->
+        <update id="incrementLikeCount" parameterType="int">
+            UPDATE COMMUNITY_POST
+            SET LIKE_COUNT = NVL(LIKE_COUNT, 0) + 1
+            WHERE POST_ID = #{postId}
+              AND IS_DELETED = 'N'
+        </update>
+
+        <!-- 좋아요 카운트 감소(0 미만 방지) -->
+        <update id="decrementLikeCount" parameterType="int">
+            UPDATE COMMUNITY_POST
+            SET LIKE_COUNT = CASE WHEN NVL(LIKE_COUNT, 0) > 0 THEN LIKE_COUNT - 1 ELSE 0 END
+            WHERE POST_ID = #{postId}
+              AND IS_DELETED = 'N'
+        </update>
+
+        <!-- 현재 좋아요 카운트 조회 -->
+        <select id="getLikeCount" parameterType="int" resultType="int">
+            SELECT NVL(LIKE_COUNT, 0)
+            FROM COMMUNITY_POST
+            WHERE POST_ID = #{postId}
+              AND IS_DELETED = 'N'
+        </select>
+
+    <!-- 좋아요 여부 확인 -->
+    <select id="hasUserLiked" resultType="int">
+        SELECT COUNT(1)
+        FROM COMMUNITY_POST
+        WHERE POST_ID = #{postId}
+          AND USER_ID = #{userId}
+    </select>
+
+
+</mapper>

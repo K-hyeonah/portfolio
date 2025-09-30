@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.ApiRound.mapper.SocialUserMapper">
+
+    <!-- resultMap 정의: DB 컬럼명과 DTO 필드명 명시 매핑 -->
+    <resultMap id="SocialUserResultMap" type="com.example.ApiRound.dto.SocialUserDTO">
+        <id property="userId" column="USER_ID" />
+        <result property="socialId" column="SOCIAL_ID" />
+        <result property="email" column="EMAIL" />
+        <result property="name" column="NAME" />
+        <result property="profileImage" column="PROFILE_IMAGE" />
+        <result property="provider" column="PROVIDER" />
+        <result property="createdAt" column="CREATED_AT" />
+        <result property="lastLogin" column="LAST_LOGIN" />
+    </resultMap>
+
+    <!-- 사용자 저장 -->
+    <insert id="insertUser" parameterType="com.example.ApiRound.dto.SocialUserDTO">
+        INSERT INTO SOCIAL_USER (
+        USER_ID,
+        SOCIAL_ID,
+        EMAIL,
+        NAME,
+        PROFILE_IMAGE,
+        PROVIDER,
+        CREATED_AT,
+        LAST_LOGIN
+        ) VALUES (
+        USER_SEQ.NEXTVAL,
+        #{socialId, jdbcType=VARCHAR},
+        #{email, jdbcType=VARCHAR},
+        #{name, jdbcType=VARCHAR},
+        #{profileImage, jdbcType=VARCHAR},
+        #{provider, jdbcType=VARCHAR},
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+        )
+    </insert>
+
+    <!-- 소셜 ID와 PROVIDER로 사용자 조회 -->
+    <select id="findBySocialIdAndProvider" resultMap="SocialUserResultMap" parameterType="map">
+        SELECT
+        USER_ID,
+        SOCIAL_ID,
+        EMAIL,
+        NAME,
+        PROFILE_IMAGE,
+        PROVIDER,
+        CREATED_AT,
+        LAST_LOGIN
+        FROM SOCIAL_USER
+        WHERE SOCIAL_ID = #{socialId}
+        AND PROVIDER = #{provider}
+    </select>
+
+    <update id="updateUser" parameterType="com.example.ApiRound.dto.SocialUserDTO">
+        UPDATE SOCIAL_USER
+        SET
+        NAME = #{name,jdbcType=VARCHAR},
+        EMAIL = #{email,jdbcType=VARCHAR},
+        PROFILE_IMAGE = #{profileImage,jdbcType=VARCHAR},
+        LAST_LOGIN = SYSDATE
+        WHERE SOCIAL_ID = #{socialId, jdbcType=VARCHAR}
+        AND PROVIDER = #{provider, jdbcType=VARCHAR}
+    </update>
+
+
+</mapper>

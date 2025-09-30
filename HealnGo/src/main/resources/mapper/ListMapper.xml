@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.ApiRound.mapper.ListMapper">
+
+    <!-- 결과 매핑: 번역 라벨(nameLabel, addressLabel) 추가 -->
+    <resultMap id="ListDtoResultMap" type="com.example.ApiRound.dto.ListDto">
+        <id     column="id"           property="id"/>
+        <result column="name"         property="name"/>
+        <result column="region"       property="region"/>
+        <result column="subregion"    property="subregion"/>
+        <result column="address"      property="address"/>
+        <result column="phone"        property="phone"/>
+        <result column="homepage"     property="homepage"/>
+        <result column="coord_x"      property="coordX"/>
+        <result column="coord_y"      property="coordY"/>
+        <result column="category"     property="category"/>
+        <!-- i18n 라벨 -->
+        <result column="name_label"    property="nameLabel"/>
+        <result column="address_label" property="addressLabel"/>
+    </resultMap>
+
+    <!-- 공통: i18n 조인과 라벨 컬럼 셀렉트 -->
+    <sql id="BaseSelectWithI18N">
+        SELECT
+        i.ID                                AS id,
+        -- i18n 라벨 (번역 우선, 없으면 원문)
+        NVL(i18n.NAME_LABEL, i.NAME)       AS name_label,
+        NVL(i18n.ADDRESS_LABEL, i.ADDRESS) AS address_label,
+
+        -- 원본 필드
+        i.NAME       AS name,
+        i.REGION     AS region,
+        i.SUBREGION  AS subregion,
+        i.ADDRESS    AS address,
+        i.PHONE      AS phone,
+        i.HOMEPAGE   AS homepage,
+        i.COORD_X    AS coord_x,
+        i.COORD_Y    AS coord_y,
+        i.CATEGORY   AS category
+                 FROM C##healngo.ITEM_LIST i
+                 LEFT JOIN C##healngo.ITEM_LIST_I18N i18n ON i.ID = i18n.ITEM_ID
+                 AND i18n.LOCALE = #{locale}
+    </sql>
+
+    <!-- 전체 리스트 -->
+    <select id="findAll" resultMap="ListDtoResultMap">
+        <include refid="BaseSelectWithI18N"/>
+        ORDER BY i.ID ASC
+    </select>
+
+    <!-- 단건 조회 -->
+    <select id="findById" resultMap="ListDtoResultMap">
+        <include refid="BaseSelectWithI18N"/>
+        WHERE i.ID = #{id}
+    </select>
+
+    <!-- 카테고리별 조회 -->
+    <select id="findByCategory" resultMap="ListDtoResultMap">
+        <include refid="BaseSelectWithI18N"/>
+        WHERE i.CATEGORY LIKE '%' || #{category} || '%'
+        ORDER BY i.ID ASC
+    </select>
+
+    <!-- 지역+구별+카테고리 조회 -->
+    <select id="findByRegionAndCategory" resultMap="ListDtoResultMap">
+        <include refid="BaseSelectWithI18N"/>
+        <where>
+            <if test="region != null and region != ''">
+                AND (i.REGION LIKE '%' || #{region} || '%' OR i.ADDRESS LIKE '%' || #{region} || '%')
+            </if>
+            <if test="subregion != null and subregion != ''">
+                AND (i.SUBREGION LIKE '%' || #{subregion} || '%' OR i.ADDRESS LIKE '%' || #{subregion} || '%')
+            </if>
+            <if test="category != null and category != ''">
+                AND i.CATEGORY LIKE '%' || #{category} || '%'
+            </if>
+        </where>
+        ORDER BY i.ID ASC
+    </select>
+
+    <!-- 전체 개수 (i18n 불필요) -->
+    <select id="countByRegionAndCategory" resultType="int">
+        SELECT COUNT(*)
+        FROM C##healngo.ITEM_LIST i
+        <where>
+            <if test="region != null and region != ''">
+                AND (i.REGION LIKE '%' || #{region} || '%' OR i.ADDRESS LIKE '%' || #{region} || '%')
+            </if>
+            <if test="subregion != null and subregion != ''">
+                AND (i.SUBREGION LIKE '%' || #{subregion} || '%' OR i.ADDRESS LIKE '%' || #{subregion} || '%')
+            </if>
+            <if test="category != null and category != ''">
+                AND i.CATEGORY LIKE '%' || #{category} || '%'
+            </if>
+        </where>
+    </select>
+
+    <!-- 페이징 조회 (Oracle 12c+: OFFSET/FETCH) -->
+    <select id="findByRegionAndCategoryPaged" resultMap="ListDtoResultMap">
+        <include refid="BaseSelectWithI18N"/>
+        <where>
+            <if test="region != null and region != ''">
+                AND (i.REGION LIKE '%' || #{region} || '%' OR i.ADDRESS LIKE '%' || #{region} || '%')
+            </if>
+            <if test="subregion != null and subregion != ''">
+                AND (i.SUBREGION LIKE '%' || #{subregion} || '%' OR i.ADDRESS LIKE '%' || #{subregion} || '%')
+            </if>
+            <if test="category != null and category != ''">
+                AND i.CATEGORY LIKE '%' || #{category} || '%'
+            </if>
+        </where>
+        ORDER BY i.ID ASC
+        OFFSET #{offset} ROWS FETCH NEXT #{amount} ROWS ONLY
+    </select>
+
+    <!-- 카테고리별 총 개수 -->
+    <select id="countByCategory" resultType="int">
+        SELECT COUNT(*)
+        FROM C##healngo.ITEM_LIST
+        WHERE CATEGORY LIKE '%' || #{category} || '%'
+    </select>
+
+    <!-- 카테고리별 페이징 조회 -->
+    <select id="findByCategoryPaged" resultMap="ListDtoResultMap">
+        <include refid="BaseSelectWithI18N"/>
+        WHERE i.CATEGORY LIKE '%' || #{category} || '%'
+        ORDER BY i.ID ASC
+        OFFSET #{offset} ROWS FETCH NEXT #{amount} ROWS ONLY
+    </select>
+
+    <!-- 디버깅: 모든 카테고리 -->
+    <select id="getAllCategories" resultType="java.lang.String">
+        SELECT DISTINCT CATEGORY FROM C##healngo.ITEM_LIST ORDER BY CATEGORY
+    </select>
+
+    <!-- 병원 등록 -->
+    <insert id="insert" parameterType="com.example.ApiRound.dto.ListDto">
+        INSERT INTO C##healngo.ITEM_LIST (NAME, REGION, SUBREGION, ADDRESS, PHONE, HOMEPAGE, COORD_X, COORD_Y, CATEGORY)
+        VALUES (#{name}, #{region}, #{subregion}, #{address}, #{phone}, #{homepage}, #{coordX}, #{coordY}, #{category})
+    </insert>
+
+</mapper>

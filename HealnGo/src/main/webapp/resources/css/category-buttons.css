@@ -1,0 +1,179 @@
+/* 콜로소 스타일 카테고리 버튼 */
+.category-buttons-section {
+    padding: 30px 0;
+    background-color: #f9fcf9;
+    margin-bottom: 40px;
+}
+
+.category-buttons-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.category-buttons-title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.category-buttons-title h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.category-buttons-title p {
+    font-size: 16px;
+    color: #666;
+}
+
+.category-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    object-fit: contain;
+}
+
+/* 마스크 이미지 특별 스타일 */
+.category-button:nth-child(3) .category-button-icon img {
+    width: 50px;
+    height: auto;
+    object-fit: contain;
+}
+
+.category-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 15px;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #eaeaea;
+    position: relative;
+}
+
+.category-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.category-button.new::after {
+    content: 'NEW';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    background-color: #ff5a5f;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.category-button.hot::after {
+    content: 'HOT';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    background-color: #ff9500;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.category-button-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.category-button-icon img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.category-button-icon i {
+    font-size: 24px;
+    /* 기본 색상은 아래 각 카테고리별 색상으로 오버라이드됨 */
+}
+
+/* 카테고리 아이콘 색상 */
+.category-button:nth-child(1) .category-button-icon i {
+    color: #4285F4; /* 관광 - 파란색 */
+}
+
+.category-button:nth-child(2) .category-button-icon i {
+    color: #EA4335; /* 성형 - 빨간색 */
+}
+
+.category-button:nth-child(3) .category-button-icon i {
+    color: #34A853; /* 피부 - 녹색 */
+}
+
+.category-button:nth-child(4) .category-button-icon i {
+    color: #FBBC05; /* 치과 - 노란색 */
+}
+
+.category-button:nth-child(5) .category-button-icon i {
+    color: #9C27B0; /* 약국 - 보라색 */
+}
+
+.category-button:nth-child(6) .category-button-icon i {
+    color: #00ACC1; /* 한의학 - 청록색 */
+}
+
+.category-button:nth-child(7) .category-button-icon img {
+    width: 50px;
+    height: auto;
+    object-fit: contain;
+}
+
+.category-button:nth-child(8) .category-button-icon img {
+    width: 50px;
+    height: auto;
+    object-fit: contain;
+}
+
+.category-button h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.category-button p {
+    font-size: 14px;
+    color: #666;
+    margin: 8px 0 0 0;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 1200px) {
+    .category-buttons-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .category-buttons-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .category-buttons-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

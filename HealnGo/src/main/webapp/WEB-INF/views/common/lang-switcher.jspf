@@ -1,0 +1,71 @@
+
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%-- /WEB-INF/views/common/lang-switcher.jspf --%>
+<style>
+  .lang-switcher { position: relative; display: inline-block; }
+  .lang-btn { padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; background: #fff; cursor: pointer; }
+  .lang-menu { position: absolute; right: 0; margin-top: 6px; min-width: 180px;
+               border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.08);
+               display: none; z-index: 1000; }
+  .lang-menu ul { list-style: none; margin: 0; padding: 6px; }
+  .lang-menu li { margin: 2px 0; }
+  .lang-item { width: 100%; text-align: left; padding: 10px 12px; border-radius: 8px; border: 0; background: transparent; cursor: pointer; }
+  .lang-item:hover, .lang-item:focus { background: #f3f4f6; outline: none; }
+  .lang-current { font-size: 12px; color: #6b7280; margin-left: 8px; }
+</style>
+
+<div class="lang-switcher" aria-haspopup="true" aria-expanded="false">
+  <button type="button" id="btnTranslate" class="lang-btn" aria-controls="langMenu">
+    <spring:message code="button.translate" text="번역"/>
+    <span class="lang-current" id="currentLangText"></span>
+  </button>
+
+  <div id="langMenu" class="lang-menu" role="menu" aria-labelledby="btnTranslate">
+    <ul>
+      <li><button type="button" class="lang-item" data-lang="ko">한국어 (KO)</button></li>
+      <li><button type="button" class="lang-item" data-lang="en">English (EN)</button></li>
+      <li><button type="button" class="lang-item" data-lang="ja">日本語 (JA)</button></li>
+      <li><button type="button" class="lang-item" data-lang="zh">中文 (ZH)</button></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+(function() {
+  const btn = document.getElementById('btnTranslate');
+  const menu = document.getElementById('langMenu');
+  const current = document.getElementById('currentLangText');
+
+  // 현재 URL에서 lang 읽기 → 표시용
+  const url = new URL(window.location.href);
+  const lang = (url.searchParams.get('lang') || '').toLowerCase();
+  const label = ({ko:'KO', en:'EN', ja:'JA', zh:'ZH'})[lang] || 'KO';
+  if (current) current.textContent = '(' + label + ')';
+
+  function toggleMenu(show) {
+    const visible = (menu.style.display === 'block');
+    const next = (typeof show === 'boolean') ? show : !visible;
+    menu.style.display = next ? 'block' : 'none';
+    btn.setAttribute('aria-expanded', String(next));
+  }
+
+  btn?.addEventListener('click', () => toggleMenu());
+
+  document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && e.target !== btn) toggleMenu(false);
+  });
+
+  menu?.addEventListener('click', (e) => {
+    const target = e.target.closest('.lang-item[data-lang]');
+    if (!target) return;
+    const selected = target.dataset.lang;
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.set('lang', selected);
+    window.location.href = nextUrl.toString();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') toggleMenu(false);
+  });
+})();
+</script>

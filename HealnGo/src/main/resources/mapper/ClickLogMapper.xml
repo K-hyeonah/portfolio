@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.ApiRound.mapper.ClickLogMapper">
+
+    <!-- 클릭 로그 저장 -->
+    <insert id="insertClickLog">
+        INSERT INTO CLICK_LOGS (COMPANY_ID, CLICKED_AT)
+        VALUES (#{companyId}, CURRENT_TIMESTAMP)
+    </insert>
+
+    <!-- 최근 7일간 업체별 클릭 수 + 업체 정보 -->
+    <select id="getClickCountsLast7Days" resultType="com.example.ApiRound.dto.CompanyClickCountDto">
+        SELECT
+            c.COMPANY_ID AS companyId,
+            i.NAME       AS companyName,
+            COUNT(*)     AS clickCount,
+            i.REGION     AS region,
+            i.SUBREGION  AS subregion,
+            i.CATEGORY   AS category
+        FROM
+            CLICK_LOGS c
+                JOIN
+            ITEM_LIST i ON c.COMPANY_ID = i.ID
+        WHERE
+            c.CLICKED_AT &gt;= SYSDATE - 7
+        GROUP BY
+            c.COMPANY_ID, i.NAME, i.REGION, i.SUBREGION, i.CATEGORY
+        ORDER BY
+            clickCount DESC
+    </select>
+
+    <!-- 제일 많이 클릭된 업체 3개 (업체 정보 포함) -->
+    <select id="getTop3CompaniesLast7Days" resultType="com.example.ApiRound.dto.CompanyClickCountDto">
+        SELECT *
+        FROM (
+                 SELECT
+                     c.COMPANY_ID AS companyId,
+                     i.NAME       AS companyName,
+                     COUNT(*)     AS clickCount,
+                     i.REGION     AS region,
+                     i.SUBREGION  AS subregion,
+                     i.CATEGORY   AS category
+                 FROM
+                     CLICK_LOGS c
+                         JOIN
+                     ITEM_LIST i ON c.COMPANY_ID = i.ID
+                 WHERE
+                     c.CLICKED_AT &gt;= SYSDATE - 7
+                 GROUP BY
+                     c.COMPANY_ID, i.NAME, i.REGION, i.SUBREGION, i.CATEGORY
+                 ORDER BY
+                     clickCount DESC
+             )
+        WHERE ROWNUM &lt;= 3
+    </select>
+
+</mapper>
