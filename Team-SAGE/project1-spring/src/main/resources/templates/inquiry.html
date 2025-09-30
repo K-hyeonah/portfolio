@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE | 내 문의 내역</title>
+  <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/inquiry.css">
+    <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="mypage-main">
+  <div class="mypage-sidebar">
+    <h2 class="mypage-title">마이페이지<br><br></h2>
+    <ul class="mypage-menu">
+      <li><a th:href="@{/mypage}">내정보</a></li>
+      <li><a th:href="@{/inquiry}" class="active">문의사항</a></li>
+      <li><a th:href="@{/favorite}">즐겨찾기</a></li>
+      <li><a th:href="@{/editinfo}">정보수정</a></li>
+    </ul>
+  </div>
+  <div class="mypage-content">
+    <div class="mypage-inner-content">
+      <h2 class="inquiry-title">문의 내역</h2>
+      <div class="inquiry-filter-row">
+        <div class="inquiry-filter-right">
+          <span class="inquiry-filter-icon">&#128269; 필터</span>
+          <select class="inquiry-filter-select">
+            <option>전체</option>
+            <option>기타</option>
+          </select>
+        </div>
+      </div>
+      <div class="inquiry-table-wrap">
+        <table class="inquiry-table">
+          <thead>
+          <tr>
+            <th>번호</th>
+            <th>문의 유형</th>
+            <th>문의 제목</th>
+            <th>문의 날짜</th>
+            <th>상태</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="inquiry-empty-row">
+            <td colspan="5" class="inquiry-empty">문의 내역이 없습니다.</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="inquiry-btn-right">
+        <button class="inquiry-write-btn" onclick="location.href='/inquiry/write'">
+          <span class="inquiry-write-icon">&#128221;</span> 문의하기</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+  // 문의 상세 토글
+  document.querySelectorAll('.inquiry-summary').forEach(function(row){
+    row.onclick = function() {
+      var detail = this.nextElementSibling;
+      if(detail) detail.style.display = (detail.style.display === 'block') ? 'none' : 'block';
+    }
+  });
+
+  // 사이드바 메뉴 active 처리 (mypage.html에서 사용하던 코드)
+  document.addEventListener('DOMContentLoaded', function() {
+    var links = document.querySelectorAll('.mypage-menu a');
+    var path = location.pathname.split('/').pop();
+    links.forEach(function(link) {
+      // '/inquiry' 경로를 active로 만듭니다.
+      if (link.getAttribute('href') === 'inquiry.html') {
+        link.classList.add('active');
+      }
+    });
+  });
+</script>
+</body>
+</html>

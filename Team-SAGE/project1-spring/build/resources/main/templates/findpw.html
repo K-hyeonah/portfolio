@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE | 아이디/비밀번호 찾기</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="find-main">
+  <div class="find-box">
+    <div class="find-tabs">
+      <button class="find-tab active" id="tabFindPw">비밀번호 찾기</button>
+    </div>
+    <form class="find-form" id="findIdForm">
+      <div class="find-field">
+        <label>이름</label>
+        <input type="text" placeholder="가입하셨던 이름을 입력해주세요" required>
+      </div>
+      <div class="find-field">
+        <label>아이디</label>
+        <input type="text" placeholder="가입하셨던 아이디를 입력해주세요" required>
+      </div>
+      <div class="find-field">
+        <label>생년월일</label>
+        <div class="find-birth-inputs">
+          <select id="findPwMonth"><option>월</option></select>
+          <select id="findPwDate"><option>일</option></select>
+          <select id="findPwYear"><option>년</option></select>
+        </div>
+      </div>
+      <button type="submit" class="find-btn">확 인</button>
+      <div class="find-login-div">
+        <a th:href="@{/login}" class="find-login-link">로그인하기</a>
+        <a th:href="@{/findid}" class="find-login-link">아이디찾기</a>
+      </div>
+    </form>
+
+  </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+  // 생년월일 Month/Date/Year 옵션 자동 생성 (아이디/비밀번호 찾기)
+  function fillBirthSelect(monthId, dateId, yearId) {
+    const monthSel = document.getElementById(monthId);
+    const dateSel = document.getElementById(dateId);
+    const yearSel = document.getElementById(yearId);
+    if(monthSel) {
+      for(let i=1; i<=12; i++) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = i + '월';
+        monthSel.appendChild(opt);
+      }
+    }
+    if(dateSel) {
+      for(let i=1; i<=31; i++) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = i + '일';
+        dateSel.appendChild(opt);
+      }
+    }
+    if(yearSel) {
+      const now = new Date().getFullYear();
+      for(let i=now; i>=now-100; i--) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = i + '년';
+        yearSel.appendChild(opt);
+      }
+    }
+  }
+  // findpw 탭이므로, findPw용 셀렉트만 채우도록 수정
+  fillBirthSelect('findPwMonth','findPwDate','findPwYear');
+</script>
+</body>
+</html>

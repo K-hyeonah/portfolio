@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${detail.name} + ' 상세 정보'">시설 상세 정보</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
+  <link rel="stylesheet" th:href="@{/css/detail.css}">
+  <style>
+    /* 기본 스타일 (임시) */
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f4f4f4; }
+    .container { width: 80%; margin: 20px auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .detail-header { text-align: center; margin-bottom: 30px; }
+    .detail-header h1 { color: #333; margin-bottom: 10px; }
+    .detail-image { text-align: center; margin-bottom: 20px; }
+    .detail-image img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .detail-info { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    .detail-info div { padding: 10px; border-bottom: 1px solid #eee; }
+    .detail-info div strong { color: #555; display: inline-block; width: 100px; }
+    .detail-full-width { grid-column: 1 / -1; }
+    .detail-section h2 { border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-top: 30px; margin-bottom: 20px; color: #007bff; }
+    .detail-section p { margin-bottom: 10px; }
+    .back-button { display: block; width: 150px; margin: 30px auto 0; padding: 10px 20px; background-color: #007bff; color: white; text-align: center; text-decoration: none; border-radius: 5px; }
+    .back-button:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body>
+
+<div th:replace="header :: header"></div>
+
+<main>
+  <div class="container">
+    <div class="detail-header">
+      <h1 th:text="${detail.name}">기관명</h1>
+      <p th:text="${detail.address}">주소</p>
+    </div>
+
+    <div class="detail-image">
+      <img th:src="${detail.mainImage != null and detail.mainImage.startsWith('/') ? detail.mainImage : (detail.mainImage != null ? '/' + detail.mainImage : '/img/default.jpg')}"
+           alt="대표사진" onerror="this.onerror=null;this.src='/img/default.jpg';" />
+    </div>
+
+    <div class="detail-info">
+      <div><strong>전화번호</strong> <span th:text="${detail.phone}"></span></div>
+      <div><strong>정원</strong> <span th:text="${detail.capacity}"></span>명</div>
+      <div><strong>현원</strong> <span th:text="${detail.currentOccupancy}"></span>명</div>
+      <div><strong>대기인원</strong> <span th:text="${detail.waitingList}"></span>명</div>
+      <div><strong>이용가능여부</strong> <span th:text="${detail.availability}"></span></div>
+      <div><strong>본인부담금</strong> <span th:text="${detail.selfPay}"></span></div>
+      <div class="detail-full-width"><strong>홈페이지</strong> <a th:href="${detail.homepage}" th:text="${detail.homepage}" target="_blank"></a></div>
+    </div>
+
+    <div class="detail-section">
+      <h2>프로그램 운영</h2>
+      <p th:text="${detail.programOperation}">제공되는 프로그램 정보</p>
+    </div>
+
+    <div class="detail-section">
+      <h2>교통 및 주차</h2>
+      <p><strong>교통편:</strong> <span th:text="${detail.transportation}"></span></p>
+      <p><strong>주차시설:</strong> <span th:text="${detail.parkingFacility}"></span></p>
+    </div>
+
+    <div class="detail-section">
+      <h2>인력 현황</h2>
+      <p th:text="${detail.staffStatus}">인력 현황 정보</p>
+    </div>
+
+    <div class="detail-section">
+      <h2>평가 정보</h2>
+      <p><strong>평가일자:</strong> <span th:text="${detail.evaluationDate != null ? #temporals.format(detail.evaluationDate, 'yyyy-MM-dd') : '정보 없음'}"></span></p>
+      <p><strong>평점:</strong> <span th:text="${detail.rating}"></span></p>
+      <p><strong>총점:</strong> <span th:text="${detail.totalScore}"></span></p>
+      <p><strong>설립일자:</strong> <span th:text="${detail.establishDate != null ? #temporals.format(detail.establishDate, 'yyyy-MM-dd') : '정보 없음'}"></span></p>
+    </div>
+
+    <div class="detail-section">
+      <h2>추천</h2>
+      <p th:text="${detail.recommendation}">이 시설에 대한 추천 사유 또는 특징</p>
+    </div>
+
+    <a href="/facilities" class="back-button">목록으로 돌아가기</a>
+  </div>
+</main>
+
+<div th:replace="footer :: footer"></div>
+</body>
+</html>

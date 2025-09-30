@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE | 마이페이지</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/favorite.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="mypage-main">
+    <div class="mypage-sidebar">
+      <h2 class="mypage-title">마이페이지<br><br></h2>
+      <ul class="mypage-menu">
+        <li><a th:href="@{/mypage}">내정보</a></li>
+        <li><a th:href="@{/inquiry}">문의사항</a></li>
+        <li><a th:href="@{/favorite}" class="active">즐겨찾기</a></li>
+        <li><a th:href="@{/editinfo}">정보수정</a></li>
+      </ul>
+    </div>
+
+    <div class="mypage-content">
+      <div class="mypage-inner-content">
+        <h3 class="user-name">김현아님</h3>
+
+        <div class="info-cards">
+          <div class="info-card" id="recent-facility-card">
+            <h4>최근 본 시설</h4>
+            <p id="recent-facility-name">○○요양원</p>
+          </div>
+          <div class="info-card">
+            <h4>요양등급</h4>
+            <p>1등급</p>
+          </div>
+          <div class="info-card" onclick="location.href='/inquiry'" style="cursor: pointer;">
+            <h4>문의사항</h4>
+            <p>문의 내역 보기</p>
+          </div>
+        </div>
+
+        <div class="favorite-list-section">
+          <div class="favorite-list-header">
+            <span class="favorite-count">00개</span>
+          </div>
+          <ul class="favorite-list" id="favoriteList">
+          </ul>
+          <div id="favoritePagination"></div>
+        </div>
+      </div>
+  </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+  // 즐겨찾기 관리 함수들
+  function getFavorites() {
+    const favorites = localStorage.getItem('facilityFavorites');
+    return favorites ? JSON.parse(favorites) : [];
+  }
+
+  function addToFavorites(facility) {
+    const favorites = getFavorites();
+    if (!favorites.find(f => f.id == facility.id)) {
+      favorites.push(facility);
+      localStorage.setItem('facilityFavorites', JSON.stringify(favorites));
+    }
+  }
+
+  function removeFromFavorites(facilityId) {
+    const favorites = getFavorites();
+    console.log('제거 전 즐겨찾기:', favorites);
+    console.log('제거할 facilityId:', facilityId, '타입:', typeof facilityId);
+    
+    // facilityId를 숫자로 변환하여 비교
+    const updatedFavorites = favorites.filter(f => {
+      console.log('비교:', f.id, 'vs', facilityId, '결과:', f.id != facilityId);
+      return f.id != facilityId;
+    });
+    
+    console.log('제거 후 즐겨찾기:', updatedFavorites);
+    localStorage.setItem('facilityFavorites', JSON.stringify(updatedFavorites));
+    renderFavoritesList(); // 목록 다시 렌더링
+  }
+
+  function renderFavoritesList() {
+    const favorites = getFavorites();
+    const container = document.getElementById('favoriteList');
+    const countSpan = document.querySelector('.favorite-count');
+
+    if (!container) return;
+
+    // 개수 업데이트
+    if (countSpan) {
+      countSpan.textContent = `${favorites.length}개`;
+    }
+
+    container.innerHTML = '';
+
+    if (!favorites.length) {
+      container.innerHTML = '<li style="padding:32px 0;text-align:center;color:#888;">즐겨찾기한 시설이 없습니다.</li>';
+      return;
+    }
+
+    favorites.forEach((facility, idx) => {
+      container.innerHTML += `
+        <li class="favorite-item" style="cursor: pointer;" onclick="window.location.href='/facilities/${facility.id}'">
+          <img src="${facility.image || 'img/1.jpg'}" alt="시설사진" class="favorite-thumb">
+          <div class="favorite-info">
+            <div class="favorite-name">${facility.name}</div>
+            <div class="favorite-addr">${facility.address}</div>
+            <div class="favorite-tel">전화번호 <span>${facility.phone}</span></div>
+          </div>
+          <input type="checkbox" id="favorite${facility.id}" class="favorite-fav-chk" checked data-facility-id="${facility.id}">
+          <label for="favorite${facility.id}" class="favorite-fav-label"></label>
+        </li>
+      `;
+    });
+
+    // 즐겨찾기 해제 이벤트 추가
+    container.querySelectorAll('.favorite-fav-chk').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const facilityId = this.dataset.facilityId;
+        if (!this.checked) {
+          // 즐겨찾기 해제
+          removeFromFavorites(facilityId);
+        } else {
+          // 다시 체크된 경우 즐겨찾기 추가
+          const currentFavorites = getFavorites();
+          const facility = currentFavorites.find(f => f.id == facilityId);
+          if (facility) {
+            addToFavorites(facility);
+          }
+        }
+      });
+
+      // 즐겨찾기 체크박스 클릭 시 이벤트 전파 방지
+      checkbox.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    });
+  }
+
+  // 최근 본 시설 표시 함수
+  function displayRecentFacility() {
+    const recentFacilities = JSON.parse(localStorage.getItem('recentFacilities') || '[]');
+    const recentFacilityName = document.getElementById('recent-facility-name');
+    const recentFacilityCard = document.getElementById('recent-facility-card');
+    
+    if (recentFacilities.length > 0) {
+      // 첫 번째 항목의 이름을 표시
+      recentFacilityName.textContent = recentFacilities[0].name;
+      
+      // 카드 클릭 시 해당 시설로 이동
+      recentFacilityCard.style.cursor = 'pointer';
+      recentFacilityCard.onclick = function() {
+        const facilityName = encodeURIComponent(recentFacilities[0].name);
+        // 시설명으로 검색하여 해당 시설 페이지로 이동
+        fetch('/api/facility/search?name=' + facilityName)
+          .then(response => response.json())
+          .then(data => {
+            if (data && data.id) {
+              window.location.href = '/facility-detail/' + data.id;
+            } else {
+              window.location.href = '/facilities';
+            }
+          })
+          .catch(error => {
+            console.error('시설 검색 중 오류 발생:', error);
+            window.location.href = '/facilities';
+          });
+      };
+    } else {
+      recentFacilityName.textContent = '최근 본 시설 없음';
+    }
+  }
+
+  // 사이드바 메뉴 active 처리
+  document.addEventListener('DOMContentLoaded', function() {
+    var links = document.querySelectorAll('.favorite-menu a');
+    var path = location.pathname.split('/').pop();
+    links.forEach(function(link) {
+      if(link.getAttribute('href') && link.getAttribute('href').indexOf(path) > -1) {
+        link.classList.add('active');
+      }
+    });
+
+    // 즐겨찾기 목록 렌더링
+    renderFavoritesList();
+    
+    // 최근 본 시설 표시
+    displayRecentFacility();
+  });
+</script>
+</body>
+</html>

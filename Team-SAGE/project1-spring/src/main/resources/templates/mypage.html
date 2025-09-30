@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SAGE | 마이페이지</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mypage.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="mypage-main">
+    <div class="mypage-container">
+        <div class="mypage-sidebar">
+            <h2 class="mypage-title">마이페이지<br><br></h2>
+            <ul class="mypage-menu">
+                <li><a th:href="@{/inquiry}">문의사항</a></li>
+                <li><a th:href="@{/favorite}">즐겨찾기</a></li>
+                <li><a th:href="@{/verify}">정보수정</a></li>
+            </ul>
+        </div>
+
+        <div class="mypage-content1">
+            <div class="mypage-inner-content">
+                <h3 class="user-name" th:text="${user.name}"></h3>
+
+                <div class="info-cards">
+                    <div class="info-card" id="favorite-card" th:onclick="|location.href='@{/favorite}'|" style="cursor: pointer;">
+                        <h4>즐겨찾기</h4>
+                        <p id="favorite-facility-name">○○요양원</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>요양등급</h4>
+                        <p th:text="${user.yyGrade}"></p>
+                    </div>
+                    <div class="info-card" id="inquiry-card" th:onclick="|location.href='@{/inquiry}'|" style="cursor: pointer;">
+                        <h4>문의사항</h4>
+                        <p></p>
+                    </div>
+                </div>
+
+                <div class="recent-posts-section">
+                    <h3 class="recent-posts-title">최근 본 게시글</h3>
+                    <div class="recent-posts-grid" id="recentPostsGrid">
+                        <!-- 최근 본 게시글이 여기에 동적으로 로드됩니다 -->
+                    </div>
+                </div>
+
+                <div class="personal-info">
+                    <h4>개인정보</h4>
+                    <div class="info-row">
+                        <span class="info-label">아이디</span>
+                        <span class="info-value" id="userIdMasked" th:text="${userId}"></span>
+                        <a href="#" class="info-link" id="showFullIdBtn">아이디 전체 확인</a>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">비밀번호</span>
+                        <a th:href="@{/find-pw}" class="info-link info-link-passedit">비밀번호 수정</a>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"></span>
+                        <span class="info-value"></span>
+                        <a th:href="@{/verify}" class="info-link">수정</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script th:inline="javascript">
+    // 즐겨찾기 첫 번째 항목 표시 함수
+    function displayFavoriteFacility() {
+      const favorites = JSON.parse(localStorage.getItem('facilityFavorites') || '[]');
+      const favoriteFacilityName = document.getElementById('favorite-facility-name');
+
+      if (favorites.length > 0) {
+        // 첫 번째 항목의 이름을 표시
+        favoriteFacilityName.textContent = favorites[0].name;
+      } else {
+        favoriteFacilityName.textContent = '즐겨찾기 없음';
+      }
+    }
+
+    // 최근 본 게시글 불러오기 함수
+    function loadRecentFacilities() {
+      var recentFacilities = JSON.parse(localStorage.getItem('recentFacilities') || '[]');
+      var gridContainer = document.getElementById('recentPostsGrid');
+
+      if (recentFacilities.length === 0) {
+        gridContainer.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">최근 본 게시글이 없습니다.</p>';
+        return;
+      }
+
+      if (!gridContainer.dataset.bound) {
+        gridContainer.addEventListener('click', (e) => {
+          const card = e.target.closest('.recent-post-card');
+          if (!card) return;
+          goToFacilityDetail(card.dataset.name);
+        });
+        gridContainer.dataset.bound = '1';
+      }
+
+      var html = '';
+      recentFacilities.forEach(function(facility) {
+        // 이미지 경로 처리 - 이미 절대 경로로 저장되어 있으므로 그대로 사용
+        var imageUrl = facility.image || '/img/default.jpg';
+
+        html += `<div class="recent-post-card" data-name="${facility.name.replace(/"/g,'&quot;')}">
+                    <img src="${imageUrl}" class="recent-post-img" onerror="this.src='/img/default.jpg'">
+                    <div class="recent-post-info">
+                      <h4 class="recent-post-title">${facility.name}</h4>
+                      <p class="recent-post-date">${facility.date}</p>
+                    </div>
+                  </div>`;
+
+      });
+
+      gridContainer.innerHTML = html;
+    }
+
+    const DETAIL_BASE = /*[[@{/facility-detail/}]]*/ '/facility-detail/';
+
+    function goToFacilityDetailById(id) {
+      window.location.href = DETAIL_BASE + encodeURIComponent(String(id));
+    }
+
+    // 시설 상세 페이지로 이동하는 함수
+    function goToFacilityDetail(facilityName) {
+      // 시설명으로 시설 ID를 찾기 위해 서버에 요청
+      fetch('/api/facility/search?name=' + facilityName)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.id) {
+            goToFacilityDetailById(data.id);
+          } else {
+            // 시설 ID가 없으면 시설찾기 페이지로 이동
+            window.location.href = /*[[@{/facilities}]]*/ '/facilities';
+          }
+        })
+        .catch(error => {
+          console.error('시설 검색 중 오류 발생:', error);
+          // 오류 발생 시 시설찾기 페이지로 이동
+          window.location.href = /*[[@{/facilities}]]*/ '/facilities';
+        });
+    }
+
+    // 사이드바 메뉴 active 처리
+    document.addEventListener('DOMContentLoaded', function() {
+      var links = document.querySelectorAll('.mypage-menu a');
+      var path = location.pathname.split('/').pop();
+      links.forEach(function(link) {
+        if(link.getAttribute('href') && link.getAttribute('href').indexOf(path) > -1) {
+          link.classList.add('active');
+        }
+      });
+
+      // 아이디 전체 확인 기능
+      var realId = /*[[${userId}]]*/ null;
+      var idSpan = document.getElementById('userIdMasked');
+      var showBtn = document.getElementById('showFullIdBtn');
+
+      if (typeof realId === 'string' && realId.length > 0 && idSpan && showBtn) {
+        var maskedId = realId.slice(0, 3) + '*'.repeat(Math.max(0, realId.length - 3));
+        idSpan.textContent = maskedId;
+        showBtn.onclick = function(e) { e.preventDefault(); idSpan.textContent = realId; this.style.display = 'none'; };
+      } else {
+        // 값이 없으면 버튼 숨기기 등 안전 처리
+        showBtn && (showBtn.style.display = 'none');
+      }
+
+
+      // 시설찾기/카드 클릭 이동 (Thymeleaf 링크 사용)
+      document.getElementById('favorite-card').onclick = function() {
+        location.href = /*[[@{/favorite}]]*/ '/favorite';
+      };
+
+      document.getElementById('inquiry-card').onclick = function() {
+        location.href = /*[[@{/inquiry}]]*/ '/inquiry';
+      };
+
+      // 즐겨찾기 첫 번째 항목 표시
+      displayFavoriteFacility();
+
+      // 최근 본 게시글 로드
+      loadRecentFacilities();
+    });
+</script>
+</body>
+</html>

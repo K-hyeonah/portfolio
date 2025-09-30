@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+
+<header th:fragment="header">
+  <div class="logo">
+    <a th:href="@{/}"><img th:src="@{/img/sage-logo-temp.png}" alt="SAGE 로고"></a>
+  </div>
+  <nav>
+    <div class="nav-auth">
+      <a th:href="@{/login}">로그인</a> <a th:href="@{/mypage}">마이페이지</a>
+    </div>
+    <div class="nav-mainlinks">
+      <a th:href="@{/facilities}">시설찾기</a>
+      <a th:href="@{/grade}">요양등급</a>
+      <a th:href="@{/payinfo}">생활정보</a>
+      <a th:href="@{/notice}">공지사항</a>
+      <a th:href="@{/faq}">QnA</a>
+    </div>
+  </nav>
+</header>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE | 마이페이지</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mypage.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="mypage-main">
+  <div class="mypage-container">
+    <div class="mypage-sidebar">
+      <h2 class="mypage-title">마이페이지<br><br></h2>
+      <ul class="mypage-menu">
+        <li><a th:href="@{/inquiry}">문의사항</a></li>
+        <li><a th:href="@{/favorite}">즐겨찾기</a></li>
+        <li><a th:href="@{/editinfo}">정보수정</a></li>
+      </ul>
+    </div>
+
+    <div class="mypage-content1">
+      <div class="mypage-inner-content">
+        <h3 class="user-name">김현아님</h3>
+
+        <div class="info-cards">
+          <div class="info-card" id="favorite-card">
+            <h4>즐겨찾기</h4>
+            <p></p>
+          </div>
+          <div class="info-card">
+            <h4>요양등급</h4>
+            <p>1등급</p>
+          </div>
+          <div class="info-card" id="inquiry-card">
+            <h4>문의사항</h4>
+            <p></p>
+          </div>
+        </div>
+
+        <div class="recent-posts-section">
+          <h3 class="recent-posts-title">최근 본 게시물</h3>
+          <div class="recent-posts-grid">
+            <div class="recent-post-card">
+              <img src="img/1.jpg" alt="게시물 이미지" class="recent-post-img">
+              <div class="recent-post-info">
+                <h4 class="recent-post-title">청운노인요양원 시설 정보</h4>
+                <p class="recent-post-date">2024.01.15</p>
+              </div>
+            </div>
+            <div class="recent-post-card">
+              <img src="img/2.jpg" alt="게시물 이미지" class="recent-post-img">
+              <div class="recent-post-info">
+                <h4 class="recent-posts-title">서울요양원 상세 정보</h4>
+                <p class="recent-post-date">2024.01.14</p>
+              </div>
+            </div>
+            <div class="recent-post-card">
+              <img src="img/3.jpg" alt="게시물 이미지" class="recent-post-img">
+              <div class="recent-post-info">
+                <h4 class="recent-posts-title">행복요양원 시설 소개</h4>
+                <p class="recent-post-date">2024.01.13</p>
+              </div>
+            </div>
+            <div class="recent-post-card">
+              <img src="img/4.jpg" alt="게시물 이미지" class="recent-post-img">
+              <div class="recent-post-info">
+                <h4 class="recent-posts-title">평화요양원 정보</h4>
+                <p class="recent-post-date">2024.01.12</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="personal-info">
+          <h4>개인정보</h4>
+          <div class="info-row">
+            <span class="info-label">아이디</span>
+            <span class="info-value" id="userIdMasked">han*******</span>
+            <a href="#" class="info-link" id="showFullIdBtn">아이디 전체 확인</a>
+          </div>
+          <div class="info-row">
+            <span class="info-label">비밀번호</span>
+            <a href="passedit.html" class="info-link info-link-passedit">비밀번호 수정</a>
+          </div>
+          <div class="info-row">
+            <span class="info-label">전화번호</span>
+            <span class="info-value">010-0000-0000</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label"></span>
+            <span class="info-value"></span>
+            <a href="editinfo.html" class="info-link">수정</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+
+  // 사이드바 메뉴 active 처리
+  document.addEventListener('DOMContentLoaded', function() {
+    var links = document.querySelectorAll('.mypage-menu a');
+    var path = location.pathname.split('/').pop();
+    links.forEach(function(link) {
+      if(link.getAttribute('href') && link.getAttribute('href').indexOf(path) > -1) {
+        link.classList.add('active');
+      }
+    });
+    // 아이디 전체 확인 기능
+    var realId = 'han1234567'; // 실제 아이디(예시)
+    var maskedId = realId.slice(0, 3) + '*'.repeat(realId.length - 3);
+    var idSpan = document.getElementById('userIdMasked');
+    var showBtn = document.getElementById('showFullIdBtn');
+    if(idSpan && showBtn) {
+      idSpan.textContent = maskedId;
+      showBtn.onclick = function(e) {
+        e.preventDefault();
+        idSpan.textContent = realId;
+        this.style.display = 'none';
+      };
+    }
+  });
+
+  // 시설찾기/카드 클릭 이동
+  document.getElementById('favorite-card').onclick = function() {
+    location.href = 'favorite.html';
+  };
+
+  document.getElementById('inquiry-card').onclick = function() {
+    location.href = 'inquiry.html';
+  };
+</script>
+</body>
+</html>

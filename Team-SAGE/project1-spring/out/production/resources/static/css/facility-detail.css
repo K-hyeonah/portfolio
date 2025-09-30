@@ -1,0 +1,135 @@
+/* 시설 상세 페이지 스타일 */
+body { 
+  font-family: 'Noto Sans KR', Arial, sans-serif; 
+  line-height: 1.6; 
+  margin: 0; 
+  padding: 0; 
+  background-color: #f6f8fb; 
+}
+
+.container { 
+  width: 90%; 
+  max-width: 1200px;
+  margin: 120px auto 40px auto; 
+  background: #fff; 
+  padding: 40px; 
+  border-radius: 16px; 
+  box-shadow: 0 4px 24px rgba(120,160,255,0.08); 
+}
+
+.detail-header { 
+  text-align: center; 
+  margin-bottom: 40px; 
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e6f0fa;
+}
+
+.detail-header h1 { 
+  color: #1a2a4a; 
+  margin-bottom: 10px; 
+  font-size: 2.2em;
+  font-weight: 700;
+}
+
+.detail-header p {
+  color: #4a5a7a;
+  font-size: 1.1em;
+  margin: 0;
+}
+
+.detail-image { 
+  text-align: center; 
+  margin-bottom: 30px; 
+}
+
+.detail-image img { 
+  max-width: 100%; 
+  height: auto; 
+  border-radius: 12px; 
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
+}
+
+.detail-section { 
+  margin-top: 30px;
+  padding: 20px 0;
+}
+
+.detail-section h2 { 
+  border-bottom: 1px solid #ddd; 
+  padding-bottom: 10px; 
+  margin-top: 0; 
+  margin-bottom: 20px; 
+  font-size: 1.3em;
+  font-weight: 600;
+}
+
+.detail-section p { 
+  margin-bottom: 10px; 
+  line-height: 1.6;
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.info-table th {
+  background: #f8f9fa;
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+  font-weight: 600;
+  width: 120px;
+}
+
+.info-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+.info-table a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.info-table a:hover {
+  text-decoration: underline;
+}
+
+.back-button { 
+  display: block; 
+  width: 150px; 
+  margin: 30px auto 0; 
+  padding: 12px 20px; 
+  background-color: #007bff; 
+  color: white; 
+  text-align: center; 
+  text-decoration: none; 
+  border-radius: 5px; 
+  font-weight: 500;
+}
+
+.back-button:hover { 
+  background-color: #0056b3; 
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    padding: 20px;
+    margin: 100px auto 20px auto;
+  }
+  .detail-header h1 {
+    font-size: 1.8em;
+  }
+  .info-table th {
+    width: 80px;
+    padding: 8px;
+    font-size: 0.9em;
+  }
+  .info-table td {
+    padding: 8px;
+    font-size: 0.9em;
+  }
+}

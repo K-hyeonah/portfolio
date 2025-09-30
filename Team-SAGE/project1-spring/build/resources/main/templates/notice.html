@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SAGE - 공지사항</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/notice.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+</head>
+<body id="notice-page">
+
+<header th:replace="header :: header"></header>
+
+<main class="notice-main">
+    <div class="notice-title-wrap">
+        <h2 class="notice-title">공지사항</h2>
+        <button class="notice-write-btn" th:onclick="|location.href='@{/notice/write}'|">글쓰기</button>
+    </div>
+    <div class="notice-table-section">
+        <table class="notice-table">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="notice : ${noticeList}" class="notice-table-row" th:data-id="${notice.id}">
+                <td th:text="${notice.id}">001</td>
+                <td>
+                    <a th:href="@{/notice/{id}(id=${notice.id})}" th:text="${notice.title}">게시글 제목</a>
+                </td>
+                <td th:text="${notice.writer}">작성자</td>
+                <td th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">2025-07-07</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="notice-pagination">
+        <a class="active" href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">&gt;</a>
+    </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script th:src="@{/js/notice.js}"></script>
+</body>
+</html>

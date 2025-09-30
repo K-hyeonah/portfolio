@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAGE - FAQ 답변</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/faq-answer.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+</head>
+<body id="faq-answer-page">
+
+<header th:replace="header :: header"></header>
+
+<main class="faq-main">
+    <div class="faq-title-wrap">
+        <h2 class="faq-title">FAQ 답변</h2>
+    </div>
+
+    <!-- FAQ 질문 내용 표시 -->
+    <div class="faq-question-display">
+        <div class="faq-question-header">
+            <h3 class="faq-question-title" th:text="${faq.title}">FAQ 질문 제목</h3>
+            <div class="faq-question-meta">
+                <span class="faq-question-number" th:text="${faq.number}">001</span>
+                <span class="faq-question-author" th:text="${faq.author}">작성자</span>
+                <span class="faq-question-date" th:text="${faq.date}">2025-07-07</span>
+            </div>
+        </div>
+        <div class="faq-question-content" th:text="${faq.content}">
+            문의 내용이 여기에 표시됩니다. 사용자가 작성한 질문 내용을 확인할 수 있습니다.
+        </div>
+    </div>
+
+    <!-- FAQ 답변 작성 폼 -->
+    <form class="faq-write-form" th:action="@{/faq/answer}" th:method="post">
+        <input type="hidden" name="faqId" th:value="${faq.id}">
+        <div class="faq-write-row">
+            <label for="faq-answer-input">답변 내용</label>
+            <textarea id="faq-answer-input" name="answer" rows="10" required placeholder="답변 내용을 입력하세요"></textarea>
+        </div>
+        <div class="faq-write-btns">
+            <button type="submit" class="faq-submit-btn">답변 등록</button>
+            <button type="button" class="faq-cancel-btn" th:onclick="|location.href='@{/faq}'|">취소</button>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script th:src="@{/js/faq-answer.js}"></script>
+</body>
+</html>

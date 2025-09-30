@@ -1,0 +1,11 @@
+
+version: "3.1"
+rules:
+- rule: Always query CSV on ask_info
+  steps:
+    - intent: ask_info
+    - action: action_query_csv
+- rule: Fallback to CSV
+  steps:
+    - intent: nlu_fallback
+    - action: action_query_csv

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE - 자주 묻는 질문 글쓰기</title>
+
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/faq-faqwrite.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="faq-main">
+  <div class="faq-title-wrap">
+    <h2 class="faq-title">자주 묻는 질문</h2>
+  </div>
+  <form class="faq-write-form" th:action="@{/faq/write}" th:method="post">
+    <div class="faq-write-row">
+      <label for="faq-title-input">제목</label>
+      <input type="text" id="faq-title-input" name="title" required placeholder="제목을 입력하세요">
+    </div>
+    <div class="faq-write-row">
+      <label for="faq-question-input">내용</label>
+      <textarea id="faq-question-input" name="question" rows="10" required placeholder="내용을 입력하세요"></textarea>
+    </div>
+    <div class="faq-write-btns">
+      <button type="submit" class="faq-submit-btn">등록</button>
+      <button type="button" class="faq-cancel-btn" onclick="history.back()">취소</button>
+    </div>
+  </form>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+</script>
+</body>
+</html>

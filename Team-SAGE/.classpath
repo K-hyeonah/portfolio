@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="project1-spring/src/main/java"/>
+	<classpathentry kind="src" path="project1-spring/src/test/java/project1/project1_spring"/>
+	<classpathentry kind="src" path="project1-spring/untitled/src"/>
+	<classpathentry kind="lib" path="__MACOSX/project1-spring/build/libs/._project1-spring-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="__MACOSX/project1-spring/build/libs/._project1-spring-0.0.1-SNAPSHOT-plain.jar"/>
+	<classpathentry kind="lib" path="__MACOSX/project1-spring/gradle/wrapper/._gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="project1-spring/build/libs/project1-spring-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="project1-spring/build/libs/project1-spring-0.0.1-SNAPSHOT-plain.jar"/>
+	<classpathentry kind="lib" path="project1-spring/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="output" path="project1-spring/build/classes/java/main"/>
+</classpath>

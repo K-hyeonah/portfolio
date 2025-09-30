@@ -1,0 +1,736 @@
+.chatbot-fab, .top-fab {
+  position: fixed;
+  right: 32px;
+  border: none;
+  border-radius: 50%;
+  width: 72px;
+  height: 72px;
+  background: #e6f0fa;
+  box-shadow: 0 2px 12px rgba(127,170,255,0.13);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  transition: background 0.18s, box-shadow 0.18s;
+}
+.chatbot-fab {
+  bottom: 32px;
+}
+.top-fab {
+  bottom: 124px;
+  font-size: 2.5em;
+  color: #0074d9;
+  background: #e6f0fa;
+}
+.chatbot-fab:hover, .top-fab:hover {
+  background: #3b6eb7;
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(59,110,183,0.18);
+}
+.chatbot-fab img {
+  width: 90%;
+  height: 90%;
+  margin: 0 auto;
+  padding: 0;
+  object-fit: contain;
+  display: block;
+}
+
+.chatbot-container {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 380px;
+  height: 480px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+  display: none;
+  flex-direction: column;
+  z-index: 2001;
+  overflow: hidden;
+  border: 1px solid #e6f0fa;
+}
+
+.chatbot-header {
+  background: #3b6eb7;
+  color: white;
+  padding: 16px 20px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1em;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.chatbot-close-btn {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.3em;
+  color: white;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.chatbot-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.chatbot-messages {
+  flex: 1;
+  padding: 20px;
+  padding-bottom: 70px;
+  overflow-y: auto;
+  background-color: #f6f8fb;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-behavior: smooth;
+  scrollbar-width: auto;
+  scrollbar-color: #c1c1c1 #f6f8fb;
+  position: relative;
+  min-height: 200px;
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(100% - 140px);
+  height: 300px;
+  /* 스크롤 성능 최적화 */
+  will-change: scroll-position;
+  transform: translateZ(0);
+  /* 스크롤 강제 활성화 */
+  overflow: auto !important;
+}
+
+/* 스크롤바 스타일링 - Webkit 브라우저 */
+.chatbot-messages::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+
+.chatbot-messages::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 4px;
+  margin: 1px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-radius: 4px;
+  min-height: 30px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb:active {
+  background: #808080;
+}
+
+.chatbot-messages::-webkit-scrollbar-corner {
+  background: #f0f0f0;
+}
+
+/* 스크롤바 스타일링 - Firefox */
+.chatbot-messages {
+  scrollbar-width: auto;
+  scrollbar-color: #b0b0b0 #f0f0f0;
+}
+
+/* 스크롤 인디케이터 */
+.chatbot-messages::after {
+  content: '';
+  position: absolute;
+  bottom: 70px;
+  right: 8px;
+  width: 8px;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, #c1c1c1);
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.chatbot-messages.has-scroll::after {
+  opacity: 1;
+}
+
+/* 스크롤 애니메이션 */
+.chatbot-messages {
+  transition: scroll-behavior 0.3s ease;
+}
+
+/* 스크롤 버튼 (선택사항) */
+.chatbot-scroll-btn {
+  position: absolute;
+  bottom: 80px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  z-index: 10;
+  opacity: 0;
+  /* 스크롤 버튼 강제 표시 */
+  pointer-events: auto;
+}
+
+.chatbot-scroll-btn:hover {
+  background: #24508a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+}
+
+.chatbot-scroll-btn:active {
+  transform: translateY(0);
+}
+
+.chatbot-scroll-btn.show {
+  display: flex;
+  opacity: 1;
+}
+
+/* 스크롤 최적화 */
+.chatbot-messages {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* 메시지 로딩 애니메이션 */
+.message {
+  animation: messageSlideIn 0.4s ease-out;
+  transform-origin: bottom;
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 스크롤 위치 표시기 */
+.chatbot-scroll-indicator {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 4px;
+  height: 40px;
+  background: rgba(59,110,183,0.3);
+  border-radius: 2px;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.chatbot-messages.scrolling .chatbot-scroll-indicator {
+  opacity: 1;
+}
+
+.message {
+  max-width: 85%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.95em;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.message.user {
+  align-self: flex-end;
+  background: #3b6eb7;
+  color: white;
+  box-shadow: 0 1px 4px rgba(127,170,255,0.06);
+  border-bottom-right-radius: 4px;
+}
+
+.message.bot {
+  align-self: flex-start;
+  background-color: #ffffff;
+  color: #222;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  border: 1px solid #e6f0fa;
+  border-bottom-left-radius: 4px;
+}
+
+/* 챗봇 메시지용 게시글 카드 스타일 */
+.message.bot.post-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  border: 1px solid #e6f0fa;
+  padding: 16px;
+  max-width: 90%;
+  margin-bottom: 8px;
+}
+
+.message.bot.post-card .post-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #f0f4fa;
+}
+
+.message.bot.post-card .post-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #3b6eb7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9em;
+  margin-right: 10px;
+}
+
+.message.bot.post-card .post-info {
+  flex: 1;
+}
+
+.message.bot.post-card .post-author {
+  font-weight: 600;
+  color: #1a2a4a;
+  font-size: 0.95em;
+  margin-bottom: 2px;
+}
+
+.message.bot.post-card .post-date {
+  font-size: 0.8em;
+  color: #6b7280;
+}
+
+.message.bot.post-card .post-content {
+  color: #222;
+  line-height: 1.5;
+  font-size: 0.9em;
+}
+
+.message.bot.post-card .post-footer {
+  margin-top: 12px;
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.message.bot.post-card .post-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.5em;
+  color: #6b7280;
+}
+
+.message.bot.post-card .post-stats i {
+  font-size: 0.5em;
+}
+
+/* 클릭 가능한 카드 스타일 */
+.message.bot.post-card.clickable-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.message.bot.post-card.clickable-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(59,110,183,0.05) 0%, rgba(59,110,183,0.02) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.message.bot.post-card.clickable-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border-color: #3b6eb7;
+}
+
+.message.bot.post-card.clickable-card:hover::before {
+  opacity: 1;
+}
+
+.message.bot.post-card.clickable-card:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.message.bot.post-card.clickable-card .post-stats {
+  color: #3b6eb7;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.message.bot.post-card.clickable-card:hover .post-stats {
+  color: #24508a;
+}
+
+.message.bot.post-card.clickable-card .post-stats i {
+  transition: transform 0.3s ease;
+}
+
+.message.bot.post-card.clickable-card:hover .post-stats i {
+  transform: scale(1.1);
+}
+
+/* 가로 배치 메뉴 카드 스타일 */
+.menu-cards-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.menu-card {
+  flex: 1;
+  min-width: 80px;
+  background: #f8fafc;
+  border: 1px solid #e6f0fa;
+  border-radius: 8px;
+  padding: 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.menu-card:hover {
+  background: #3b6eb7;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59,110,183,0.2);
+  border-color: #3b6eb7;
+}
+
+.menu-card:active {
+  transform: translateY(0);
+}
+
+.menu-icon {
+  font-size: 1.5em;
+  margin-bottom: 4px;
+}
+
+.menu-text {
+  font-size: 0.8em;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* 챗봇 응답 카드 타입별 스타일 */
+.message.bot.post-card[data-type="menu"] {
+  border-left: 4px solid #3b6eb7;
+}
+
+.message.bot.post-card[data-type="info"] {
+  border-left: 4px solid #10b981;
+}
+
+.message.bot.post-card[data-type="help"] {
+  border-left: 4px solid #f59e0b;
+}
+
+.message.bot.post-card[data-type="default"] {
+  border-left: 4px solid #6b7280;
+}
+
+/* 카드 타입별 아이콘 색상 */
+.message.bot.post-card[data-type="menu"] .post-stats i {
+  color: #3b6eb7;
+}
+
+.message.bot.post-card[data-type="info"] .post-stats i {
+  color: #10b981;
+}
+
+.message.bot.post-card[data-type="help"] .post-stats i {
+  color: #f59e0b;
+}
+
+ .message.bot.post-card[data-type="default"] .post-stats i {
+   color: #6b7280;
+ }
+
+.message.bot.post-card[data-type="facility"] {
+  border-left: 4px solid #10b981;
+}
+
+/* 요양원 카드 스타일 */
+.facility-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 8px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.facility-card:hover {
+  background: #f1f5f9;
+  border-color: #3b6eb7;
+  box-shadow: 0 4px 12px rgba(59, 110, 183, 0.15);
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+
+.facility-card:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 110, 183, 0.1);
+}
+
+.facility-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.facility-title {
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  line-height: 1.3;
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.facility-group {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 16px;
+  background: #ffffff;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.facility-group::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b6eb7, #24508a);
+}
+
+.facility-group:hover {
+  border-color: #3b6eb7;
+  box-shadow: 0 6px 20px rgba(59, 110, 183, 0.15);
+  transform: translateY(-2px);
+}
+
+.facility-group:last-child {
+  margin-bottom: 0;
+}
+
+.facility-grade {
+  background: linear-gradient(135deg, #3b6eb7, #24508a);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8em;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(59, 110, 183, 0.3);
+}
+
+.facility-info {
+  margin-bottom: 12px;
+}
+
+.facility-item {
+  font-size: 0.9em;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.facility-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.facility-item.facility-name {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.facility-item.facility-address {
+  color: #64748b;
+  font-size: 0.9em;
+  margin-bottom: 16px;
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.facility-action-btn {
+  text-align: right;
+  margin-top: 8px;
+}
+
+.view-facility {
+  color: #3b6eb7;
+  font-size: 0.85em;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(59, 110, 183, 0.1);
+  display: inline-block;
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  border: 1px solid rgba(59, 110, 183, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.view-facility::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.facility-action-btn:hover .view-facility {
+  color: #ffffff;
+  background: linear-gradient(135deg, #3b6eb7, #24508a);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(59, 110, 183, 0.3);
+  border-color: #3b6eb7;
+}
+
+.facility-action-btn:hover .view-facility::before {
+  left: 100%;
+}
+
+.facility-action-btn:active .view-facility {
+  transform: translateY(0);
+}
+
+.chatbot-input {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  padding: 16px 20px;
+  border-top: 1px solid #e6f0fa;
+  background-color: #fff;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.chatbot-input input {
+  flex-grow: 1;
+  border: 1px solid #e6f0fa;
+  border-radius: 24px;
+  padding: 12px 18px;
+  outline: none;
+  font-size: 0.95em;
+  background: #f6f8fb;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.chatbot-input input:focus {
+  border-color: #3b6eb7;
+  box-shadow: 0 0 0 3px rgba(59,110,183,0.1);
+  background: #fff;
+}
+
+.chatbot-input button {
+  background: #3b6eb7;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  margin-left: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 1px 4px rgba(127,170,255,0.06);
+}
+
+.chatbot-input button:hover {
+  background: #24508a;
+  transform: translateY(-1px);
+}
+
+.chatbot-input button:active {
+  transform: translateY(0);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .chatbot-container {
+    width: calc(100vw - 40px);
+    right: 20px;
+    left: 20px;
+    height: 60vh;
+  }
+  
+  .chatbot-fab, .top-fab {
+    right: 20px;
+  }
+}
+
+
+
+

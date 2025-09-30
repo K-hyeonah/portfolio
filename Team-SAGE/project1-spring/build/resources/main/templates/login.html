@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE | 로그인</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body id="login-page">
+
+<header th:replace="header :: header"></header>
+
+<main class="login-main">
+  <form class="login-form">
+    <h2 class="login-title">로그인</h2>
+    <div class="login-field">
+      <label for="loginId">아이디</label>
+      <input type="text" id="loginId" placeholder="아이디를 입력해주세요" required>
+    </div>
+    <div class="login-field">
+      <label for="loginPw">비밀번호</label>
+      <input type="password" id="loginPw" placeholder="비밀번호를 입력해주세요" required>
+    </div>
+    <button type="submit" class="login-btn">로그인</button>
+    <div class="login-links">
+      <a th:href="@{/signup}">회원가입</a> | <a th:href="@{/findid}">아이디 찾기</a>
+      | <a th:href="@{/findpw}">비밀번호 찾기</a>
+    </div>
+  </form>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE | 공지사항 상세</title>
+
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/notice.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="notice-main">
+  <div class="notice-title-wrap">
+    <h2 class="notice-title">공지사항</h2>
+    <button class="notice-list-btn" th:onclick="|location.href='@{/notice}'|">목록</button>
+  </div>
+  <div class="notice-detail-main">
+    <div class="notice-detail-title" th:text="${notice.title}">공지 제목</div>
+    <div class="notice-detail-meta">
+      작성자: <span th:text="${notice.writer}">관리자</span>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      작성일: <span th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">2025-07-07</span>
+    </div>
+    <div class="notice-detail-content" th:utext="${notice.content}">
+      공지 내용이 여기에 표시됩니다.<br>
+      시스템 점검 안내, 정책 변경, 기타 주요 공지사항 등...
+    </div>
+  </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+</script>
+</body>
+</html>

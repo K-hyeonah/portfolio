@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE | QnA 상세</title>
+
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/faq.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
+
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="faq-main">
+  <div class="faq-title-wrap">
+    <h2 class="faq-title">자주 묻는 질문</h2>
+    <button class="faq-list-btn" th:onclick="|location.href='@{/faq}'|">목록</button>
+  </div>
+  <div class="faq-detail-main">
+    <div class="faq-detail-title-sub"><h3 th:text="${faq.title}">제목</h3></div>
+    <div class="faq-detail-meta">
+      작성자: <span th:text="${faq.writer}">사용자</span>
+      작성일: <span th:text="${#temporals.format(faq.createdAt, 'yyyy-MM-dd')}">2025-07-07</span>
+    </div>
+    <div class="faq-detail-content" th:utext="${faq.question}">
+      고객 문의 내용<br>
+      예시: 요양원 등급 기준이 궁금합니다.
+    </div>
+    <div class="faq-detail-answer">
+      <strong>문의 답변 내용</strong><br>
+      <span th:utext="${faq.answer}">예시: 등급 기준은 신체, 인지, 행동, 간호 등 다양한 항목을 평가하여 결정됩니다.</span>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+</script>
+</body>
+</html>

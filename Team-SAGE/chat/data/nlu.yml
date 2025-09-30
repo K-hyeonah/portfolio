@@ -1,0 +1,19 @@
+
+version: "3.1"
+nlu:
+- intent: ask_info
+  examples: |
+    - [시설](keyword) 정보 알려줘
+    - [주소](keyword) 알려줘
+    - [전화번호](keyword) 뭐야?
+    - [요양원](keyword) 목록 보여줘
+    - [부산](keyword) 근처 시설
+    - [서울](keyword) 시설 찾아줘
+    - [등급](keyword) 좋은 곳
+    - [병상](keyword) 수 많은 곳
+    - [장기요양](keyword) 기관 알려줘
+    - [운영](keyword) 형태가 뭐야
+- intent: nlu_fallback
+  examples: |
+    - ㅁㄴㅇㄹ
+    - 아무말

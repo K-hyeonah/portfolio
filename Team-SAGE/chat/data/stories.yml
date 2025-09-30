@@ -1,0 +1,7 @@
+
+version: "3.1"
+stories:
+- story: simple path
+  steps:
+    - intent: ask_info
+    - action: action_query_csv

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE | 마이페이지</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/favorite.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="mypage-main">
+    <div class="mypage-sidebar">
+      <h2 class="mypage-title">마이페이지<br><br></h2>
+      <ul class="mypage-menu">
+        <li><a th:href="@{/mypage}">내정보</a></li>
+        <li><a th:href="@{/inquiry}">문의사항</a></li>
+        <li><a th:href="@{/favorite}" class="active">즐겨찾기</a></li>
+        <li><a th:href="@{/editinfo}">정보수정</a></li>
+      </ul>
+    </div>
+
+    <div class="mypage-content">
+      <div class="mypage-inner-content">
+        <h3 class="user-name">김현아님</h3>
+
+        <div class="info-cards">
+          <div class="info-card">
+            <h4>최근 본 시설</h4>
+            <p>○○요양원</p>
+          </div>
+          <div class="info-card">
+            <h4>요양등급</h4>
+            <p>1등급</p>
+          </div>
+          <div class="info-card">
+            <h4>문의사항</h4>
+            <p></p>
+          </div>
+        </div>
+
+        <div class="favorite-list-section">
+          <div class="favorite-list-header">
+            <span class="favorite-count">00개</span>
+          </div>
+          <ul class="favorite-list" id="favoriteList">
+          </ul>
+          <div id="favoritePagination"></div>
+        </div>
+      </div>
+  </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+  // 즐겨찾기 관리 함수들
+  function getFavorites() {
+    const favorites = localStorage.getItem('facilityFavorites');
+    return favorites ? JSON.parse(favorites) : [];
+  }
+
+  function addToFavorites(facility) {
+    const favorites = getFavorites();
+    if (!favorites.find(f => f.id === facility.id)) {
+      favorites.push(facility);
+      localStorage.setItem('facilityFavorites', JSON.stringify(favorites));
+    }
+  }
+
+  function removeFromFavorites(facilityId) {
+    const favorites = getFavorites();
+    const updatedFavorites = favorites.filter(f => f.id !== facilityId);
+    localStorage.setItem('facilityFavorites', JSON.stringify(updatedFavorites));
+    renderFavoritesList(); // 목록 다시 렌더링
+  }
+
+  function renderFavoritesList() {
+    const favorites = getFavorites();
+    const container = document.getElementById('favoriteList');
+    const countSpan = document.querySelector('.favorite-count');
+
+    if (!container) return;
+
+    // 개수 업데이트
+    if (countSpan) {
+      countSpan.textContent = `${favorites.length}개`;
+    }
+
+    container.innerHTML = '';
+
+    if (!favorites.length) {
+      container.innerHTML = '<li style="padding:32px 0;text-align:center;color:#888;">즐겨찾기한 시설이 없습니다.</li>';
+      return;
+    }
+
+    favorites.forEach((facility, idx) => {
+      container.innerHTML += `
+        <li class="favorite-item" style="cursor: pointer;" onclick="window.location.href='/facilities/${facility.id}'">
+          <img src="${facility.image || 'img/1.jpg'}" alt="시설사진" class="favorite-thumb">
+          <div class="favorite-info">
+            <div class="favorite-name">${facility.name}</div>
+            <div class="favorite-addr">${facility.address}</div>
+            <div class="favorite-tel">전화번호 <span>${facility.phone}</span></div>
+          </div>
+          <input type="checkbox" id="favorite${facility.id}" class="favorite-fav-chk" checked data-facility-id="${facility.id}">
+          <label for="favorite${facility.id}" class="favorite-fav-label"></label>
+        </li>
+      `;
+    });
+
+    // 즐겨찾기 해제 이벤트 추가
+    container.querySelectorAll('.favorite-fav-chk').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const facilityId = this.dataset.facilityId;
+        if (!this.checked) {
+          // 즐겨찾기 해제
+          removeFromFavorites(facilityId);
+        } else {
+          // 다시 체크된 경우 즐겨찾기 추가
+          const facility = favorites.find(f => f.id == facilityId);
+          if (facility) {
+            addToFavorites(facility);
+          }
+        }
+      });
+
+      // 즐겨찾기 체크박스 클릭 시 이벤트 전파 방지
+      checkbox.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    });
+  }
+
+  // 사이드바 메뉴 active 처리
+  document.addEventListener('DOMContentLoaded', function() {
+    var links = document.querySelectorAll('.favorite-menu a');
+    var path = location.pathname.split('/').pop();
+    links.forEach(function(link) {
+      if(link.getAttribute('href') && link.getAttribute('href').indexOf(path) > -1) {
+        link.classList.add('active');
+      }
+    });
+
+    // 즐겨찾기 목록 렌더링
+    renderFavoritesList();
+  });
+</script>
+</body>
+</html>

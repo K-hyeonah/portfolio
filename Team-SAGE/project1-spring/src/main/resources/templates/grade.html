@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE - 요양 등급</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/grade.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="grade-main">
+  <div class="grade-section">
+    <h1 class="grade-title">요양 등급</h1>
+    <div class="grade-subtitle">장기요양 등급 기준</div>
+    <table class="grade-table">
+      <thead>
+      <tr><th>등급</th><th>기준요양</th><th>대표사례</th></tr>
+      </thead>
+      <tbody>
+      <tr><td>1등급</td><td>전적인 도움 필요</td><td>침대에서 혼자 못 움직이심</td></tr>
+      <tr><td>2등급</td><td>부분적인 도움 필요</td><td>휠체어 이동, 식사 어려움</td></tr>
+      <tr><td>3등급</td><td>부분적인 도움 필요</td><td>보행 불편, 식사 가능</td></tr>
+      <tr><td>4등급</td><td>간헐적 도움 필요</td><td>거동 가능, 목욕/청소 도움</td></tr>
+      <tr><td>5등급</td><td>경증 치매</td><td>인지기능 저하, 간단한 일상 가능</td></tr>
+      <tr><td>인지지원등급</td><td>경도 치매</td><td>신체기능은 양호, 기억력 저하</td></tr>
+      </tbody>
+    </table>
+    <ul class="grade-list">
+      <li><b>1등급:</b> 침대에서 혼자 움직이지 못할 정도로 전적인 도움이 필요</li>
+      <li><b>2등급:</b> 휠체어를 타고 이동하거나 식사도 어려움</li>
+      <li><b>3등급:</b> 혼자 식사 가능하지만 보행은 불편</li>
+      <li><b>4등급:</b> 거동 되지만 목욕, 청소 등에 도움 필요</li>
+      <li><b>5등급:</b> 경증 치매, 신체는 비교적 양호하지만 인지기능 저하</li>
+      <li><b>인지지원등급:</b> 경도 치매로 기억력 저하가 있지만 일상은 가능</li>
+    </ul>
+    <div class="grade-desc">공단 직원이 집으로 직접 방문해 장기요양인정점수표 90문항을 기준으로 점수를 매깁니다.<br>이 점수에 따라 등급이 결정됩니다.</div>
+    <hr class="grade-hr">
+    <div class="grade-subtitle">점수 범위 및 등급</div>
+    <table class="grade-table">
+      <thead>
+      <tr><th>점수 범위</th><th>등급</th></tr>
+      </thead>
+      <tbody>
+      <tr><td>95점 이상</td><td>1등급</td></tr>
+      <tr><td>75~94점</td><td>2등급</td></tr>
+      <tr><td>60~74점</td><td>3등급</td></tr>
+      <tr><td>51~59점</td><td>4등급</td></tr>
+      <tr><td>45~50점</td><td>5등급</td></tr>
+      <tr><td>42점 이상 + 치매진단서</td><td>인지지원등급</td></tr>
+      </tbody>
+    </table>
+    <div class="grade-subtitle">조사 항목</div>
+    <table class="grade-table">
+      <thead>
+      <tr><th>항목</th><th>예시 문항</th><th>최대 점수</th></tr>
+      </thead>
+      <tbody>
+      <tr><td>신체 기능</td><td>세수, 옷 갈아입기, 식사하기, 화장실 사용 등</td><td>약 45점</td></tr>
+      <tr><td>인지 기능</td><td>기억력, 의사 표현, 시간·장소 인식 등</td><td>약 13점</td></tr>
+      <tr><td>행동 변화</td><td>배회, 환각, 폭언, 수면 장애 등</td><td>약 18점</td></tr>
+      <tr><td>간호 처치</td><td>욕창, 도뇨관, 산소치료 등</td><td>약 5점</td></tr>
+      <tr><td>재활 필요성</td><td>물리치료, 작업치료 등 필요 여부</td><td>약 2점</td></tr>
+      <tr><td>환경 평가</td><td>보호자 유무, 사회적 고려 여부 등</td><td>약 7점</td></tr>
+      </tbody>
+    </table>
+    <div class="grade-desc">점수 배점은 세부적으로 더 나뉘지만, 전체적으로 100점 만점 기준에서 실제 부여되는 점수는 최대 약 95점 내외입니다.</div>
+  </div>
+  <div class="grade-section">
+    <div class="grade-subtitle">장기요양인정 신청절차</div>
+    <img th:src="@{/img/정책.png}" alt="장기요양인정 신청절차" class="img_grade">
+    <div class="grade-subtitle">장기요양인정 신청자격</div>
+    <div class="grade-desc" style="margin-bottom:16px;">
+      장기요양보험가입자 및 그 피부양자, 의료급여수급권자<br>
+      <b>• 65세 이상의 노인</b><br>
+      <b>• 65세 미만으로서 치매, 뇌혈관질환 등 대통령령으로 정한 노인성 질병을 가진 사람</b><br><br>
+      장애인 활동지원 급여를 이용 중이거나 이용을 희망하는 경우 장기요양등급을 받으면 장애인 활동지원 신청이 제한되며,<br>
+      장기요양등급을 취소해도 장애인 활동지원 신청이 불가능하니 주의하시기 바랍니다.<br>
+      (장애인 활동지원 문의 : 국민연금공단 ☎ 1355)
+    </div>
+    <ul class="grade-list">
+      <li>신청인 : 본인 또는 대리인이 신청할 수 있습니다.</li>
+      <li>• 대리인<br>가족, 친족 또는 법정대리인<br>• 사회복지시설장<br>• 시장·군수·구청장 (신청인이 치매환자인 경우에 한정합니다)</li>
+      <li>• 신청장소 : 국민건강보험공단 지사(노인장기요양보험 업무, 팩스, 인터넷(65세 이상 또는 65세 미만 정신신청의 경우 가능, 외국인은 팩스하여 공인인증서로 로그인해야 함), 유선신청(정신신청의 경우만 가능)<br>• 공단 지사 및 출장부서, 장방부서, 치매부서, 영등포부서, 광명출장소는 운영센터가 없어 장기요양 신청서 접수 이외의 장기요양 상담 및 업무 불가하므로 유의하시기 바랍니다.</li>
+      <li>• 신청시 첨부 및 제출서류<br>1. 첨부서류(통합신청: 신분증 지참 / 우편, 팩스 신청: 신분증 사본 제출)<br>2. 본인이 신청하는 경우: 본인 신분증<br>3. 대리인이 신청하는 경우: 가족, 친족 또는 이해관계인의 신분증 1부, 공무원/치매안심센터의 장임을 증명하는 서류 1부, 신분증 1부, 대리인임 신분증 1부<br>4. 제출서류<br>5. 장기요양인정신청서<br>6. 공단 지사(운영센터) 또는 홈페이지(<a href="https://www.longtermcare.or.kr/npbs/u/b/101/openLtcRcgtAplyPttnChoice.web?aplyTypeScr=applitt" target="_blank">www.longtermcare.or.kr</a>)에 접속하여 처리하며 > 서식자료실 >게시물 - [별지 제1호의 2서식]을 다운로드하실 수 있습니다.<br>7. 의사소견서<br>8. 장기요양인정신청서와 함께 제출하여야 하며, 65세 이상일 경우 등급판정위원회 의뢰자료 제출 전까지 제출할 수 있습니다.</li>
+    </ul>
+    <a href="https://www.longtermcare.or.kr/npbs/u/b/101/openLtcRcgtAplyPttnChoice.web?aplyTypeScr=applitt" target="_blank" class="grade-link-btn">장기요양인정 신청 바로가기</a>
+  </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+</script>
+</body>
+</html>

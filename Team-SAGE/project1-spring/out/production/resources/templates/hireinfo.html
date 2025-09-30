@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko" class="info-page" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE - 커뮤니티</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/info.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/community.css">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="info-main">
+  <div class="info-sidebar">
+    <h2 class="info-title-sidebar">생활정보<br><br></h2>
+    <ul class="info-menu">
+      <li><a th:href="@{/payinfo}">비용안내</a></li>
+      <li><a th:href="@{/policy}">지원정책</a></li>
+      <li><a th:href="@{/hireinfo}" class="active">커뮤니티</a></li>
+      <li><a th:href="@{/youtube}">유튜브</a></li>
+    </ul>
+  </div>
+
+  <div class="info-section">
+    <div class="community-header">
+      <h1 class="info-title">커뮤니티</h1>
+      <p class="community-subtitle">자유롭게 이야기를 나누는 공간입니다</p>
+    </div>
+
+    <!-- 글쓰기 폼 -->
+    <div class="write-form-container">
+      <div class="write-form-header">
+        <h3>새 글 작성</h3>
+        <button class="write-toggle-btn" id="writeToggleBtn">글쓰기</button>
+      </div>
+      <form class="write-form" id="writeForm" style="display: none;">
+        <div class="form-group">
+          <label for="authorName">작성자</label>
+          <input type="text" id="authorName" name="authorName" placeholder="이름을 입력하세요" required>
+        </div>
+        <div class="form-group">
+          <label for="postTitle">제목</label>
+          <input type="text" id="postTitle" name="postTitle" placeholder="제목을 입력하세요" required>
+        </div>
+        <div class="form-group">
+          <label for="postContent">내용</label>
+          <textarea id="postContent" name="postContent" placeholder="자유롭게 글을 작성해주세요..." required></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="submit-btn">등록하기</button>
+          <button type="button" class="cancel-btn" id="cancelBtn">취소</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 게시글 목록 -->
+    <div class="posts-container">
+      <div class="posts-header">
+        <h3>최근 게시글</h3>
+        <div class="posts-count">총 <span id="postsCount">0</span>개의 글</div>
+      </div>
+      
+      <div class="posts-list" id="postsList">
+        <!-- 게시글들이 여기에 동적으로 추가됩니다 -->
+      </div>
+    </div>
+
+    <!-- 페이지네이션 -->
+    <div class="pagination" id="pagination">
+      <!-- 페이지네이션이 여기에 동적으로 추가됩니다 -->
+    </div>
+  </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script src="js/community.js"></script>
+</body>
+</html>

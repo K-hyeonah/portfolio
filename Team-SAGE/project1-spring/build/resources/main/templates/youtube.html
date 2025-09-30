@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko" class="info-page" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE - 유튜브 생활정보</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/info.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/youtube.css">
+
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="info-main">
+  <div class="info-sidebar">
+    <h2 class="info-title-sidebar">생활정보<br><br></h2>
+    <ul class="info-menu">
+      <li><a th:href="@{/payinfo}">비용안내</a></li>
+      <li><a th:href="@{/policy}">지원정책</a></li>
+      <li><a th:href="@{/hireinfo}">채용정보</a></li>
+      <li><a th:href="@{/youtube}" class="active">유튜브</a></li>
+    </ul>
+  </div>
+  <div class="info-section">
+    <h1 class="info-title">유튜브</h1>
+    <ul class="youtube-card-list">
+      <li class="youtube-card">
+        <img class="youtube-thumb" th:src="@{/img/찔레꽃.png}" alt="찔레꽃 체조 썸네일">
+        <div class="youtube-card-body">
+          <div class="youtube-title">[서울노인복지센터] 찔레꽃 체조</div>
+          <div class="youtube-desc">서울노인복지센터에서 진행하는 찔레꽃 체조 영상입니다. 어르신들의 건강을 위한 쉽고 재미있는 체조를 배워보세요.</div>
+          <div class="youtube-meta">조회수 1,234회 · 2024-06-01</div>
+          <div class="youtube-meta">전화번호: 02-1234-5678</div>
+        </div>
+        <div class="youtube-fav" title="즐겨찾기"><span>☆</span></div>
+      </li>
+      <li class="youtube-card">
+        <img class="youtube-thumb" th:src="@{/img/9988.png}" alt="9988 체조 썸네일">
+        <div class="youtube-card-body">
+          <div class="youtube-title">노인 맞춤형 건강 체조 "9988 체조"</div>
+          <div class="youtube-desc">관절 움직임과 근력 향상에 도움이 되는 9988 체조를 따라해보세요. 집에서도 쉽게 할 수 있습니다.</div>
+          <div class="youtube-meta">조회수 2,345회 · 2024-05-20</div>
+          <div class="youtube-meta">전화번호: 02-2345-6789</div>
+        </div>
+        <div class="youtube-fav" title="즐겨찾기"><span>☆</span></div>
+      </li>
+      <li class="youtube-card">
+        <img class="youtube-thumb" th:src="@{/img/박수체조.png}" alt="기억력 박수 체조 썸네일">
+        <div class="youtube-card-body">
+          <div class="youtube-title">기억력 박수 체조</div>
+          <div class="youtube-desc">내 나이가 어때서♪에 맞춰 '기억력 박수 체조'를 배워보세요. 건강하모 좋긋네!</div>
+          <div class="youtube-meta">조회수 3,456회 · 2024-05-10</div>
+          <div class="youtube-meta">전화번호: 02-3456-7890</div>
+        </div>
+        <div class="youtube-fav" title="즐겨찾기"><span>☆</span></div>
+      </li>
+      <li class="youtube-card">
+        <img class="youtube-thumb" th:src="@{/img/노년기건강관리.png}" alt="노년기 건강관리 썸네일">
+        <div class="youtube-card-body">
+          <div class="youtube-title">노년기 건강관리ㅣ3가지를 꼭 기억하세요</div>
+          <div class="youtube-desc">노년기에 꼭 필요한 건강관리법 3가지를 알려드립니다. 건강하게 늙는 법을 알아보세요.</div>
+          <div class="youtube-meta">조회수 4,567회 · 2024-04-30</div>
+          <div class="youtube-meta">전화번호: 02-4567-8901</div>
+        </div>
+        <div class="youtube-fav" title="즐겨찾기"><span>☆</span></div>
+      </li>
+      <li class="youtube-card">
+        <img class="youtube-thumb" th:src="@{/img/2막.png}" alt="건강한 인생 2막 썸네일">
+        <div class="youtube-card-body">
+          <div class="youtube-title">건강한 인생 2막을 위하여! 노년기의 건강관리</div>
+          <div class="youtube-desc">건강한 인생 2막을 위한 노년기 건강관리법을 소개합니다. 건강플러스와 함께 하세요.</div>
+          <div class="youtube-meta">조회수 5,678회 · 2024-04-15</div>
+          <div class="youtube-meta">전화번호: 02-5678-9012</div>
+        </div>
+        <div class="youtube-fav" title="즐겨찾기"><span>☆</span></div>
+      </li>
+      <li class="youtube-card">
+        <img class="youtube-thumb" th:src="@{/img/장수.png}" alt="장수 비결 썸네일">
+        <div class="youtube-card-body">
+          <div class="youtube-title">건강하게 장수하는 비결 1가지</div>
+          <div class="youtube-desc">건강하게 장수하는 비결을 영상으로 확인해보세요. 실생활에 바로 적용할 수 있습니다.</div>
+          <div class="youtube-meta">조회수 6,789회 · 2024-04-01</div>
+          <div class="youtube-meta">전화번호: 02-6789-0123</div>
+        </div>
+        <div class="youtube-fav" title="즐겨찾기"><span>☆</span></div>
+      </li>
+    </ul>
+    <div id="facilityPagination" style="margin: 32px 0 0 0; text-align: center;"></div>
+  </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+  // 즐겨찾기(스크랩) 토글 예시
+  document.querySelectorAll('.youtube-fav').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      btn.classList.toggle('active');
+      var star = btn.querySelector('span');
+      if(btn.classList.contains('active')) {
+        star.textContent = '★';
+      } else {
+        star.textContent = '☆';
+      }
+    });
+  });
+  // 카드 클릭 시 유튜브 영상 새창 이동 (예시)
+  document.querySelectorAll('.youtube-card').forEach(function(card, idx){
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function(e){
+      if(e.target.classList.contains('youtube-fav')) return;
+      const urls = [
+        'https://www.youtube.com/watch?v=4zDk16TJUnk&t=1s',
+        'https://www.youtube.com/watch?v=AJrCXjPT1Pg',
+        'https://www.youtube.com/watch?v=-JWyAuNiEYI',
+        'https://www.youtube.com/watch?v=R4CRmTIpwfU',
+        'https://www.youtube.com/watch?v=m3tq71zsBSw',
+        'https://www.youtube.com/watch?v=Ylr_s0CCTB0'
+      ];
+      window.open(urls[idx], '_blank');
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE | 아이디/비밀번호 찾기 결과</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<main class="find-main">
+  <div class="find-box">
+    <div class="find-tabs">
+      <button class="find-tab active" id="tabFindId">아이디 찾기</button>
+      <button class="find-tab" id="tabFindPw" th:href="@{/findpw}">비밀번호 찾기</button>
+    </div>
+    <div class="find-result" id="findIdResult">
+      <div class="find-result-row">
+        <img th:src="@{/img/pngegg.png}" alt="아이디 찾기 아이콘" class="find-result-icon">
+        <div class="find-result-text">
+          회원님의 아이디는<br>
+          <strong th:text="${findUserId}"></strong> 입니다.
+        </div>
+      </div>
+      <button class="find-btn find-result-btn" th:href="@{/login}">로그인 하러 가기</button>
+    </div>
+  </div>
+</main>
+<div id="footer"></div>
+<script>
+  fetch('header.html').then(r=>r.text()).then(t=>document.getElementById('header').innerHTML=t);
+  fetch('footer.html').then(r=>r.text()).then(t=>document.getElementById('footer').innerHTML=t);
+  // 탭 전환
+  document.getElementById('tabFindId').onclick = function() {
+    this.classList.add('active');
+    document.getElementById('tabFindPw').classList.remove('active');
+    document.getElementById('findIdResult').style.display = '';
+    document.getElementById('findPwResult').style.display = 'none';
+  };
+  document.getElementById('tabFindPw').onclick = function() {
+    this.classList.add('active');
+    document.getElementById('tabFindId').classList.remove('active');
+    document.getElementById('findIdResult').style.display = 'none';
+    document.getElementById('findPwResult').style.display = '';
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko" class="info-page" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE - 노인정책</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/info.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="info-main">
+  <div class="info-sidebar">
+    <h2 class="info-title-sidebar">생활정보<br><br></h2>
+    <ul class="info-menu">
+      <li><a th:href="@{/payinfo}">비용안내</a></li>
+      <li><a th:href="@{/policy}" class="active">지원정책</a></li>
+      <li><a th:href="@{/hireinfo}">채용정보</a></li>
+      <li><a th:href="@{/youtube}">유튜브</a></li>
+    </ul>
+  </div>
+  <div class="info-section">
+    <h1 class="info-title">주요 노인복지 제도</h1>
+    <div class="info-desc">
+      우리나라 노인복지 제도는 노인의 소득 보장, 의료 서비스, 주거 지원, 사회참여 서비스 제공 등을 포함합니다.<br>
+      노인복지법을 중심으로 다양한 정책과 사업이 추진되고 있으며, 초고령 사회 진입에 따라 관련 예산도 확대되고 있습니다.
+    </div>
+    <hr style="margin:32px 0 24px 0; border:0; border-top:2px solid #e6f0fa;">
+    <h2 class="info-title" style="font-size:1.3em; margin:0 0 16px 0; border:none; color:#1a4fa0;">주요 노인복지 제도</h2>
+    <div class="info-desc" style="margin-bottom:8px;"><b>소득 보장</b></div>
+    <div class="info-desc" style="margin-top:0;">
+      기초연금: 65세 이상 소득 하위 70% 노인에게 지급되는 연금으로, 소득 수준에 따라 자동 지급됩니다.
+    </div>
+    <table class="info-table" style="margin-top:12px;">
+      <caption class="info-table-caption">기초연금 선정기준 및 지급액 (2024~2025년)</caption>
+      <thead>
+      <tr>
+        <th rowspan="2">구분</th>
+        <th colspan="2">2024년</th>
+        <th colspan="2">2025년</th>
+      </tr>
+      <tr>
+        <th>단독가구</th>
+        <th>부부가구</th>
+        <th>단독가구</th>
+        <th>부부가구</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="bold">선정기준액</td>
+        <td><b>2,130,000원</b></td>
+        <td><b>3,408,000원</b></td>
+        <td><b>2,280,000원</b></td>
+        <td><b>3,648,000원</b></td>
+      </tr>
+      <tr>
+        <td class="bold">소득평가액</td>
+        <td colspan="2">소득평가액 = 0.7×(상시근로소득-110만 원) + 기타소득</td>
+        <td colspan="2">소득평가액 = 0.7×(상시근로소득-112만 원) + 기타소득</td>
+      </tr>
+      <tr>
+        <td class="bold" rowspan="7">기준연금액</td>
+        <td colspan="2" style="background:#fff; text-align:center; font-weight:600;">2024년</td>
+        <td colspan="2" style="background:#fff; text-align:center; font-weight:600;">2025년</td>
+      </tr>
+      <tr>
+        <td>10%</td><td>33,480원</td><td>10%</td><td>34,250원</td>
+      </tr>
+      <tr>
+        <td>70%</td><td>167,400원</td><td>70%</td><td>171,500원</td>
+      </tr>
+      <tr>
+        <td>100%</td><td>323,180원</td><td>100%</td><td>330,180원</td>
+      </tr>
+      <tr>
+        <td>150%</td><td>485,200원</td><td>150%</td><td>495,270원</td>
+      </tr>
+      <tr>
+        <td>200%</td><td>646,270원</td><td>200%</td><td>660,270원</td>
+      </tr>
+      <tr>
+        <td>250%</td><td>807,020원</td><td>250%</td><td>856,270원</td>
+      </tr>
+      <tr>
+        <td class="bold">물가/인상률</td>
+        <td colspan="2">3.6%</td>
+        <td colspan="2">2.3%</td>
+      </tr>
+      <tr>
+        <td class="bold">소득대체율</td>
+        <td colspan="2">42%</td>
+        <td colspan="2">41.5%</td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td colspan="5" style="text-align:left; font-size:0.97em; background:#f6f8fb;">
+          <ul style="margin:8px 0 8px 18px; padding:0; list-style:disc; color:#444;">
+            <li>주민등록 요건 및 실명 사망: 2015년 1월 22일 이전 신고 및 회계 요건 관련 사항.</li>
+            <li>기초연금 수급권 상실 사유 중 죽음 이후의 지급에 대한 정의와 국외 이주한 자격, 상해에 의한 영주권 등은 별도 규정.</li>
+            <li>조사대상 별 부부 추가 재산가액 소득·재산에 대한 조사.</li>
+            <li>사실상 이혼한 경우: 사망 후 지급된 부분은 상속인에게 지급된 것으로 보아 상속인에게 환수.</li>
+          </ul>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+    <div class="info-table-info" style="margin-top:0;">
+        <span class="gray">※ 주요 변동사항은 브로셔로 표기. <br>
+          ※ 출처: '2025 기초연금 사업안내', 보건복지부, 2025. pp. iii의 표를 활용해 저자 재작성.</span><br>
+      <span class="gray">※ 소득 하위 70% 이하 노인에게 지급. 지급액은 소득인정액에 따라 차등.</span>
+    </div>
+    <table class="info-table" style="margin-top:12px;">
+      <caption class="info-table-caption">노후 소득보장 주요 연금 제도</caption>
+      <thead>
+      <tr>
+        <th>구분</th>
+        <th>국민연금</th>
+        <th>공무원연금</th>
+        <th>군인연금</th>
+        <th>사학연금</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>소관 부처</td>
+        <td>보건복지부<br>(국민연금공단)</td>
+        <td>인사혁신처<br>(공무원연금공단)</td>
+        <td>국방부<br>(국방부)</td>
+        <td>교육부/사립학교<br>(교직원연금공단)</td>
+      </tr>
+      <tr>
+        <td>법적 근거</td>
+        <td>국민연금법</td>
+        <td>공무원연금법</td>
+        <td>군인연금법</td>
+        <td>사립학교교직원연금법</td>
+      </tr>
+      <tr>
+        <td>설치 연도</td>
+        <td>1988년</td>
+        <td>1960년</td>
+        <td>1963년</td>
+        <td>1975년</td>
+      </tr>
+      <tr>
+        <td>가입대상</td>
+        <td>국내거주 18~59세 국민</td>
+        <td>공무원연금법상 공무원원</td>
+        <td>부사관 이상 현역군인</td>
+        <td>사립학교 교원 및 사무직원 등등</td>
+      </tr>
+      <tr>
+        <td>보험료율(%)</td>
+        <td>9%<br>(근로자, 고용주 각 4.5%)</td>
+        <td>18%<br>(공무원, 국가<br>자치제 각 9%)</td>
+        <td>14%<br>(군인, 국가 각 7%)</td>
+        <td>18%<br>(개인, 법인, 국가 각 9%)</td>
+      </tr>
+      <tr>
+        <td>주요급여</td>
+        <td>연금(노령, 유족, 장애)<br>일시금(사망, 반환)</td>
+        <td>연금(퇴직, 유족, 장애)<br>일시금(퇴직, 장해보상, 유족보상 등)<br>퇴직수당 등</td>
+        <td>연금(퇴직, 유족, 장애)<br>일시금(퇴직, 장해보상, 유족보상 등)<br>퇴직수당 등</td>
+        <td>연금(퇴직, 유족, 장애)<br>일시금(퇴직, 장해보상, 유족보상 등)<br>퇴직수당 등</td>
+      </tr>
+      <tr>
+        <td>급여 수준</td>
+        <td>가입 1년당 <b>1.04%</b><br>(2028년 이후 1.0%)</td>
+        <td>재직 1년당 <b>1.74%</b><br>(2035년 이후 1.7%)</td>
+        <td>재직 1년당 (1.9%)</td>
+        <td>재직 1년당 <b>1.74%</b><br>(2035년 이후 1.7%)</td>
+      </tr>
+      <tr>
+        <td>연금 수령 요건</td>
+        <td>10년 이상 가입, <b>63세</b> 도달(2033년 65세)</td>
+        <td>10년 이상 재직, <b>62세</b> 도달(2035년 65세)</td>
+        <td>20년 이상 복무하고 퇴직한 경우</td>
+        <td>10년 이상 재직, <b>62세</b> 도달(2033년 65세)</td>
+      </tr>
+      <tr>
+        <td>수급자 수</td>
+        <td>약 692만 명</td>
+        <td>약 66만 명</td>
+        <td>약 10만 명</td>
+        <td>약 12만 명</td>
+      </tr>
+      <tr>
+        <td>월평균 급여액</td>
+        <td>60만 원</td>
+        <td>254만 원</td>
+        <td>277만 원</td>
+        <td>294만 원</td>
+      </tr>
+      </tbody>
+    </table>
+    <hr style="margin:40px 0 24px 0; border:0; border-top:2px solid #e6f0fa;">
+    <div class="info-desc" style="margin-bottom:8px;"><b>의료 보장</b></div>
+    <div class="info-desc" style="margin-top:0;">
+      노인장기요양보험: 고령이나 노인성 질병으로 일상생활이 어려운 노인에게 신체 활동 및 가사 활동 등을 지원하는 제도입니다. <br>
+      치매 관리 지원: 치매 어르신을 위한 약제비 및 진료비 지원, 치매전담시설 운영 등을 지원합니다.
+    </div>
+    <div class="info-desc" style="margin-top:8px;">
+      <div class="info-desc" style="margin-bottom:8px;"><b>주거 보장</b></div>
+      노인복지주택: 노인에게 주거 편의 및 기타 서비스(식사, 세탁, 의료 등)를 제공하는 시설입니다.<br>
+      공공임대주택: 저소득 노인을 위한 주택 지원 정책입니다.
+    </div>
+    <div class="info-desc" style="margin-top:8px;">
+      <div class="info-desc" style="margin-bottom:8px;"><b>사회복지 서비스</b></div>
+      노인맞춤돌봄서비스: 노인에게 주거 편의 및 기타 서비스(식사, 세탁, 의료 등)를 제공하는 시설입니다.<br>
+      응급안전알림서비스: 독거노인 가정에 응급상황 감지 시스템을 설치하여 신속한 구조를 지원합니다. <br>
+      노인일자리 및 사회활동 지원: 노인들에게 사회 참여 기회를 제공하고 소득을 지원합니다.
+    </div>
+    <table class="info-table info-table-blue" style="margin-top:12px;">
+      <caption class="info-table-caption">노인복지시설 유형별 주요 서비스</caption>
+      <thead>
+      <tr><th>구분</th><th>공립/공영시설</th><th>사회복지시설</th><th>민간형</th></tr>
+      </thead>
+      <tbody>
+      <tr><td>주요 서비스</td><td>공공임대주택, 노인복지관 등</td><td>노인요양시설, 주야간보호센터 등</td><td>실버타운, 민간요양원 등</td></tr>
+      <tr><td>지원 내용</td><td>임대료 감면, 복지 프로그램</td><td>요양, 의료, 생활지원</td><td>생활지원, 의료서비스</td></tr>
+      </tbody>
+    </table>
+    <div class="info-desc" style="margin-top:16px;">
+      <span class="blue bold">노인의 지역사회참여, 일자리, 평생교육, 건강증진 등도 함께 이루어집니다.</span>
+    </div>
+    <hr style="margin:40px 0 24px 0; border:0; border-top:2px solid #e6f0fa;">
+    <div class="info-desc" style="margin-bottom:8px;"><b>정책 특징</b></div>
+    <div class="info-desc" style="margin-top:0;">
+      1981년 제정된 노인복지법에 따라 정책의 제도적 기반이 마련되었습니다.<br>
+      초고령 사회 진입에 따라 노인복지 정책 중요성이 커지고 있으며, 관련 예산도 확대되는 추세입니다.
+    </div>
+    <table class="info-table" style="margin-top:12px;">
+      <caption class="info-table-caption">노인일자리 유형별 사업 현황</caption>
+      <thead>
+      <tr>
+        <th>구분</th>
+        <th>공익활동형</th>
+        <th>사회서비스형</th>
+        <th>민간형</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>사업내용</td>
+        <td>노인이 자기만족과 공익증진을 위해<br>참여하는 봉사활동형</td>
+        <td>취약계층 시설 등 사회적 도움이<br>필요한 영역에 서비스 제공</td>
+        <td>시장형 및 취업알선형 사업</td>
+      </tr>
+      <tr>
+        <td>참여대상</td>
+        <td>기초연금 수급자</td>
+        <td>65세 이상(일부 60세)</td>
+        <td>60세 이상</td>
+      </tr>
+      <tr>
+        <td>근무시간</td>
+        <td>월 30시간 내외</td>
+        <td>월 60시간 내외</td>
+        <td>수요처 특성에 따라 상이</td>
+      </tr>
+      <tr>
+        <td>급여수준</td>
+        <td>월 29만원(11개월)</td>
+        <td>월 76만원(10개월)<br>일부 사업 내용에 따라 상이</td>
+        <td>수요처 특성에 따라 상이</td>
+      </tr>
+      <tr>
+        <td>목표인원</td>
+        <td>2024년: 65만 명 수준<br><b>2025년: 69만 명 수준</b></td>
+        <td>2024년: 15만 명 수준<br><b>2025년: 17만 명 수준</b></td>
+        <td>2024년: 19만 명 수준<br><b>2025년: 24만 명 수준</b></td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="info-table-info" style="margin-top:0;">
+      <span class="gray">출처: '표-직종일자리 사업 현황', 국회예산정책처, 2024c, 2025년도 예산안 총괄설명 III, pp.182를 활용해 저자 재작성.</span>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+</script>
+</body>
+</html>

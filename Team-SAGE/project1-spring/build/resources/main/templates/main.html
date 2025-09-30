@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SAGE | 메인</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+</head>
+<body>
+<header th:replace="header :: header"></header>
+
+<main class="main-ui-v3">
+    <div class="main-center">
+        <div class="main-banner-img main-banner-slider">
+            <button class="banner-arrow left" onclick="slideBanner(-1)">←</button>
+            <img id="mainBannerImg" src="/img/123.jpg" alt="추천요양원 배너" />
+            <button class="banner-arrow right" onclick="slideBanner(1)">→</button>
+        </div>
+        <div class="main-searchbox main-searchbox-lg">
+            <div class="main-searchbar-row">
+                <select id="sidoSelect"><option>전체</option></select>
+                <select id="gugunSelect"><option>전체</option></select>
+                <select id="dongSelect"><option>전체</option></select>
+                <input type="text" placeholder="시설명을 입력해주세요">
+            </div>
+            <button class="main-search-btn" id="mainSearchBtn"><span class="icon-home"></span> 시설찾기 <span class="icon-arrow">→</span></button>
+        </div>
+        <div class="main-card-slider-wrapper">
+            <button class="main-card-arrow left" id="mainCardPrevBtn">←</button>
+            <div class="main-card-row" id="mainCardRow">
+                <div class="main-card" id="cardGrade"><div>요양등급알아보기</div><img th:src="@{/img/5.jpg}" alt="요양등급"></div>
+                <div class="main-card" id="cardPolicy"><div>노인지원정책 알아보기</div><img th:src="@{/img/6.png}" alt="지원정책"></div>
+                <div class="main-card" id="cardCompare"><div>요양원 찾아보기</div><img th:src="@{/img/4.jpg}" alt="나에게 맞는 요양원"></div>
+            </div>
+            <button class="main-card-arrow right" id="mainCardNextBtn">→</button>
+        </div>
+        <div class="main-btn-row">
+            <button class="main-btn" id="showNoticeBtn">공지</button>
+            <button class="main-btn" id="showFaqBtn">Q&A</button>
+        </div>
+        <div class="main-notice-box" id="mainNoticeBox">
+            <div class="main-notice-header">
+                <span>공지</span>
+                <a th:href="@{/notice}" class="main-notice-more">더보기</a>
+            </div>
+            <div class="main-notice-content">
+                <ul id="mainNoticeList">
+                    <li data-id="1">2024-07-01 시스템 점검 안내</li>
+                    <li data-id="2">2024-06-20 요양등급 정책 변경</li>
+                    <li data-id="3">2024-06-10 신규 요양원 등록</li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-faq-box" id="mainFaqBox" style="display:none;">
+            <div class="main-notice-header">
+                <span>Q&A</span>
+                <a th:href="@{/faq}" class="main-notice-more">더보기</a>
+            </div>
+            <div class="main-notice-content">
+                <ul id="mainFaqList">
+                    <li data-id="1">Q. 요양원 등급 기준이 궁금해요</li>
+                    <li data-id="2">Q. 시설 비교는 어떻게 하나요?</li>
+                    <li data-id="3">Q. 입소 절차가 어떻게 되나요?</li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-pick-section-v3">
+            <button class="main-pick-prev-btn" id="mainPickPrevBtn">←</button>
+            <div class="main-pick-list-v3" id="mainPickListV3">
+                <div class="pick-card-v3" onclick="window.open('https://www.youtube.com/watch?v=4zDk16TJUnk&t=1s','_blank')"><img th:src="@{/img/찔레꽃.png}" alt="유튜브1"><div>[서울노인복지센터] 찔레꽃 체조</div></div>
+                <div class="pick-card-v3" onclick="window.open('https://www.youtube.com/watch?v=AJrCXjPT1Pg','_blank')"><img th:src="@{/img/9988.png}" alt="유튜브2"><div>노인 맞춤형 건강 체조 "9988 체조" | 관절 움직임 근력 향상</div></div>
+                <div class="pick-card-v3" onclick="window.open('https://www.youtube.com/watch?v=-JWyAuNiEYI','_blank')"><img th:src="@{/img/박수체조.png}" alt="유튜브3"><div>내 나이가 어때서♪에 맞춰 '기억력 박수 체조' [건강하모 좋긋네]</div></div>
+                <div class="pick-card-v3" onclick="window.open('https://www.youtube.com/watch?v=R4CRmTIpwfU','_blank')"><img th:src="@{/img/노년기건강관리.png}" alt="유튜브4"><div>노년기 건강관리ㅣ3가지를 꼭 기억하세요 / 건강하게 늙는 법!</div></div>
+                <div class="pick-card-v3" onclick="window.open('https://www.youtube.com/watch?v=m3tq71zsBSw','_blank')"><img th:src="@{/img/2막.png}" alt="유튜브5"><div>건강한 인생 2막을 위하여! 노년기의 건강관리 편 [건강플러스]</div></div>
+                <div class="pick-card-v3" onclick="window.open('https://www.youtube.com/watch?v=Ylr_s0CCTB0','_blank')"><img th:src="@{/img/장수.png}" alt="유튜브6"><div>건강하게 장수하는 비결 1가지</div></div>
+                <div class="pick-card-v3 more-card" onclick="location.href='youtube.html'"><div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:1.2em;font-weight:700;">=> 더 알아보기</div></div>
+            </div>
+            <button class="main-pick-next-btn" id="mainPickNextBtn">→</button>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<button class="chatbot-fab" title="챗봇"><img th:src="@{/img/pngegg.png}" alt="챗봇" style="width:28px;height:28px;"></button>
+<button class="top-fab" title="맨 위로" onclick="window.scrollTo({top:0,behavior:'smooth'})">⇧</button>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

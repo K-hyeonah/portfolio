@@ -1,0 +1,350 @@
+/* policy 전용 스타일 */
+
+
+.youtube-main {
+     max-width: 1100px;
+      margin: 100px auto 40px auto;
+       background: #fff;
+        border-radius: 12px;
+         box-shadow: 0 2px 12px rgba(120,160,255,0.07);
+          padding: 0 0 40px 0;
+        }
+
+.youtube-title {
+     font-size: 2em;
+     font-weight: 700;
+     color: #222;
+     border-bottom: 2px solid #e6f0fa;
+     display: inline-block;
+     padding-bottom: 8px;
+     margin-bottom: 32px;
+     margin-left: 40px;
+    }
+
+.youtube-section {
+  width: 1100px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 60px;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+.youtube-section table,
+.youtube-section .facility-list-section {
+  min-width: 900px;
+}
+
+.youtube-img {
+     display: block;
+      margin: 32px auto 32px auto;
+       max-width: 500px; width: 100%;
+        border-radius: 12px;
+     }
+
+.youtube-desc {
+     font-size: 1.05em;
+      margin: 24px 0;
+     }
+
+.youtube-desc p {
+     line-height: 1.5;
+      margin-bottom: 8px;
+     }
+
+.youtube-desc lo {
+  display: block;
+  line-height: 1.5;
+  margin-bottom: 2px;
+}
+
+.youtube-table {
+     width: 100%;
+      border-collapse: collapse;
+       margin: 32px 0;
+        background: #f6f8fb;
+     }
+
+.youtube-table th,
+ .youtube-table td {
+     border: 1px solid #e6e6e6;
+      padding: 6px 4px;
+       text-align: center;
+        font-size: 1em;
+     }
+
+.youtube-table th {
+     background: #e6f0fa;
+      font-weight: 700;
+     }
+
+.youtube-table .highlight {
+     background: #e3f0ff;
+      color: #1a4fa0;
+       font-weight: 700;
+     }
+
+.youtube-table .bold {
+     font-weight: 700;
+     }
+
+.youtube-table-blue th,
+ .youtube-table-blue td {
+     background: #f6f8fb;
+     }
+
+.youtube-table-blue th {
+     background: #e6f0fa;
+     }
+
+.youtube-table-caption {
+     text-align: left;
+      font-weight: 600;
+      margin-bottom: 8px;
+     }
+
+.youtube-blue {
+     color: #1a4fa0;
+      font-weight: 700;
+       font-size: 1.1em;
+        margin: 16px 0;
+     }
+
+.red { color: #d32f2f; }
+.blue { color: #1a4fa0; }
+.gray { color: #888; }
+.bold { font-weight: 700; }
+.youtube-table-youtube { font-size: 0.97em; color: #444; margin: 8px 0 24px 0; line-height: 1.7; }
+.youtube-table-youtube .gray { font-size: 0.95em; }
+.youtube-table-youtube .blue { text-decoration: underline; cursor: pointer; }
+
+.youtube-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+.youtube-sidebar {
+  width: 220px;
+  position: fixed;
+  top: 70px;
+  left: 0;
+  height: calc(100vh - 70px);
+  background: #f6f8fb;
+  padding: 48px 0 48px 0;
+  margin-top: 10px;
+  border-right: 1px solid #e9ecef;
+  border-radius: 0 12px 12px 0;
+  box-sizing: border-box;
+  z-index: 100;
+}
+
+.youtube-title-sidebar {
+     font-size: 1.5em;
+     font-weight: 700;
+     color: #333;
+     text-decoration: underline;
+     margin: 0 30px;
+     text-underline-offset: 8px;
+   }
+
+.youtube-title {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #333;
+  margin: 0 30px;
+  text-underline-offset: 8px;
+}
+.youtube-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.youtube-menu li {
+  margin: 0;
+}
+.youtube-menu a {
+  display: block;
+  padding: 15px 30px;
+  color: #666;
+  text-decoration: none;
+  font-size: 1em;
+  transition: background-color 0.2s, color 0.2s;
+}
+.youtube-menu a:hover {
+  background-color: #e6f0fa;
+  color: #333;
+}
+.youtube-menu a.active {
+  font-weight: 700;
+  color: #222;
+  background: #e6f0fa;
+}
+.youtube-main {
+  margin: 100px 0px auto;
+  padding: 48px 40px 48px 40px;
+  min-width: 0;
+  width: auto;
+  max-width: none;
+  background: #fff;
+  box-sizing: border-box;
+  display: block;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 900px 이하: 사이드바 숨김, 메인 여백 제거 */
+@media (max-width: 900px) {
+  body {
+    margin-left: 0;
+    margin-top: 50px;
+    width: 100%;
+
+  }
+  .youtube-sidebar {
+    display: none;
+  }
+  .youtube-main {
+    margin: 60px auto 24px auto;
+    padding: 0 0 24px 0;
+  }
+  .youtube-section {
+
+    max-width: 100%;
+    padding: 0 10px;
+    margin: 0;
+
+  }
+  .youtube-section table,
+  .youtube-section .facility-list-section {
+    min-width: 900px;
+  }
+}
+
+/* 768px 이하: 내부 컨텐츠 패딩 축소 */
+@media (max-width: 768px) {
+     body {
+     margin-top: 50px;
+     }
+
+  .youtube-main {
+    margin: 40px auto 16px auto;
+    padding: 0 0 16px 0;
+  }
+  .youtube-section {
+    padding: 0 4px;
+  }
+}
+
+/* 480px 이하: 내부 컨텐츠 패딩 최소화 */
+@media (max-width: 480px) {
+
+body {
+     margin-top: 50px;
+     }
+
+  .youtube-main {
+    margin: 20px auto 8px auto;
+    padding: 0 0 8px 0;
+  }
+  .youtube-section {
+    padding: 0 2px;
+  }
+}
+
+/* 유튜브 카드형 게시글 스타일 */
+.youtube-card-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 24px;
+  margin: 32px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+.youtube-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(120,160,255,0.07);
+  width: 450px;
+  display: flex;
+  margin: 0 auto;
+  flex-direction: column;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+  position: relative;
+}
+.youtube-thumb {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background: #eee;
+}
+.youtube-card-body {
+  padding: 18px 18px 12px 18px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.youtube-title {
+  font-size: 1.15em;
+  font-weight: 700;
+  color: #1a4fa0;
+  margin-bottom: 4px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.6em;
+  text-align: center;
+
+}
+.youtube-desc {
+  font-size: 0.98em;
+  color: #444;
+  line-height: 1.5;
+  margin-bottom: 2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.8em;
+}
+.youtube-meta {
+  font-size: 0.93em;
+  color: #888;
+  margin-bottom: 2px;
+}
+.youtube-fav {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  font-size: 2em;
+  color: gray;
+  background: none;
+  opacity: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  user-select: none;
+}
+.youtube-fav span {
+  pointer-events: none;
+}
+.youtube-fav.active span {
+  color: #FFD600;
+}
+@media (max-width: 900px) {
+  .youtube-card-list {
+    justify-content: center;
+    gap: 20px 8px;
+  }
+  .youtube-card {
+    width: 98vw;
+    max-width: 340px;
+  }
+}

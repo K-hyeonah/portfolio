@@ -1,0 +1,88 @@
+/* grade 전용 스타일 */
+body { background: #f8fbff; }
+.grade-main {
+     max-width: 900px;
+     margin: 100px auto 40px auto;
+     background: #fff;
+     border-radius: 12px;
+     box-shadow: 0 2px 12px rgba(120,160,255,0.07);
+     padding: 0 0 40px 0;
+    }
+
+
+    .grade-title {
+        font-size: 2em;
+        font-weight: 700;
+        color: #222;
+        border-bottom: 2px solid #e6f0fa;
+        display: inline-block;
+        padding-bottom: 8px;
+        margin-bottom: 32px;
+        margin-left: 0px;
+      }
+.grade-section {
+     padding: 0 60px;
+     }
+.grade-subtitle {
+     font-size: 1.3em;
+      font-weight: 600;
+      margin: 32px 0 16px 0;
+    }
+.grade-table {
+     width: 100%;
+    border-collapse: collapse;
+     margin: 24px 0;
+      background: #f6f8fb;
+     }
+.grade-table th,
+.grade-table td {
+     border: 1px solid #e6e6e6;
+      padding: 12px 8px;
+      text-align: center;
+       font-size: 1em;
+     }
+.grade-table th {
+     background: #e6f0fa;
+      font-weight: 700;
+    }
+.grade-desc {
+     margin: 16px 0 24px 0;
+      font-size: 1em;
+      line-height: 1.8;
+    }
+.grade-hr {
+     border: none;
+      border-top: 1.5px solid #e6e6e6;
+       margin: 32px 0;
+     }
+.grade-list {
+     margin: 0 0 24px 0;
+      padding-left: 0;
+       list-style: none;
+      line-height: 1.8;
+    }
+.grade-list li {
+  margin-bottom: 18px;
+}
+.grade-table-caption {
+     text-align: left;
+      font-weight: 600;
+       margin-bottom: 8px;
+     }
+.img_grade {
+  display: block;
+  margin: 32px auto 32px auto;
+  max-width: 700px;
+  width: 100%;
+  border-radius: 12px;
+}
+@media (max-width: 700px) {
+     .grade-main,
+      .grade-section {
+         padding: 0 10px;
+        }
+
+        .grade-title {
+             padding-left: 10px;
+            }
+        }

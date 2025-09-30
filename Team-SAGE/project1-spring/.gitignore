@@ -1,0 +1,3 @@
+git remote set-url origin https://github.com/Teamzz-SAGE/SAGE.git
+git add .
+git commit -m "Teamzz-SAGE 저장소로 이전"

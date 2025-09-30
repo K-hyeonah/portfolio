@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko" class="info-page" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE - 노인정책</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/info.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="info-main">
+  <div class="info-sidebar">
+    <h2 class="info-title-sidebar">생활정보<br><br></h2>
+    <ul class="info-menu">
+      <li><a th:href="@{/payinfo}">비용안내</a></li>
+      <li><a th:href="@{/policy}">지원정책</a></li>
+      <li><a th:href="@{/hireinfo}" class="active">채용정보</a></li>
+      <li><a th:href="@{/youtube}">유튜브</a></li>
+    </ul>
+  </div>
+
+  <div class="info-section">
+    <h1 class="info-title">채용정보</h1>
+    <img th:src="@{/img/노인.jpg}" alt="노인 일러스트" class="info-img">
+    <div class="info-desc">
+
+
+    </div>
+    <table class="info-table">
+      <caption class="info-table-caption">2025년 운영요금 안내</caption>
+      <thead>
+      <tr>
+        <th rowspan="2">등급</th>
+        <th rowspan="2">급여비용(1일)</th>
+        <th rowspan="2">급여비용(30일)</th>
+        <th colspan="3">본인부담금(월)①</th>
+        <th rowspan="2">비급여(월)②<br><span class="red">(식대, 간식)<br>예시금액</span></th>
+        <th colspan="3">(월)총계③</th>
+      </tr>
+      <tr>
+        <th>일반대상자<br><span class="gray">(20%)</span></th>
+        <th>감경자<br><span class="gray">(12%)</span></th>
+        <th>감경자<br><span class="gray">(8%)</span></th>
+        <th class="blue">일반20%</th>
+        <th class="gray">감경12%</th>
+        <th class="gray">감경8%</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>1등급</td><td>90,450</td><td>2,713,500</td><td class="bold">542,700</td><td>325,620</td><td>217,080</td><td class="red bold">418,500</td><td class="blue bold">961,200</td><td class="gray bold">744,120</td><td class="gray bold">635,580</td>
+      </tr>
+      <tr>
+        <td>2등급</td><td>83,910</td><td>2,517,300</td><td class="bold">503,460</td><td>302,076</td><td>201,390</td><td class="red bold">418,500</td><td class="blue bold">921,960</td><td class="gray bold">720,576</td><td class="gray bold">619,884</td>
+      </tr>
+      <tr>
+        <td>3,4,5등급</td><td>79,240</td><td>2,377,200</td><td class="bold">475,440</td><td>285,264</td><td>190,176</td><td class="red bold">418,500</td><td class="blue bold">893,940</td><td class="gray bold">703,764</td><td class="gray bold">608,676</td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="info-table-info">
+      <span class="gray">※ 비급여는 계산의 이해를 돕기 위한 예시 금액입니다.</span><br>
+      차상위 또는 의료 수급권자는 8~12%이며, 기초생활 수급자(생계급여, 의료급여)는 본인부담금 0원이며, 생계급여 대상자는 식비 포함 별도로 들어가는 비용이 없습니다.<br>
+      비급여 예시는 1일 13,500원 (1식: 3,500원, 간식: 3,000원) 입니다. 비급여는 요양원마다 다릅니다.<br>
+      3~5등급은 급여형류로 시설급여가 가능해야 합니다. <a th:href="@{/grade}" class="blue">(요양등급)</a>
+    </div>
+    <div class="info-blue">월 이용 요금 = 본인부담(월) + 비급여</div>
+    <table class="info-table info-table-blue">
+      <caption class="info-table-caption">주야간 보호</caption>
+      <thead>
+      <tr><th rowspan="2">구분</th><th rowspan="2">등급</th><th colspan="2">'24년</th><th colspan="2">'25년</th></tr>
+      <tr><th>수가</th><th>본인부담</th><th>수가</th><th>본인부담</th></tr>
+      </thead>
+      <tbody>
+      <tr><td rowspan="6">3시간 이상<br>~ 6시간 미만</td><td>1</td><td>39,810</td><td>5,972</td><td>40,650</td><td>6,098</td></tr>
+      <tr><td>2</td><td>36,850</td><td>5,528</td><td>37,630</td><td>5,645</td></tr>
+      <tr><td>3</td><td>34,020</td><td>5,103</td><td>34,740</td><td>5,211</td></tr>
+      <tr><td>4</td><td>32,470</td><td>4,871</td><td>33,160</td><td>4,974</td></tr>
+      <tr><td>5</td><td>30,920</td><td>4,638</td><td>31,580</td><td>4,737</td></tr>
+      <tr><td>인지지원</td><td>30,920</td><td>4,638</td><td>31,580</td><td>4,737</td></tr>
+
+      <tr><td rowspan="6">6시간 이상<br>~ 8시간 미만</td><td>1</td><td>53,360</td><td>8,004</td><td>54,490</td><td>8,174</td></tr>
+      <tr><td>2</td><td>49,420</td><td>7,413</td><td>50,470</td><td>7,571</td></tr>
+      <tr><td>3</td><td>45,620</td><td>6,843</td><td>46,590</td><td>6,989</td></tr>
+      <tr><td>4</td><td>42,500</td><td>6,375</td><td>43,400</td><td>6,510</td></tr>
+      <tr><td>5</td><td>42,500</td><td>6,375</td><td>43,400</td><td>6,510</td></tr>
+      <tr><td>인지지원</td><td>42,500</td><td>6,375</td><td>43,400</td><td>6,510</td></tr>
+
+      <tr><td rowspan="6">8시간 이상<br>~ 10시간 미만</td><td>1</td><td>66,360</td><td>9,999</td><td>69,950</td><td>10,166</td></tr>
+      <tr><td>2</td><td>61,480</td><td>9,222</td><td>62,780</td><td>9,417</td></tr>
+      <tr><td>3</td><td>56,760</td><td>8,514</td><td>57,960</td><td>8,694</td></tr>
+      <tr><td>4</td><td>53,640</td><td>8,046</td><td>54,780</td><td>8,217</td></tr>
+      <tr><td>5</td><td>53,640</td><td>8,046</td><td>54,780</td><td>8,217</td></tr>
+      <tr><td>인지지원</td><td>53,640</td><td>8,046</td><td>54,780</td><td>8,217</td></tr>
+
+      <tr><td rowspan="6">10시간 이상<br>~ 13시간 이하</td><td>1</td><td>73,110</td><td>10,967</td><td>74,660</td><td>11,199</td></tr>
+      <tr><td>2</td><td>67,720</td><td>10,158</td><td>69,160</td><td>10,374</td>

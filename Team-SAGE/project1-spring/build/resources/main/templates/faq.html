@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE | 자주 묻는 질문</title>
+
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/faq.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="faq-main">
+    <div class="faq-title-wrap">
+        <h2 class="faq-title">자주 묻는 질문</h2>
+        <div class="faq-buttons">
+            <button class="faq-write-btn" th:onclick="|location.href='@{/faq/write}'|">글쓰기</button>
+        </div>
+    </div>
+    <div class="faq-table-section">
+        <table class="faq-table">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>답변</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="faq : ${faqList}" class="faq-table-row">
+                <td th:text="${faq.id}">001</td>
+                <td>
+          <span th:text="${faq.title}"
+                th:onclick="|location.href='@{/faq/{id}(id=${faq.id})}'|"
+                style="cursor: pointer;">제목</span>
+                </td>
+                <td th:text="${faq.writer}">작성자</td>
+                <td th:text="${#temporals.format(faq.createdAt, 'yyyy-MM-dd')}">2025-07-07</td>
+                <td>
+                    <!-- 관리자 모드일 때 -->
+                    <span th:if="${session.userRole == 'ADMIN' or session.isAdmin == true}"
+                          class="faq-answer-link"
+                          th:onclick="|location.href='@{/faq/answer/{id}(id=${faq.id})}'|"
+                          th:data-id="${faq.id}">답변하기</span>
+
+                    <!-- 사용자 모드일 때 -->
+                    <span th:unless="${session.userRole == 'ADMIN' or session.isAdmin == true}"
+                          class="faq-answer-waiting">답변대기중</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="faq-pagination">
+        <a class="active" href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">&gt;</a>
+    </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+</body>
+</html>

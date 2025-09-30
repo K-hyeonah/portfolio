@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE | 회원가입</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="signup-main">
+  <form class="signup-form">
+    <h2 class="signup-title">회원가입</h2>
+    <div class="signup-field">
+      <label for="signupName">이름</label>
+      <input type="text" id="signupName" required>
+    </div>
+    <div class="signup-field">
+      <label for="signupId">아이디</label>
+      <input type="text" id="signupId" placeholder="아이디를 입력해주세요" required>
+    </div>
+    <div class="signup-field">
+      <label for="signupPw">비밀번호</label>
+      <div class="signup-pw-row">
+        <input type="password" id="signupPw" placeholder="비밀번호를 입력해주세요" required>
+        <button type="button" id="pwToggleBtn" style="background:none;border:none;padding:0;display:flex;align-items:center;cursor:pointer;">
+          <img th:src="@{/img/감은눈.png}" alt="숨기기" id="pwToggleIcon" style="width:28px;height:28px;">
+        </button>
+      </div>
+      <div class="signup-desc">8자 이상의 문자, 숫자 및 기호의 조합을 사용하세요.</div>
+    </div>
+    <div class="signup-field">
+      <label>성별</label>
+      <div class="signup-radio-row">
+        <label><input type="radio" name="gender"> 여자</label>
+        <label><input type="radio" name="gender"> 남자</label>
+      </div>
+    </div>
+    <div class="signup-field signup-birth-row">
+      <label>생년월일</label>
+      <div class="signup-birth-inputs">
+        <select id="signupMonth"><option>월</option></select>
+        <select id="signupDate"><option>일</option></select>
+        <select id="signupYear"><option>년</option></select>
+      </div>
+    </div>
+    <div class="signup-field">
+      <label>위치</label>
+      <div class="signup-location-row">
+        <select id="signupSido">
+          <option>시/도</option>
+          <option>서울</option>
+          <option>경기</option>
+          <option>인천</option>
+          <option>부산</option>
+          <option>대구</option>
+          <option>광주</option>
+          <option>대전</option>
+          <option>울산</option>
+          <option>세종</option>
+          <option>강원</option>
+          <option>충북</option>
+          <option>충남</option>
+          <option>전북</option>
+          <option>전남</option>
+          <option>경북</option>
+          <option>경남</option>
+          <option>제주</option>
+        </select>
+        <select id="signupGugun">
+          <option>구/군</option>
+          <option>강남구</option>
+          <option>강동구</option>
+          <option>강북구</option>
+          <option>강서구</option>
+          <option>관악구</option>
+          <option>광진구</option>
+          <option>구로구</option>
+          <option>금천구</option>
+          <option>노원구</option>
+          <option>도봉구</option>
+          <option>동대문구</option>
+          <option>동작구</option>
+          <option>마포구</option>
+          <option>서대문구</option>
+          <option>서초구</option>
+          <option>성동구</option>
+          <option>성북구</option>
+          <option>송파구</option>
+          <option>양천구</option>
+          <option>영등포구</option>
+          <option>용산구</option>
+          <option>은평구</option>
+          <option>종로구</option>
+          <option>중구</option>
+          <option>중랑구</option>
+        </select>
+        <input type="text" placeholder="상세주소">
+      </div>
+    </div>
+    <div class="signup-field signup-check-row">
+      <label><input type="checkbox"> 마케팅 목적이고 내 등록 데이터로 콘텐츠 제공자와 공유합니다. <a href="#" id="showPrivacyModal" class="privacy-link"><br>개인정보처리방침</a></label>
+    </div>
+    <div id="privacyModal" class="privacy-modal" style="display:none;">
+      <div class="privacy-modal-bg"></div>
+      <div class="privacy-modal-content">
+        <button class="privacy-modal-close" id="closePrivacyModal">&times;</button>
+        <h3>개인정보처리방침</h3>
+        <div class="privacy-modal-body">
+          <b>1. 개인정보보호법에 따른 요건</b><br><br>
+          <b>• 개인정보 동의</b><br>
+          “이름, 생년월일, 위치를 수집하며, 개인 데이터 저장용으로 활용됩니다.<br>
+          자세한 내용은 개인정보처리방침을 참조하세요.”<br><br>
+          <b>• 동의 철회 및 삭제 방법 안내</b><br>
+          “언제든지 설정 메뉴에서 동의 철회 및 데이터 삭제를 요청할 수 있습니다.”<br><br>
+          <b>2. 약관의 효력 및 개정</b><br><br>
+          <b>• 약관 효력</b><br>
+          “SAGE는 회원이 제공한 정보를 서비스 개선 목적으로 활용하며, 구체적인 활용 방법은 아래와 같습니다.<br>
+          약관은 SAGE가 운영, 제공하는 위치기반서비스(이하 ‘서비스’라 합니다)를 이용함에 있어 회사와 이용자 간의 의무와 책임사항에 따른 이용조건 및 절차 등 제반사항을 규정함을 목적으로 합니다.<br>
+          본 약관은 SAGE 서비스에 가입된 회원을 포함하여 서비스를 이용하고자 하는 모든 회원에 대하여 그 효력을 발생합니다.”<br><br>
+          <b>• 약관 개정</b><br>
+          “이용자는 약관의 변경내용이 게시되거나 통지 후부터 변경되는 약관이 시행되기 전의 영업일까지 거부의사를 표시하지 않을 수 있고, 약관 변경내용에 대해 이의를 제기하지 아니하는 경우에는 약관 변경을 승인한 것으로 봅니다.<br>
+          본 규정에 의하여 개정된 약관은 원칙적으로 그 효력 발생일로부터 장래를 향하여 유효합니다.”<br><br>
+          <b>3. 서비스</b><br>
+          “본 약관에 정해진 바에 따라 회원에게 제공하는 SAGE 서비스는 아래와 같습니다.<br>
+          웹사이트: 당사는 국민건강보험공단, 심사평가원에서 제공하는 전국 장기요양기관, 요양병원 등의 시설 정보 및 장기요양 관련 정보를 제공합니다.<br>
+          각 개별 시설의 정보는 해당 시설의 요청이나 직접 수정/관리로 인해 변경 또는 수집될 수 있습니다.<br>
+          회원에게 제공되는 시니어특화 서비스는 당사의 영업정책 및 사정에 따라 변경될 수 있습니다.”<br><br>
+          <b>4. 회원가입</b><br>
+          “회원은 회원자격을 타인에게 양도하거나 대여의 목적으로 이용할 수 없습니다.<br>
+          회원은 언제든지 회원탈퇴를 요청할 수 있습니다.”<br>
+        </div>
+      </div>
+    </div>
+    <div class="signup-desc" style="margin-bottom:18px;">계정을 생성함으로써, 당신은 이용 약관 및 개인정보 보호정책에 동의하게 됩니다.</div>
+    <button type="submit" class="signup-btn">회원가입</button>
+    <div class="signup-login-link">이미 계정을 가지고 있습니까? <a th:href="@{/login}">로그인</a></div>
+  </form>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+  // 비밀번호 토글
+  document.addEventListener('DOMContentLoaded', function() {
+    const pwInput = document.getElementById('signupPw');
+    const pwToggle = document.querySelector('.pw-toggle');
+    if(pwInput && pwToggle) {
+      pwToggle.onclick = function() {
+        if(pwInput.type === 'password') {
+          pwInput.type = 'text';
+          pwToggle.textContent = 'Show';
+        } else {
+          pwInput.type = 'password';
+          pwToggle.textContent = 'Hide';
+        }
+      }
+    }
+    // 시/도-구/군 연동
+    const sidoData = {
+      '서울': ['강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구'],
+      '경기': ['수원시','성남시','고양시','용인시','부천시','안산시','안양시','남양주시','화성시','평택시','의정부시','시흥시','파주시','김포시','광주시','광명시','군포시','오산시','이천시','안성시','의왕시','하남시','여주시','양평군','동두천시','과천시','가평군','연천군'],
+      '인천': ['계양구','미추홀구','남동구','동구','부평구','서구','연수구','중구','강화군','옹진군'],
+      '부산': ['강서구','금정구','기장군','남구','동구','동래구','부산진구','북구','사상구','사하구','서구','수영구','연제구','영도구','중구','해운대구'],
+      '대구': ['남구','달서구','달성군','동구','북구','서구','수성구','중구'],
+      '광주': ['광산구','남구','동구','북구','서구'],
+      '대전': ['대덕구','동구','서구','유성구','중구'],
+      '울산': ['남구','동구','북구','울주군','중구'],
+      '세종': ['세종시'],
+      '강원': ['강릉시','동해시','삼척시','속초시','원주시','춘천시','태백시','고성군','양구군','양양군','영월군','인제군','정선군','철원군','평창군','홍천군','화천군','횡성군'],
+      '충북': ['제천시','청주시','충주시','괴산군','단양군','보은군','영동군','옥천군','음성군','증평군','진천군','청원군'],
+      '충남': ['계룡시','공주시','논산시','당진시','보령시','서산시','아산시','천안시','금산군','부여군','서천군','예산군','청양군','태안군','홍성군'],
+      '전북': ['군산시','김제시','남원시','익산시','전주시','정읍시','고창군','무주군','부안군','순창군','완주군','임실군','장수군','진안군'],
+      '전남': ['광양시','나주시','목포시','순천시','여수시','강진군','고흥군','곡성군','구례군','담양군','무안군','보성군','신안군','영광군','영암군','완도군','장성군','장흥군','진도군','함평군','해남군','화순군'],
+      '경북': ['경산시','경주시','구미시','김천시','문경시','상주시','안동시','영주시','영천시','포항시','고령군','군위군','봉화군','성주군','영덕군','영양군','예천군','울릉군','울진군','의성군','청도군','청송군','칠곡군'],
+      '경남': ['거제시','김해시','마산시','밀양시','사천시','양산시','진주시','진해시','창원시','통영시','거창군','고성군','남해군','산청군','의령군','창녕군','하동군','함양군','합천군'],
+      '제주': ['서귀포시','제주시']
+    };
+    const sido = document.getElementById('signupSido');
+    const gugun = document.getElementById('signupGugun');
+    if(sido && gugun) {
+      sido.addEventListener('change', function() {
+        const val = sido.value;
+        gugun.innerHTML = '<option>구/군</option>';
+        if(sidoData[val]) {
+          sidoData[val].forEach(function(g){
+            const opt = document.createElement('option');
+            opt.value = g;
+            opt.textContent = g;
+            gugun.appendChild(opt);
+          });
+        }
+      });
+    }
+    // 생년월일 Month/Date/Year 옵션 자동 생성
+    const monthSel = document.getElementById('signupMonth');
+    const dateSel = document.getElementById('signupDate');
+    const yearSel = document.getElementById('signupYear');
+    if(monthSel) {
+      for(let i=1; i<=12; i++) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = i + '월';
+        monthSel.appendChild(opt);
+      }
+    }
+    if(dateSel) {
+      for(let i=1; i<=31; i++) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = i + '일';
+        dateSel.appendChild(opt);
+      }
+    }
+    if(yearSel) {
+      const now = new Date().getFullYear();
+      for(let i=now; i>=now-100; i--) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = i + '년';
+        yearSel.appendChild(opt);
+      }
+    }
+  });
+  // 개인정보처리방침 모달
+  document.getElementById('showPrivacyModal').onclick = function(e) {
+    e.preventDefault();
+    document.getElementById('privacyModal').style.display = 'block';
+  };
+  document.getElementById('closePrivacyModal').onclick = function() {
+    document.getElementById('privacyModal').style.display = 'none';
+  };
+  document.querySelector('.privacy-modal-bg').onclick = function() {
+    document.getElementById('privacyModal').style.display = 'none';
+  };
+  // 비밀번호 숨기기/보이기 토글 (아이콘)
+  const pwInput = document.getElementById('signupPw');
+  const pwToggle = document.getElementById('pwToggleBtn');
+  const pwIcon = document.getElementById('pwToggleIcon');
+  if(pwInput && pwToggle && pwIcon) {
+    pwToggle.onclick = function() {
+      if(pwInput.type === 'password') {
+        pwInput.type = 'text';
+        pwIcon.src = 'img/뜬눈.png';
+        pwIcon.alt = '보이기';
+      } else {
+        pwInput.type = 'password';
+        pwIcon.src = 'img/감은눈.png';
+        pwIcon.alt = '숨기기';
+      }
+    }
+  }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SAGE | 메인</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+</head>
+<body>
+<header th:replace="header :: header"></header>
+
+<main class="main-ui-v3">
+    <div class="main-center">
+        <div class="main-banner-img main-banner-slider">
+            <button class="banner-arrow left" onclick="slideBanner(-1)">←</button>
+            <img id="mainBannerImg" src="/img/banner1.jpg" alt="추천요양원 배너" />
+            <button class="banner-arrow right" onclick="slideBanner(1)">→</button>
+        </div>
+        <div class="main-searchbox main-searchbox-lg">
+            <div class="main-searchbar-row">
+                <select id="sidoSelect"><option>전체</option></select>
+                <select id="gugunSelect"><option>전체</option></select>
+                <select id="dongSelect"><option>전체</option></select>
+                <input type="text" placeholder="시설명을 입력해주세요">
+            </div>
+            <button class="main-search-btn" id="mainSearchBtn"><span class="icon-home"></span> 시설찾기 <span class="icon-arrow">→</span></button>
+        </div>
+        <div class="main-card-slider-wrapper">
+            <button class="main-card-arrow left" id="mainCardPrevBtn">←</button>
+            <div class="main-card-row" id="mainCardRow">
+                <div class="main-card" id="cardGrade">
+                    <div class="card-title">요양등급알아보기</div>
+                    <img th:src="@{/img/grade.png}" alt="요양등급">
+                </div>
+                <div class="main-card" id="cardPolicy">
+                    <div class="card-title">노인지원정책 알아보기</div>
+                    <img th:src="@{/img/policy.png}" alt="지원정책">
+                </div>
+                <div class="main-card" id="cardCompare">
+                    <div class="card-title">커뮤니티</div>
+                    <img th:src="@{/img/community.png}" alt="커뮤니티">
+                </div>
+            </div>
+            <button class="main-card-arrow right" id="mainCardNextBtn">→</button>
+        </div>
+        <p></p>
+        <div class="main-btn-row">
+            <button class="main-btn" id="showNoticeBtn">공지</button>
+            <button class="main-btn" id="showFaqBtn">Q&A</button>
+        </div>
+        <div class="main-notice-box" id="mainNoticeBox">
+            <div class="main-notice-header">
+                <span>공지</span>
+                <a th:href="@{/notice}" class="main-notice-more">더보기</a>
+            </div>
+            <div class="main-notice-content">
+                <ul id="mainNoticeList">
+                    <li th:each="notice : ${recentNotices}" th:data-id="${notice.id}">
+                        <span class="notice-title" th:text="${notice.title}">공지사항 제목</span>
+                        <span class="notice-date" th:text="${#temporals.format(notice.createdAt, 'MM-dd')}">01-01</span>
+                    </li>
+                    <li th:if="${#lists.isEmpty(recentNotices)}">등록된 공지사항이 없습니다.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-faq-box" id="mainFaqBox" style="display:none;">
+            <div class="main-notice-header">
+                <span>Q&A</span>
+                <a th:href="@{/faq}" class="main-notice-more">더보기</a>
+            </div>
+            <div class="main-notice-content">
+                <ul id="mainFaqList">
+                    <li th:each="faq : ${recentFaqs}" th:data-id="${faq.id}">
+                        <span class="notice-title" th:text="${faq.title}">FAQ 제목</span>
+                        <span class="notice-date" th:text="${#temporals.format(faq.createdAt, 'MM-dd')}">01-01</span>
+                    </li>
+                    <li th:if="${#lists.isEmpty(recentFaqs)}">등록된 FAQ가 없습니다.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-pick-section-v3">
+            <button class="main-pick-prev-btn" id="mainPickPrevBtn">←</button>
+            <div class="main-pick-list-v3" id="mainPickListV3">
+                <div class="pick-card-v3" onclick="window.open('https://www.youtube.com/watch?v=4zDk16TJUnk&t=1s','_blank')"><img th:src="@{/img/찔레꽃.png}" alt="유튜브1"><div>[서울노인복지센터] 찔레꽃 체조</div></div>
+                <div class="pick-card-v3" onclick="window.open('https://www.youtube.com/watch?v=AJrCXjPT1Pg','_blank')"><img th:src="@{/img/9988.png}" alt="유튜브2"><div>노인 맞춤형 건강 체조 "9988 체조" | 관절 움직임 근력 향상</div></div>
+                <div class="pick-card-v3" onclick="window.open('https://www.youtube.com/watch?v=-JWyAuNiEYI','_blank')"><img th:src="@{/img/박수체조.png}" alt="유튜브3"><div>내 나이가 어때서♪에 맞춰 '기억력 박수 체조' [건강하모 좋긋네]</div></div>
+                <div class="pick-card-v3" onclick="window.open('https://www.youtube.com/watch?v=R4CRmTIpwfU','_blank')"><img th:src="@{/img/노년기건강관리.png}" alt="유튜브4"><div>노년기 건강관리ㅣ3가지를 꼭 기억하세요 / 건강하게 늙는 법!</div></div>
+                <div class="pick-card-v3" onclick="window.open('https://www.youtube.com/watch?v=m3tq71zsBSw','_blank')"><img th:src="@{/img/2막.png}" alt="유튜브5"><div>건강한 인생 2막을 위하여! 노년기의 건강관리 편 [건강플러스]</div></div>
+                <div class="pick-card-v3" onclick="window.open('https://www.youtube.com/watch?v=Ylr_s0CCTB0','_blank')"><img th:src="@{/img/장수.png}" alt="유튜브6"><div>건강하게 장수하는 비결 1가지</div></div>
+                <div class="pick-card-v3 more-card" onclick="location.href='youtube.html'"><div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:1.2em;font-weight:700;">=> 더 알아보기</div></div>
+            </div>
+            <button class="main-pick-next-btn" id="mainPickNextBtn">→</button>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<div class="chatbot-container" id="chatbotContainer">
+    <div class="chatbot-header">
+        <span>SAGE 챗봇</span>
+        <span class="chatbot-close-btn" id="chatbotCloseBtn" title="챗봇 닫기">&times;</span>
+    </div>
+    <div class="chatbot-messages" id="chatbotMessages">
+        <!-- 환영 메시지 카드 -->
+        <div class="message bot post-card" data-type="default">
+            <div class="post-header">
+                <div class="post-avatar">AI</div>
+                <div class="post-info">
+                    <div class="post-author">챗봇 어시스턴트</div>
+                    <div class="post-date">2025-08-14</div>
+                </div>
+            </div>
+            <div class="post-content">
+                안녕하세요! SAGE 챗봇입니다. 🤖<br>
+                요양원 정보, 등급 조회, 정책 안내 등<br>
+                무엇이든 물어보세요!
+            </div>
+        </div>
+
+        <!-- 메뉴 카드 -->
+        <div class="message bot post-card" data-type="menu">
+            <div class="post-header">
+                <div class="post-avatar">AI</div> <!-- 첫 번째 코드에서 있었던 avatar 포함 -->
+                <div class="post-info">
+                    <div class="post-author">챗봇 어시스턴트</div>
+                    <div class="post-date">2025-08-14</div>
+                </div>
+            </div>
+            <div class="post-content">
+                빠른 메뉴를 선택해보세요!
+            </div>
+            <div class="post-footer">
+                <div class="menu-cards-row">
+                    <div class="menu-card" onclick="location.href='/facilities'">
+                        <div class="menu-icon">🏥</div>
+                        <div class="menu-text">요양원 정보</div>
+                    </div>
+                    <div class="menu-card" onclick="location.href='/grade'">
+                        <div class="menu-icon">⭐</div>
+                        <div class="menu-text">등급</div>
+                    </div>
+                    <div class="menu-card" onclick="location.href='/payinfo'">
+                        <div class="menu-icon">💰</div>
+                        <div class="menu-text">비용안내</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="chatbot-scroll-btn" id="chatbotScrollBtn" title="맨 아래로" style="display: none;">▼</button>
+    <div class="chatbot-input">
+        <input type="text" id="chatbotInput" placeholder="메시지를 입력하세요..." maxlength="500">
+        <button id="chatbotSendBtn" title="전송">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send-horizontal"><path d="m3 3 3 9-3 9 19-9Z"/><path d="M6 12h16"/></svg>
+        </button>
+    </div>
+</div>
+
+<button class="chatbot-fab" id="chatbotFab" title="챗봇"><img th:src="@{/img/pngegg.png}" alt="챗봇" style="width:28px;height:28px;"></button>
+<button class="top-fab" title="맨 위로" onclick="window.scrollTo({top:0,behavior:'smooth'})">⇧</button>
+
+<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/youtube-thumbnails.js}"></script>
+
+</body>
+</html>

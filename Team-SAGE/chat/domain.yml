@@ -1,0 +1,27 @@
+version: "3.1"
+intents:
+  - ask_info
+  - nlu_fallback
+
+entities:
+  - keyword
+
+slots:
+  keyword:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: keyword
+      - type: from_text
+
+responses:
+  utter_greet:
+    - text: "안녕하세요! 무엇이 궁금하신가요? 키워드를 포함해서 질문해 주세요."
+
+actions:
+  - action_query_csv
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

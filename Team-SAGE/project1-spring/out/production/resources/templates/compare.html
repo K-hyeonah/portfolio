@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>시설 비교 - SAGE</title>
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/compare.css">
+</head>
+<body>
+<header th:replace="header :: header"></header>
+
+<main class="compare-main">
+    <div class="compare-container">
+        <div th:if="${#lists.isEmpty(facilities)}" class="empty-state">
+            <h3>비교할 시설이 없습니다</h3>
+            <p>시설 목록에서 하트를 눌러 비교할 시설을 선택해주세요.</p>
+            <a href="/" class="back-to-search-btn">시설 목록으로 돌아가기</a>
+        </div>
+
+        <div th:if="${not #lists.isEmpty(facilities)}">
+            <div class="facility-cards-section">
+                <div class="cards-container" id="facilityCards">
+                    <div class="facility-card" th:each="facility : ${facilities}">
+                        <img th:src="${facility.mainImage}" th:alt="${facility.name}" class="facility-card-image">
+                        <div class="card-info">
+                            <h3 th:text="${facility.name}"></h3>
+                            <p th:text="${facility.address}"></p>
+                            <p th:text="${facility.phone}"></p>
+                        </div>
+                        <div class="facility-card-buttons">
+                            <button class="facility-card-btn" th:onclick="|goToDetail(${facility.id})|">상품이동</button>
+                            <button class="facility-card-btn" th:onclick="|previewFacility(${facility.id})|">미리보기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-table-section">
+                <h2 class="section-title">시설 상세 비교</h2>
+                <div class="comparison-table-container">
+                    <table class="comparison-table" id="comparisonTable">
+                        <colgroup>
+                            <col style="width:15%">
+                            <col th:each="f : ${facilities}" th:style="|width: ${85.0 / facilities.size()}%;|">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="spec-header">구분</th>
+                            <th th:each="facility : ${facilities}" th:text="${facility.name}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="spec-category">
+                            <td>기본 정보</td>
+                            <td th:each="facility : ${facilities}"></td>
+                        </tr>
+                        <tr th:if="${not #lists.isEmpty(facilities)}">
+                            <td>주소</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.address}"></td>
+                        </tr>
+                        <tr th:if="${not #lists.isEmpty(facilities)}">
+                            <td>전화번호</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.phone}"></td>
+                        </tr>
+                        <tr th:if="${not #lists.isEmpty(facilities)}">
+                            <td>설립일자</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.establishDate}"></td>
+                        </tr>
+
+                        <tr class="spec-category">
+                            <td>시설 및 운영정보</td>
+                            <td th:each="facility : ${facilities}"></td>
+                        </tr>
+                        <tr th:if="${not #lists.isEmpty(facilities)}">
+                            <td>정원</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.capacity}"></td>
+                        </tr>
+                        <tr th:if="${not #lists.isEmpty(facilities)}">
+                            <td>현원</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.currentOccupancy}"></td>
+                        </tr>
+                        <tr th:if="${not #lists.isEmpty(facilities)}">
+                            <td>대기인원</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.waitingList}"></td>
+                        </tr>
+                        <tr>
+                            <td>이용가능여부</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.availability}"></td>
+                        </tr>
+                        <tr>
+                            <td>본인부담금</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.selfPay}"></td>
+                        </tr>
+                        <tr>
+                            <td>인력현황</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.staffStatus}"></td>
+                        </tr>
+                        <tr th:if="${not #lists.isEmpty(facilities)}">
+                            <td>프로그램운영</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.programOperation}"></td>
+                        </tr>
+                        <tr th:if="${not #lists.isEmpty(facilities)}">
+                            <td>교통편</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.transportation}"></td>
+                        </tr>
+                        <tr th:if="${not #lists.isEmpty(facilities)}">
+                            <td>주차시설</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.parkingFacility}"></td>
+                        </tr>
+                        <tr>
+                            <td>홈페이지</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.homepage}"></td>
+                        </tr>
+                        <tr>
+                            <td>평가일자</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.evaluationDate}"></td>
+                        </tr>
+                        <tr>
+                            <td>평점</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.rating}"></td>
+                        </tr>
+                        <tr>
+                            <td>총점</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.totalScore}"></td>
+                        </tr>
+                        <tr>
+                            <td>추천</td>
+                            <td th:each="facility : ${facilities}" th:text="${facility.recommendation}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function goToDetail(facilityId) {
+        window.open(`/facilities/${facilityId}`, '_blank');
+    }
+
+    function previewFacility(facilityId) {
+        alert('미리보기 기능은 개발 중입니다.');
+    }
+</script>
+</body>
+<footer th:replace="footer :: footer"></footer>
+</html>

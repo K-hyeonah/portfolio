@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>SAGE - 공지사항 글쓰기</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/notice-noticewrite.css}">
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/footer.css}">
+</head>
+<body>
+
+<header th:replace="header :: header"></header>
+
+<main class="notice-main">
+  <div class="notice-title-wrap">
+    <h2 class="notice-title">공지사항</h2>
+  </div>
+  <form class="notice-write-form" th:action="@{/notice/write}" th:method="post">
+    <div class="notice-write-row">
+      <label for="notice-title-input">제목</label>
+      <input type="text" id="notice-title-input" name="title" required placeholder="제목을 입력하세요">
+    </div>
+    <div class="notice-write-row">
+      <label for="notice-content-input">내용</label>
+      <textarea id="notice-content-input" name="content" rows="10" required placeholder="내용을 입력하세요"></textarea>
+    </div>
+    <div class="notice-write-btns">
+      <button type="submit" class="notice-submit-btn">등록</button>
+      <button type="button" class="notice-cancel-btn" onclick="history.back()">취소</button>
+    </div>
+  </form>
+</main>
+
+<footer th:replace="footer :: footer"></footer>
+
+<script>
+</script>
+</body>
+</html>
