@@ -23,10 +23,15 @@ Figma: https://www.figma.com/design/TN6zDkncyCVDMdr0KwzlgL/Kimhyeonah-Portfolio?
 
 Skills
 Backend: Java, Spring Boot, Spring MVC, Spring Security, JPA/MyBatis, Bean Validation, REST
+
 Frontend: HTML/CSS/JavaScript, jQuery, Bootstrap (React/Next.js 도입 준비)
+
 DB: MySQL 8 (모델링·정규화·인덱싱, 키셋 페이지네이션, 조회 전용 뷰)
+
 Cloud & Ops: AWS(EC2/S3/RDS), Apache Tomcat, 환경 분리/배포, GitHub Actions, 기본 로그·모니터링, 롤백
+
 Collab & Design: Git/GitHub, Figma/FigJam, Postman, Maven
+
 AI 도구: ChatGPT, Cursor (코드 리뷰·리팩터·테스트 아이디어 보조)
 
 Projects
