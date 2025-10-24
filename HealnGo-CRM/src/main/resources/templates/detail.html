@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>HealnGo 상세페이지</title>
+    <link rel="stylesheet" href="/resources/css/detail.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div th:replace="common/header :: header"></div>
+
+    <div class="hospital-list-container">
+        <!-- 게시글 목록 -->
+        <div class="hospital-item">
+            <div class="hospital-header">
+                <div class="hospital-image">
+                    <img src="/resources/images/detail/hospital.jpg" alt="병원">
+                </div>
+                <div class="hospital-info">
+                    <h3 class="hospital-title" id="hospital-name">
+                        <!-- 서버 데이터로 채워짐 -->
+                    </h3>
+                    <p class="hospital-address" id="hospital-address">
+                        <!-- 서버 데이터로 채워짐 -->
+                    </p>
+                    <div class="hospital-tags">
+                        <span class="tag">성형외과</span>
+                        <span class="tag">리프팅</span>
+                        <span class="tag">지방성형</span>
+                    </div>
+                </div>
+                <div class="hospital-arrow">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <!-- 상세내용 (처음에는 숨김) -->
+            <div class="hospital-detail" style="display: none;">
+                <div class="detail-content">
+                    <div class="hospital-container">
+                        <div class="detail-hospital">
+                            <img src="/resources/images/detail/hospital.jpg" alt="병원">
+                        </div>
+                        <h2 class="hospital_title" id="detail-hospital-name">
+                            <!-- 서버 데이터로 채워짐 -->
+                        </h2>
+                    </div>
+
+                    <table border="1">
+                        <tr>
+                            <th>상담가능언어</th>
+                            <td>영어, 중국어, 일본어, 프랑스어</td>
+                        </tr>
+                        <tr>
+                            <th>특화진료</th>
+                            <td>리프팅, 지방성형(다이어트), 쁘띠(필러, 보톡스 등), 흉터제거, 레이저제모</td>
+                        </tr>
+                        <tr>
+                            <th>시설정보</th>
+                            <td>의료진 수: 5명, 병상 수: 2병상</td>
+                        </tr>
+                        <tr>
+                            <th>운영시간</th>
+                            <td class="hospital_time"></td>
+                        </tr>
+                        <tr>
+                            <th>홈페이지</th>
+                            <td class="hospital_website"></td>
+                        </tr>
+                        <tr>
+                            <th>연락처</th>
+                            <td class="hospital_phonenumber"></td>
+                        </tr>
+                        <tr>
+                            <th>위치 및 교통정보</th>
+                            <td class="hospital_address" id="detail-address">서울 서초구 서초대로73길 42 강남역리가스퀘어 3층</td>
+                        </tr>
+                        <tr>
+                            <th>지하철</th>
+                            <td class="location"></td>
+                        </tr>
+                    </table>
+                    <div id="map" class="map"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 추가 게시글 예시 -->
+        <div class="hospital-item">
+            <div class="hospital-header">
+                <div class="hospital-image">
+                    <img src="/resources/images/detail/hospital.jpg" alt="병원">
+                </div>
+                <div class="hospital-info">
+                    <h3 class="hospital-title">강남성형외과의원</h3>
+                    <p class="hospital-address">서울 강남구 테헤란로 123</p>
+                    <div class="hospital-tags">
+                        <span class="tag">성형외과</span>
+                        <span class="tag">눈성형</span>
+                        <span class="tag">코성형</span>
+                    </div>
+                </div>
+                <div class="hospital-arrow">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <div class="hospital-detail" style="display: none;">
+                <div class="detail-content">
+                    <div class="hospital-container">
+                        <div class="detail-hospital">
+                            <img src="/resources/images/detail/hospital.jpg" alt="병원">
+                        </div>
+                        <h2 class="hospital_title">강남성형외과의원</h2>
+                    </div>
+
+                    <table border="1">
+                        <tr>
+                            <th>상담가능언어</th>
+                            <td>한국어, 영어</td>
+                        </tr>
+                        <tr>
+                            <th>특화진료</th>
+                            <td>눈성형, 코성형, 턱성형, 지방이식</td>
+                        </tr>
+                        <tr>
+                            <th>시설정보</th>
+                            <td>의료진 수: 3명, 병상 수: 1병상</td>
+                        </tr>
+                        <tr>
+                            <th>운영시간</th>
+                            <td class="hospital_time"></td>
+                        </tr>
+                        <tr>
+                            <th>홈페이지</th>
+                            <td class="hospital_website"></td>
+                        </tr>
+                        <tr>
+                            <th>연락처</th>
+                            <td class="hospital_phonenumber"></td>
+                        </tr>
+                        <tr>
+                            <th>위치 및 교통정보</th>
+                            <td class="hospital_address">서울 강남구 테헤란로 123</td>
+                        </tr>
+                        <tr>
+                            <th>지하철</th>
+                            <td class="location"></td>
+                        </tr>
+                    </table>
+                    <div id="map" class="map"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 추가 게시글 예시 2 -->
+        <div class="hospital-item">
+            <div class="hospital-header">
+                <div class="hospital-image">
+                    <img src="/resources/images/detail/hospital.jpg" alt="병원">
+                </div>
+                <div class="hospital-info">
+                    <h3 class="hospital-title">부산치과병원</h3>
+                    <p class="hospital-address">부산 해운대구 해운대로 456</p>
+                    <div class="hospital-tags">
+                        <span class="tag">치과</span>
+                        <span class="tag">임플란트</span>
+                        <span class="tag">교정</span>
+                    </div>
+                </div>
+                <div class="hospital-arrow">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+
+            <div class="hospital-detail" style="display: none;">
+                <div class="detail-content">
+                    <div class="hospital-container">
+                        <div class="detail-hospital">
+                            <img src="/resources/images/detail/hospital.jpg" alt="병원">
+                        </div>
+                        <h2 class="hospital_title">부산치과의원</h2>
+                    </div>
+
+                    <table border="1">
+                        <tr>
+                            <th>상담가능언어</th>
+                            <td>한국어, 영어, 일본어</td>
+                        </tr>
+                        <tr>
+                            <th>특화진료</th>
+                            <td>임플란트, 교정, 보철, 치주치료</td>
+                        </tr>
+                        <tr>
+                            <th>시설정보</th>
+                            <td>의료진 수: 4명, 병상 수: 0병상</td>
+                        </tr>
+                        <tr>
+                            <th>운영시간</th>
+                            <td class="hospital_time"></td>
+                        </tr>
+                        <tr>
+                            <th>홈페이지</th>
+                            <td class="hospital_website"></td>
+                        </tr>
+                        <tr>
+                            <th>연락처</th>
+                            <td class="hospital_phonenumber"></td>
+                        </tr>
+                        <tr>
+                            <th>위치 및 교통정보</th>
+                            <td class="hospital_address">부산 해운대구 해운대로 456</td>
+                        </tr>
+                        <tr>
+                            <th>지하철</th>
+                            <td class="location"></td>
+                        </tr>
+                    </table>
+                    <div id="map" class="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=703e2573e79d7de26254a05a83ea0f4c&libraries=services,clusterer"></script>
+    <script src="/resources/js/map.js"></script>
+    <script src="/resources/js/detail.js"></script>
+
+    <!-- 서버 데이터를 JavaScript로 전달 -->
+    <script>
+        // 서버에서 전달된 데이터를 JavaScript에서 사용할 수 있도록 설정
+        // HTML에서는 JSP 문법을 사용할 수 없으므로 API 호출로 대체
+        window.serverData = {
+            list: null
+        };
+    </script>
+
+    <script>
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            // HTML include 초기화
+            includeHTML();
+
+            // 서버 데이터 로드
+            loadDetailData();
+        });
+
+        // 서버 데이터 로드
+        async function loadDetailData() {
+            try {
+                // URL에서 ID 추출 (/list/{id} 형식)
+                const pathParts = window.location.pathname.split('/');
+                const id = pathParts[pathParts.length - 1];
+                
+                if (id && !isNaN(id)) {
+                    // API 호출로 병원 정보 가져오기
+                    const response = await fetch(`/api/list/${id}`);
+                    if (response.ok) {
+                        const hospitalData = await response.json();
+                        renderHospitalData(hospitalData);
+                    }
+                }
+            } catch (error) {
+                console.error('병원 데이터 로드 중 오류:', error);
+            }
+        }
+
+        // 병원 데이터 렌더링
+        function renderHospitalData(hospitalData) {
+            if (!hospitalData) return;
+
+            // 병원 이름 설정
+            const hospitalName = hospitalData.nameLabel || hospitalData.name;
+            document.getElementById('hospital-name').textContent = hospitalName;
+            document.getElementById('detail-hospital-name').textContent = hospitalName;
+
+            // 병원 주소 설정
+            const hospitalAddress = hospitalData.addressLabel || hospitalData.address;
+            document.getElementById('hospital-address').textContent = hospitalAddress;
+            document.getElementById('detail-address').textContent = hospitalAddress;
+        }
+    </script>
+
+    <!-- 푸터 -->
+    <div th:replace="common/footer :: footer"></div>
+</body>
+</html>

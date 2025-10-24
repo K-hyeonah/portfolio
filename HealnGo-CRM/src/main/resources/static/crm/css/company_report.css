@@ -1,0 +1,351 @@
+/* Company Report Page Styles */
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #F3F4F6;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 280px; /* 사이드바 너비만큼 여백 */
+}
+
+.content-wrapper {
+    flex: 1;
+    padding: 24px;
+}
+
+/* 페이지 헤더 */
+.page-header {
+    margin-bottom: 32px;
+}
+
+.page-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+/* 대시보드 콘텐츠 */
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* 상단 섹션 */
+.top-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+/* 매출 리포트 카드 */
+.sales-report-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.card-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+}
+
+.view-all-link {
+    color: #3B82F6;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.view-all-link:hover {
+    text-decoration: underline;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+/* 우측 패널 */
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* 핵심 지표 카드 */
+.key-indicators-card {
+    background: #F0FDF4;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.key-indicators-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 20px 0;
+}
+
+.indicator-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.indicator-item:last-child {
+    border-bottom: none;
+}
+
+.indicator-label {
+    font-size: 14px;
+    color: #6B7280;
+}
+
+.indicator-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.indicator-value .value {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.trend-low {
+    color: #EF4444;
+}
+
+.trend i {
+    font-size: 10px;
+}
+
+/* 최근 활동 카드 */
+.recent-activity-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.recent-activity-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 20px 0;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.activity-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.icon-green {
+    background: #D1FAE5;
+    color: #059669;
+}
+
+.icon-blue {
+    background: #DBEAFE;
+    color: #2563EB;
+}
+
+.icon-orange {
+    background: #FED7AA;
+    color: #EA580C;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827;
+    margin-bottom: 2px;
+}
+
+.activity-time {
+    font-size: 12px;
+    color: #6B7280;
+}
+
+/* 리포트 카드 섹션 */
+.report-cards-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.report-card {
+    background: white;
+    border-radius: 12px;
+    padding: 32px 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 140px;
+    justify-content: center;
+}
+
+.report-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.card-yellow .card-icon {
+    background: #FEF3C7;
+    color: #D97706;
+}
+
+.card-green .card-icon {
+    background: #D1FAE5;
+    color: #059669;
+}
+
+.card-blue .card-icon {
+    background: #DBEAFE;
+    color: #2563EB;
+}
+
+.card-purple .card-icon {
+    background: #E9D5FF;
+    color: #7C3AED;
+}
+
+.card-content h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .top-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .report-cards-section {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .content-wrapper {
+        padding: 16px;
+    }
+    
+    .page-header h1 {
+        font-size: 24px;
+    }
+    
+    .sales-report-card,
+    .key-indicators-card,
+    .recent-activity-card {
+        padding: 16px;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+    
+    .report-cards-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .report-card {
+        padding: 16px;
+    }
+}
+
+/* 차트 스타일링 */
+#salesChart {
+    max-height: 300px;
+}
+
+/* 스크롤바 스타일링 */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F3F4F6;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #D1D5DB;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #9CA3AF;
+}

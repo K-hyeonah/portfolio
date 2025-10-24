@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>업체 정보 수정 - HealnGo</title>
+    <link rel="stylesheet" href="/crm/css/company_edit.css">
+    <link rel="stylesheet" href="/crm/css/company_header.css">
+    <link rel="stylesheet" href="/crm/css/company_sidebar.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+<div class="layout">
+    <!-- 사이드바 -->
+    <div th:replace="common/company_sidebar :: company_sidebar"></div>
+
+    <!-- 메인 콘텐츠 -->
+    <div class="main-content">
+        <!-- 헤더 -->
+        <div th:replace="common/company_header :: company_header"></div>
+
+        <!-- 콘텐츠 영역 -->
+        <div class="content-wrapper">
+            <!-- 페이지 헤더 -->
+            <div class="page-header">
+                <div class="header-left">
+                    <h1>업체 정보 수정</h1>
+                    <p>회사 정보를 관리하고 업데이트하세요</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-cancel">
+                        <i class="fas fa-times"></i>
+                        취소
+                    </button>
+                    <button class="btn-save">
+                        <i class="fas fa-save"></i>
+                        저장하기
+                    </button>
+                </div>
+            </div>
+
+            <!-- 메인 콘텐츠 -->
+            <div class="main-content-area">
+                <!-- 중앙 폼 영역 -->
+                <div class="form-section">
+                    <!-- 탭 네비게이션 -->
+                    <div class="tab-navigation">
+                        <button class="tab-btn active" data-tab="basic">기본 정보</button>
+                        <button class="tab-btn" data-tab="contact">연락처</button>
+                    </div>
+
+                    <!-- 탭 콘텐츠 -->
+                    <div class="tab-content">
+                        <!-- 기본 정보 탭 -->
+                        <div class="tab-pane active" id="basic">
+                            <div class="form-group">
+                                <label for="companyName">업체명 <span class="required">*</span></label>
+                                <input type="text" id="companyName" name="companyName"
+                                       th:value="${basicInfo.companyName}" placeholder="업체명을 입력하세요">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="businessNumber">사업자등록번호 <span class="required">*</span></label>
+                                <input type="text" id="businessNumber" name="businessNumber"
+                                       th:value="${basicInfo.businessNumber}" placeholder="사업자등록번호를 입력하세요">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="representative">대표자명 <span class="required">*</span></label>
+                                <input type="text" id="representative" name="representative"
+                                       th:value="${basicInfo.representative}" placeholder="대표자명을 입력하세요">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="category">카테고리 <span class="required">*</span></label>
+                                <select id="category" name="category" class="category">
+                                    <option value="">카테고리를 선택하세요</option>
+                                    <option value="성형외과" th:selected="${basicInfo.category == '성형외과'}">성형외과</option>
+                                    <option value="피부과" th:selected="${basicInfo.category == '피부과'}">피부과</option>
+                                    <option value="치과" th:selected="${basicInfo.category == '치과'}">치과</option>
+                                    <option value="약국" th:selected="${basicInfo.category == '약국'}">약국</option>
+                                    <option value="한의원" th:selected="${basicInfo.category == '한의원'}">한의원</option>
+                                    <option value="마사지" th:selected="${basicInfo.category == '마사지'}">마사지</option>
+                                    <option value="왁싱" th:selected="${basicInfo.category == '왁싱'}">왁싱</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="companyIntroduction">업체 소개</label>
+                                <textarea id="companyIntroduction" name="companyIntroduction"
+                                          placeholder="업체 소개를 입력하세요" maxlength="500"
+                                          th:text="${basicInfo.companyIntroduction}"></textarea>
+                                <div class="character-count">
+                                    <span id="charCount">36</span> / 500자
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 연락처 탭 -->
+                        <div class="tab-pane" id="contact">
+                            <div class="form-group">
+                                <label for="email">이메일 <span class="required">*</span></label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-envelope"></i>
+                                    <input type="email" id="email" name="email"
+                                           th:value="${contactInfo.email}" placeholder="이메일을 입력하세요">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mainPhone">대표 전화번호 <span class="required">*</span></label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-phone"></i>
+                                    <input type="tel" id="mainPhone" name="mainPhone"
+                                           th:value="${contactInfo.mainPhone}" placeholder="대표 전화번호를 입력하세요">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fax">팩스 <span style="color: #6b7280; font-size: 12px;">(선택)</span></label>
+                                <input type="tel" id="fax" name="fax"
+                                       th:value="${contactInfo.fax}" placeholder="팩스번호를 입력하세요">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="postcode">우편번호 <span class="required">*</span></label>
+                                <div class="address-input-group">
+                                    <input type="text" id="postcode" name="postcode"
+                                           th:value="${contactInfo.postcode}" placeholder="우편번호" readonly>
+                                    <button type="button" class="btn-postal" onclick="searchAddress()">우편번호 찾기</button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="deliveryAddress">주소 <span class="required">*</span></label>
+                                <input type="text" id="deliveryAddress" name="deliveryAddress"
+                                       th:value="${contactInfo.address}" placeholder="주소" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="detailAddress">상세 주소</label>
+                                <input type="text" id="detailAddress" name="detailAddress"
+                                       th:value="${contactInfo.detailAddress}" placeholder="상세 주소를 입력하세요">
+                            </div>
+                            
+                            <!-- 우편번호 검색 팝업 영역 -->
+                            <div id="wrap" style="display:none;border:1px solid #E2E8F0;width:100%;height:400px;margin:10px 0;position:relative;border-radius:8px;overflow:hidden;">
+                                <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" 
+                                     style="cursor:pointer;position:absolute;right:10px;top:10px;z-index:1" 
+                                     onclick="foldDaumPostcode()" alt="접기 버튼">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="website">웹사이트</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-globe"></i>
+                                    <input type="url" id="website" name="website"
+                                           th:value="${contactInfo.website}" placeholder="웹사이트 URL을 입력하세요">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 우측 사이드바 -->
+                <div class="right-sidebar">
+                    <!-- 미리보기 -->
+                    <div class="preview-card">
+                        <h3>미리보기</h3>
+                        <div class="company-preview">
+                            <div class="company-logo" id="companyLogoPreview">
+                                <img th:if="${basicInfo.hasAvatar}" 
+                                     th:src="@{/company/avatar/{id}(id=${basicInfo.companyId})}" 
+                                     alt="Company Logo" 
+                                     class="logo-image"
+                                     id="logoImage"
+                                     style="display: block;">
+                                <span id="logoInitial" th:if="${!basicInfo.hasAvatar}" th:text="${basicInfo.companyName != null ? basicInfo.companyName.substring(0, 1) : 'H'}">H</span>
+                            </div>
+                            <div class="logo-upload-section">
+                                <input type="file" id="logoInput" accept="image/*" style="display: none;">
+                                <button type="button" class="btn-upload-logo" onclick="document.getElementById('logoInput').click()">
+                                    <i class="fas fa-camera"></i>
+                                    로고 변경
+                                </button>
+                            </div>
+                            <div class="company-info">
+                                <h4 th:text="${basicInfo.companyName}">YoyoMedi</h4>
+                                <p th:text="${basicInfo.representative} + ' 대표'">YoyoKang 대표</p>
+                            </div>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span th:text="${contactInfo.mainPhone}">02-1234-5678</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span th:text="${contactInfo.email}">yoyo@gmail.com</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span th:text="${contactInfo.address}">서울특별시 강남구 테헤란로 1...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 작성 팁 -->
+                    <div class="tips-card">
+                        <h3>
+                            <i class="fas fa-lightbulb"></i>
+                            작성 팁
+                        </h3>
+                        <ul class="tips-list">
+                            <li>정확한 연락처를 입력하세요</li>
+                            <li>고해상도 로고를 사용하세요</li>
+                            <li>전문 분야를 명확히 표시하세요</li>
+                            <li>업체 소개는 간결하게 작성하세요</li>
+                        </ul>
+                    </div>
+
+                    <!-- 업데이트 현황 -->
+                    <div class="status-card">
+                        <h3>업데이트 현황</h3>
+                        <div class="status-item">
+                            <span class="status-label">마지막 수정:</span>
+                            <span class="status-value" th:text="${updateStatus.lastModified}">2시간 전</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">완료도:</span>
+                            <span class="status-value" th:text="${updateStatus.completionRate} + '%'">85%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" th:style="'width: ' + ${updateStatus.completionRate} + '%'"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 스크립트 -->
+<script src="/crm/js/company_header.js"></script>
+<script src="/crm/js/company_sidebar.js"></script>
+<script src="/crm/js/company_edit.js"></script>
+</body>
+</html>

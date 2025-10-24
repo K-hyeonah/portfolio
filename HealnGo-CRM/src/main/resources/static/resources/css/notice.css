@@ -1,0 +1,684 @@
+/* ========== 공지사항 페이지 스타일 ========== */
+
+/* 전체 컨테이너 */
+.community-container {
+    max-width: 1200px;
+    padding: 40px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* 공지사항 목록 페이지 전용 */
+.notice-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 20px 0;
+}
+
+.notice-table th {
+    background: #f8f9fa;
+    padding: 15px;
+    text-align: center;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+}
+
+.notice-table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.notice-title {
+    text-align: left !important;
+    font-weight: 500;
+}
+
+.notice-row {
+    transition: background 0.2s;
+}
+
+.notice-row:hover {
+    background: #f8f9fa;
+}
+
+.notice-row.pinned {
+    background: #fff3cd;
+}
+
+.notice-row.pinned:hover {
+    background: #ffe69c;
+}
+
+.pinned-badge {
+    background: #ff6b6b;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.audience-badge {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.audience-badge.all {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.audience-badge.social {
+    background: #e8f5e9;
+    color: #388e3c;
+}
+
+.audience-badge.company {
+    background: #fce4ec;
+    color: #c2185b;
+}
+
+.empty-message {
+    padding: 40px !important;
+    color: #999;
+    text-align: center !important;
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 30px 0;
+}
+
+.page-link {
+    padding: 8px 12px;
+    border: 1px solid #dee2e6;
+    background: white;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s;
+    min-width: 40px;
+    text-align: center;
+}
+
+.page-link:hover {
+    background: #e9ecef;
+}
+
+.page-link.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* 공지사항 상세 페이지 */
+.notice-detail {
+    background: white;
+    padding: 40px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.notice-header {
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.notice-detail .notice-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    color: #2c3e50;
+    text-align: left;
+}
+
+.notice-meta {
+    display: flex;
+    gap: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.notice-meta i {
+    margin-right: 5px;
+}
+
+.notice-content {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+    min-height: 200px;
+    margin-bottom: 40px;
+    padding: 20px 0;
+}
+
+.notice-actions {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+    border-top: 1px solid #dee2e6;
+}
+
+.btn-list {
+    padding: 10px 30px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.btn-list:hover {
+    background: #5a6268;
+}
+
+/* 상단 헤더 */
+.community-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px 0;
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.community-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.community-subtitle {
+    color: #7f8c8d;
+    font-size: 16px;
+}
+
+.community-row {
+    border: 1px solid #005a66;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;            /* 세로 가운데 정렬 */
+}
+
+.community-left {
+    font-size: 18px;
+    color: #005a66;
+    padding: 10px 20px;       /* 크기 */
+
+}
+
+.write-btn {
+    background-color: #fff; /* 원하는 배경색 */
+    color: #005a66;             /* 글자색 */
+    border: none;             /* 테두리 제거 */
+    padding: 10px 20px;       /* 버튼 크기 */
+    border-radius: 5px;       /* 둥근 모서리 */
+    cursor: pointer;          /* 마우스 올리면 손가락 커서 */
+}
+
+/* 글작성 클릭 시 숨김/노출 */
+.community-insert {
+    display: none;              /* 기본은 숨김 */
+    margin-top: 20px;
+    width: 100%;
+    border: 1px solid #005a66;
+    border-radius: 5px;
+    flex-direction: column;
+    overflow: hidden;           /* 둥근 모서리 안 넘치게 */
+    box-sizing: border-box;
+}
+
+.community-insert.is-open {
+    display: flex;              /* 열렸을 때 flex 레이아웃 */
+}
+
+/* 구분선 */
+.community-insert hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 0 20px;
+}
+
+.insert-title-down {
+    display: flex;
+    justify-content: space-between;
+    align-item: center;
+    gap: 10px;                      /* 간격 */
+}
+
+/* 제목 입력창 */
+.insert-title {
+    flex:1 1 auto;
+    border: none;
+    font-size: 18px;
+    padding: 20px;
+    outline: none;               /* 클릭 시 기본 파란 테두리 제거 */
+}
+
+/* 로그인 버튼 */
+.login-btn-community {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #fff;
+    border: 1px solid #fff;
+    color: #005a66;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    margin-right: 20px;
+}
+
+/* 내용 입력창 */
+.insert-content {
+    border: none;
+    font-size: 14px;
+    padding: 20px;
+    height: 80px;
+    resize: none;                /* 크기 조절 막기 */
+    outline: none;
+}
+
+.insert-btn {
+    background-color: #fff;   /* 원하는 배경색 */
+    color: #005a66;           /* 글자색 */
+    border: none;             /* 테두리 제거 */
+    width: 100px;
+    padding: 10px 20px;       /* 버튼 크기 */
+    cursor: pointer;          /* 마우스 올리면 손가락 커서 */
+    display: flex;
+    justify-content: center;
+}
+
+.insert-btn-wrap {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 끝으로 */
+}
+
+/* 입력버튼 누른 후 모달창 */
+.insert-confirm-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); /* 반투명 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.insert-confirm-content {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 250px;
+}
+
+.insert-confirm-buttons {
+    margin-top: 15px;
+}
+
+.insert-confirm-buttons button {
+    padding: 8px 16px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.insert-confirm-ok {
+    background: #005a66;
+    color: #fff;
+}
+/* 카테고리 버튼 커스텀 컬러 */
+.btn-category{
+  background:#fff !important;
+  border-color:#fff !important;
+  color:#005a66 !important;
+}
+
+.btn-category:hover{
+  background:#fff !important;
+  border-color:#fff !important;
+}
+
+/* 드롭다운 메뉴 스타일 + 스크롤 */
+.dropdown-menu{
+  background:#fff !important;
+  color:#005a66 !important;
+  max-height:200px;          /* 넘치면 세로 스크롤 */
+  overflow-y:auto;
+  border:1px solid #005a66;
+}
+.dropdown-item{ color:#005a66 !important; }
+.dropdown-item:hover,
+.dropdown-item:focus{
+  background:#005a66 !important;
+  color:#fff !important;
+}
+
+.dropdown .btn-category {
+  height: 100%;                   /* input 높이에 맞추고 싶으면 */
+  display: flex;
+  align-items: center;            /* 버튼 내부 텍스트도 세로 정렬 */
+}
+
+/* ==== 작성한 글 보여주는 박스 ==== */
+.community-show {
+  display: flex;                /* 항상 보이게 */
+  flex-direction: column;
+  margin-top: 20px;
+  width: 100%;
+  border: 1px solid #005a66;
+  border-radius: 8px;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+/* 구분선 */
+.community-show hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 0 20px;
+}
+
+/* 제목 영역 */
+.show-title {
+  font-size: 18px;
+  padding: 16px 20px;
+  /* height: 30px;  ← 제거(줄바꿈 허용) */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+/* 메타 정보 (날짜, 카테고리) */
+.show-meta {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 20px;
+}
+
+.show-meta::before {
+    content: '';
+    width: 3px;
+    height: 3px;
+    background-color: #ccc;
+    border-radius: 50%;
+}
+
+.show-meta::after {
+    content: '';
+    width: 3px;
+    height: 3px;
+    background-color: #ccc;
+    border-radius: 50%;
+}
+
+/* 내용 영역 */
+.show-content {
+  font-size: 14px;
+  white-space: pre-line;        /* 줄바꿈 유지, 들여쓰기 제거 */
+  padding-left: 20px;                   /* 들여쓰기 제거 */
+}
+
+/* 버튼 묶음 */
+.show-btn-wrap {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px 20px;
+}
+
+/* 버튼 공통 */
+.show-update,
+.show-delete {
+  background: #fff;
+  color: #005a66;
+  border: 1px solid #005a66;    /* 테두리 살짝 주면 더 카드 같음 */
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.show-update:hover,
+.show-delete:hover {
+  background: #f0fafa;
+}
+
+.empty-tip {
+   background: #fff;
+   color: #005a66;
+   border: 1px solid #005a66;    /* 테두리 살짝 주면 더 카드 같음 */
+   padding: 8px 14px;
+   border-radius: 6px;
+   transition: background .2s;
+   margin-top: 20px;
+ }
+
+/* 삭제버튼 누른 후 모달창 */
+.delete-confirm-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);   /* 반투명 어두운 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* 모달 박스 */
+.delete-confirm-content {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 250px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* 살짝 그림자 */
+}
+
+/* 버튼 영역 */
+.delete-confirm-buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* 버튼 공통 */
+.delete-confirm-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+/* 확인 버튼 */
+.delete-confirm-ok {
+  background: #005a66;
+  color: #fff;
+}
+.delete-confirm-ok:hover {
+  background: #004855;
+}
+
+/* 취소 버튼 */
+.delete-confirm-cancel {
+  background: #eee;
+  color: #333;
+}
+.delete-confirm-cancel:hover {
+  background: #ddd;
+}
+
+/* 수정/삭제 버튼 색상 조정 */
+.show-update {
+    background-color: #005a66;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.show-cancel {
+    background-color: #95a5a6; /* 회색 */
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.show-delete {
+    background-color: #005a66;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 수정 모드 입력 필드 */
+.title-edit {
+  width: 80%;
+  padding: 8px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.content-edit {
+  width: 80%;
+  min-height: 100px;
+  padding: 12px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* 수정/취소/저장/삭제 버튼 색상 조정 */
+.show-update {
+    background-color: #005a66;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.show-cancel {
+    background-color: #95a5a6; /* 회색 */
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.show-save {
+    background-color: #27ae60; /* 초록색 */
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.show-delete {
+    background-color: #005a66;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 로그인 안내 메시지 */
+.login-notice {
+    color: #666;
+    font-size: 14px;
+    font-style: italic;
+    padding: 10px 0;
+}
+
+/* 로그인 버튼 */
+
+.login-btn:hover {
+    background-color: #004d5a;
+    color: white;
+    text-decoration: none;
+}
+
+/* 좋아요 버튼을 카테고리 옆으로 배치 */
+.show-title .like-toggle {
+  display: none; /* 메타 영역으로 이동 전까지 숨김 */
+}
+
+.show-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.show-meta .like-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #005a66;
+  cursor: pointer;
+}
+
+.show-meta .like-toggle .like-count {
+  margin-left: 4px;
+  font-weight: 600;
+  color: #005a66;
+}
+
+.show-meta .like-toggle i.far,
+.show-meta .like-toggle i.fas {
+  font-size: 16px;
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Header</title>
+    <link rel="stylesheet" href="/static/crm/css/company_header.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- 업체 헤더 Fragment -->
+<header th:fragment="company_header" class="main-header">
+    <div class="header-actions">
+        <div class="user-profile">
+            <div class="profile-img-wrapper">
+                <img th:if="${hasAvatar}" 
+                     th:src="@{/company/avatar/{id}(id=${companyId})}" 
+                     alt="Profile" 
+                     class="profile-img">
+                <div th:unless="${hasAvatar}" class="profile-img profile-img-placeholder">
+                    <span th:text="${companyName != null && companyName.length() > 0 ? companyName.substring(0, 1) : 'H'}">H</span>
+                </div>
+            </div>
+            <div class="user-dropdown">
+                <span class="user-name" th:text="${companyName != null ? companyName : '업체'}"></span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script src="/static/crm/js/company_header.js"></script>
+</body>
+</html>

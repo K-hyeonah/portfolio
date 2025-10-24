@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>캘린더 - HealnGo Admin</title>
+    <link rel="stylesheet" href="/crm/css/admin_sidebar.css">
+    <link rel="stylesheet" href="/crm/css/admin_header.css">
+    <link rel="stylesheet" href="/crm/css/admin_reservation_management.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 기본 레이아웃 */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa !important;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 290px; /* 사이드바 너비(250px) + margin(40px) */
+        }
+        
+        .admin-page-content {
+            padding: 20px;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- 사이드바 -->
+        <div th:replace="~{common/admin_sidebar :: admin_sidebar}"></div>
+        
+        <!-- 메인 콘텐츠 -->
+        <div class="main-content">
+            <!-- 헤더 -->
+            <div th:replace="~{common/admin_header :: admin_header}"></div>
+
+            <!-- 페이지 컨텐츠 -->
+            <div class="admin-page-content">
+                <!-- 페이지 헤더 -->
+                <div class="page-header">
+                    <h1 class="page-title">캘린더</h1>
+                    <div class="page-actions">
+                        <button class="btn btn-secondary" onclick="syncGoogleCalendar()">
+                            <i class="fab fa-google"></i>
+                            Google 캘린더 동기화
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 통계 카드 -->
+                <div class="calendar-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number" th:text="${ongoingEvents}">0</h3>
+                            <p class="stat-label">진행중인 노출</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number" th:text="${ongoingPromotions}">0</h3>
+                            <p class="stat-label">진행중인 쿠폰</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 class="stat-number" th:text="${upcomingEvents}">0</h3>
+                            <p class="stat-label">예정된 이벤트</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 필터 섹션 -->
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label>유형</label>
+                        <div class="filter-checkboxes">
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="placement" checked onchange="filterCalendarEvents()">
+                                <span class="type-badge type-event">노출</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="coupon" checked onchange="filterCalendarEvents()">
+                                <span class="type-badge type-promotion">쿠폰</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 캘린더와 일정 목록 -->
+                <div class="calendar-layout">
+                    <!-- 캘린더 영역 -->
+                    <div class="calendar-section">
+                        <div class="calendar-container">
+                            <div class="calendar-header">
+                                <button class="nav-btn" id="prevMonth">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <h3 class="month-year" id="currentMonth">2024년 10월</h3>
+                                <button class="nav-btn" id="nextMonth">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                                <button class="today-btn" onclick="goToToday()">오늘</button>
+                            </div>
+                            
+                            <div class="calendar-grid">
+                                <div class="weekdays">
+                                    <div class="weekday">일</div>
+                                    <div class="weekday">월</div>
+                                    <div class="weekday">화</div>
+                                    <div class="weekday">수</div>
+                                    <div class="weekday">목</div>
+                                    <div class="weekday">금</div>
+                                    <div class="weekday">토</div>
+                                </div>
+                                
+                                <div class="days" id="calendarDays">
+                                    <!-- 캘린더 날짜들이 JavaScript로 동적으로 생성됩니다 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 범례 -->
+                        <div class="calendar-legend">
+                            <h4>범례</h4>
+                            <div class="legend-items">
+                                <div class="legend-item">
+                                    <span class="legend-dot event-dot"></span>
+                                    <span>노출</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot promotion-dot"></span>
+                                    <span>쿠폰</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 일정 목록 영역 -->
+                    <div class="events-list-section">
+                        <div class="events-list-header">
+                            <h3 id="selectedDateTitle">전체 일정</h3>
+                            <button class="btn-clear-filter" id="clearDateFilter" onclick="clearDateFilter()" style="display: none;">
+                                <i class="fas fa-times"></i>
+                                필터 해제
+                            </button>
+                        </div>
+                        
+                        <div class="events-list" id="eventsList">
+                            <!-- Placement (노출 요청) -->
+                            <div th:each="placement : ${placements}" 
+                                 class="event-item" 
+                                 data-type="placement" 
+                                 th:data-date="${placement.startDate}" 
+                                 th:data-end-date="${placement.endDate}">
+                                <div class="event-color event-color-event"></div>
+                                <div class="event-content">
+                                    <h4 class="event-title" th:text="${placement.target}">노출 대상</h4>
+                                    <p class="event-company">
+                                        <i class="fas fa-building"></i> 
+                                        업체 ID: <span th:text="${placement.companyId}">0</span>
+                                    </p>
+                                    <p class="event-period">
+                                        <i class="fas fa-calendar"></i> 
+                                        <span th:text="${placement.startDate}">2024-10-01</span> ~ 
+                                        <span th:text="${placement.endDate}">2024-10-31</span>
+                                    </p>
+                                    <p class="event-discount">
+                                        <i class="fas fa-tag"></i> 
+                                        슬롯: <span th:text="${placement.slot}">HOME_HERO</span>
+                                    </p>
+                                </div>
+                                <div class="event-badge">
+                                    <span class="type-badge type-event">노출</span>
+                                </div>
+                            </div>
+
+                            <!-- Coupon (쿠폰) -->
+                            <div th:each="coupon : ${coupons}" 
+                                 class="event-item" 
+                                 data-type="coupon" 
+                                 th:data-date="${coupon.validFrom}" 
+                                 th:data-end-date="${coupon.validUntil}">
+                                <div class="event-color event-color-promotion"></div>
+                                <div class="event-content">
+                                    <h4 class="event-title" th:text="${coupon.name}">쿠폰명</h4>
+                                    <p class="event-company">
+                                        <i class="fas fa-building"></i> 
+                                        업체 ID: <span th:text="${coupon.companyId}">0</span>
+                                    </p>
+                                    <p class="event-period">
+                                        <i class="fas fa-calendar"></i> 
+                                        <span th:text="${coupon.validFrom}">2024-10-01</span> ~ 
+                                        <span th:text="${coupon.validUntil}">2024-10-31</span>
+                                    </p>
+                                    <p class="event-discount">
+                                        <i class="fas fa-tag"></i> 
+                                        <span th:text="${coupon.couponType == T(com.example.ApiRound.entity.Marketing.CouponType).PERCENT ? coupon.discountValue + '%' : coupon.discountValue + '원'}">할인</span>
+                                    </p>
+                                </div>
+                                <div class="event-badge">
+                                    <span class="type-badge type-promotion">쿠폰</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // 서버에서 전달받은 데이터를 JavaScript 변수로 변환
+        const placementsData = /*[[${placements}]]*/ [];
+        const couponsData = /*[[${coupons}]]*/ [];
+        
+        // 이벤트 데이터 준비
+        const calendarEvents = [];
+        
+        // Placement 데이터 추가
+        placementsData.forEach(p => {
+            calendarEvents.push({
+                type: 'placement',
+                title: p.target,
+                companyId: p.companyId,
+                startDate: p.startDate,
+                endDate: p.endDate,
+                slot: p.slot,
+                color: '#3498db'
+            });
+        });
+        
+        // Coupon 데이터 추가
+        couponsData.forEach(c => {
+            calendarEvents.push({
+                type: 'coupon',
+                title: c.name,
+                companyId: c.companyId,
+                startDate: c.validFrom,
+                endDate: c.validUntil,
+                discount: c.couponType === 'PERCENT' ? c.discountValue + '%' : c.discountValue + '원',
+                color: '#27ae60'
+            });
+        });
+        
+        console.log('캘린더 이벤트:', calendarEvents);
+        /*]]>*/
+    </script>
+    <script src="/crm/js/admin_reservation_management.js"></script>
+</body>
+</html>
+

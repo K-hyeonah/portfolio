@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealnGo - 예약내역</title>
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/crm/css/booking.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <div th:replace="~{common/header :: header}"></div>
+
+    <!-- 메인 컨텐츠 -->
+    <main class="main-content">
+        <div class="container">
+            <!-- 페이지 제목 -->
+            <div class="page-header">
+                <h1 class="page-title">예약내역</h1>
+            </div>
+
+            <!-- 예약내역 목록 -->
+            <div class="booking-list-container">
+                <!-- 예약 내역이 있을 경우 -->
+                <div th:if="${reservations != null and !reservations.isEmpty()}">
+                    <div class="booking-item" th:each="reservation : ${reservations}"
+                         th:onclick="'openBookingDetail(' + ${reservation.id} + ')'">
+                        <div class="booking-icon">
+                            <i class="fas fa-folder"></i>
+                        </div>
+                        <div class="booking-info">
+                            <div class="booking-id" th:text="'#' + ${reservation.id}">0000</div>
+                            <div class="booking-name" th:text="${reservation.company != null ? reservation.company.companyName : '알 수 없음'}">병원명</div>
+                            <div class="booking-service" th:if="${reservation.title != null}" th:text="'서비스: ' + ${reservation.title}" style="font-size: 14px; color: #6c757d; margin-bottom: 5px;"></div>
+                            <div class="booking-date">
+                                <i class="fas fa-calendar"></i>
+                                <span th:text="'예약일: ' + ${#temporals.format(reservation.date, 'yyyy-MM-dd')}">예약일</span>
+                                <span th:if="${reservation.startTime != null}" th:text="' ' + ${#temporals.format(reservation.startTime, 'HH:mm')}">시간</span>
+                            </div>
+                            <div class="booking-status" style="margin-top: 8px;">
+                                <span class="status-badge" 
+                                      th:classappend="${reservation.status == 'CONFIRMED' ? 'status-confirmed' : 
+                                                       (reservation.status == 'CANCELLED' ? 'status-cancelled' : 
+                                                       (reservation.status == 'COMPLETED' ? 'status-completed' : 'status-pending'))}"
+                                      th:text="${reservation.status == 'CONFIRMED' ? '확정' : 
+                                               (reservation.status == 'CANCELLED' ? '취소' : 
+                                               (reservation.status == 'COMPLETED' ? '완료' : '대기'))}"
+                                      style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">
+                                    상태
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 예약 내역이 없을 경우 -->
+                <div th:if="${reservations == null or reservations.isEmpty()}" class="no-bookings" style="text-align: center; padding: 60px 20px; color: #6c757d;">
+                    <i class="fas fa-calendar-times" style="font-size: 64px; color: #dee2e6; margin-bottom: 20px;"></i>
+                    <p style="font-size: 16px; margin: 0;">예약 내역이 없습니다.</p>
+                </div>
+            </div>
+
+            <!-- 페이지네이션 -->
+            <div class="pagination" th:if="${totalPages > 0}">
+                <!-- 처음으로 -->
+                <a th:if="${currentPage > 1}" 
+                   th:href="@{/booking(page=1)}" 
+                   class="page-btn">
+                    <i class="fas fa-angle-double-left"></i>
+                </a>
+                
+                <!-- 이전 페이지 -->
+                <a th:if="${hasPrevious}" 
+                   th:href="@{/booking(page=${currentPage - 1})}" 
+                   class="page-btn">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                
+                <!-- 페이지 번호들 -->
+                <th:block th:with="startPage=${currentPage - 2 > 0 ? currentPage - 2 : 1}, 
+                                   endPage=${currentPage + 2 <= totalPages ? currentPage + 2 : totalPages}">
+                    <a th:each="pageNum : ${#numbers.sequence(startPage, endPage)}"
+                       th:href="@{/booking(page=${pageNum})}"
+                       th:text="${pageNum}"
+                       th:classappend="${pageNum == currentPage ? 'active' : ''}"
+                       class="page-btn">
+                    </a>
+                </th:block>
+                
+                <!-- 다음 페이지 -->
+                <a th:if="${hasNext}" 
+                   th:href="@{/booking(page=${currentPage + 1})}" 
+                   class="page-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                
+                <!-- 마지막으로 -->
+                <a th:if="${currentPage < totalPages}" 
+                   th:href="@{/booking(page=${totalPages})}" 
+                   class="page-btn">
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+            </div>
+            
+            <!-- 페이지 정보 표시 -->
+            <div class="page-info" th:if="${totalPages > 0}" style="text-align: center; margin-top: 10px; color: #6c757d; font-size: 14px;">
+                <span th:text="|전체 ${totalElements}개 중 ${currentPage} / ${totalPages} 페이지|"></span>
+            </div>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <div th:replace="~{common/footer :: footer}"></div>
+
+    <script src="/crm/js/booking.js"></script>
+</body>
+</html>

@@ -1,0 +1,712 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealnGO</title>
+    <!-- 부트스트랩 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 공통 스타일시트 -->
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <!-- 카테고리 버튼 스타일시트 -->
+    <link rel="stylesheet" href="/resources/css/category-buttons.css">
+    <!-- 인기 도시 스타일시트 -->
+    <link rel="stylesheet" href="/resources/css/popular-cities.css">
+    <!-- 메인 페이지 전용 스타일시트 -->
+    <link rel="stylesheet" href="/resources/css/main.css">
+    <!-- Font Awesome 5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- 트립비토즈 스타일 추가 -->
+    <style>
+        .popular-content-wrapper {
+            margin-top: 30px;
+        }
+        /* Community Comments (Left Box) */
+        .community-comments {
+            flex: 0 0 420px;
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 8px 30px rgba(67, 120, 67, 0.08);
+            display: flex;               /* Header + List vertical layout */
+            flex-direction: column;
+            max-height: 480px;           /* Height limit to align with TOP3 and bottom line */
+            overflow: hidden;            /* Hide container overflow */
+        }
+        .community-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .community-header .title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2f3a3a;
+        }
+        .community-header .more-link {
+            font-size: 12px;
+            color: #2a7a5b;
+            text-decoration: none;
+        }
+        .community-header .more-link:hover {
+            text-decoration: underline;
+        }
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1 1 auto;      /* Take remaining space to become scroll area */
+            overflow-y: auto;    /* Internal scroll */
+        }
+        .comment-card {
+            border: 1px solid #f0f2f4;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: box-shadow .2s ease, transform .2s ease;
+            background: #fff;
+        }
+        .comment-card:hover {
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+        .comment-card .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .comment-card .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #f2f4f6;
+        }
+        .comment-card .meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .comment-card .nickname {
+            font-size: 13px;
+            font-weight: 600;
+            color: #2b2f33;
+        }
+        .comment-card .date {
+            font-size: 11px;
+            color: #8a8f94;
+        }
+        .comment-card .content .tag {
+            display: inline-block;
+            margin-bottom: 6px;
+            padding: 2px 8px;
+            font-size: 11px;
+            background: #eef7f1;
+            color: #2a7a5b;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+        .comment-card .content .text {
+            font-size: 14px;
+            color: #3b4045;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .comment-card .actions {
+            display: flex;
+            gap: 14px;
+            font-size: 12px;
+            color: #6b7278;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .popular-content-wrapper { gap: 24px; }
+        }
+        @media (max-width: 1024px) {
+            .popular-content-wrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: center; /* Center align internal elements horizontally */
+            }
+            .community-comments {
+                flex: 0 1 auto;      /* Override desktop 420px fixed width */
+                margin-top: 0;
+                max-height: none;
+                overflow: visible;
+                width: 100%;
+                max-width: 720px;    /* Maximum width for readability */
+                margin-left: auto;   /* Center alignment */
+                margin-right: auto;  /* Center alignment */
+            }
+            .content-divider { display: none; }
+            .company-cards-wrapper {
+                width: 100%;
+                max-width: 980px;    /* Maintain center alignment feeling for card grid */
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive card grid */
+                gap: 16px;
+                justify-content: center;
+                align-items: stretch;
+            }
+            .company-cards-wrapper .company-card {
+                width: 100%;
+                max-width: 420px; /* Maintain card shape */
+                margin: 0 auto;
+                display: block;
+            }
+            /* Ensure fixed ratio and same height for TOP3 card images */
+            .company-cards-wrapper .company-card .card-image {
+                position: relative;
+                width: 100%;
+                aspect-ratio: 3 / 2; /* Unify to 3:2 ratio */
+                overflow: hidden;
+            }
+            .company-cards-wrapper .company-card .card-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+        }
+
+            /* Right TOP3 container and title */
+            .popular-right {
+                display: flex;
+                flex-direction: column;
+                flex: 1 1 auto;
+            }
+            .popular-title {
+                margin-bottom: 12px; /* Space below title */
+            }
+            .popular-title h2 {
+                font-size: 22px;
+                font-weight: 700;
+                color: #2f3a3a;
+                margin: 0;
+            }
+            .popular-title p {
+                font-size: 13px;
+                color: #6b7278;
+                margin: 4px 0 0;
+            }
+
+        /* Popular TOP3 Title Block */
+        .popular-title {
+            margin-bottom: 12px; /* Space below title */
+            text-align: center;  /* Center align card container */
+        }
+        .popular-title h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2f3a3a;
+            margin: 0;
+        }
+        .popular-title p {
+            font-size: 13px;
+            color: #6b7278;
+            margin: 4px 0 0;
+        }
+        /* Move cards slightly down to secure space */
+        .company-cards-wrapper {
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+        <div th:replace="~{common/header :: header}"></div>
+
+    <main class="main-content">
+        <section class="hero-section" style="--bg:url('/resources/images/bannerimg.jpg')">
+            <img src="/resources/images/bannerimg.jpg" alt="HealnGo Main Visual" class="hero-image">
+        </section>
+
+        <section class="category-buttons-section">
+            <div class="category-buttons-container">
+                <div class="category-buttons-title">
+                    <h2>K-메디컬 투어 카테고리</h2>
+                    <p>관심 있는 분야를 선택하세요</p>
+                </div>
+
+                <div class="category-buttons-grid">
+                    <!-- 카테고리 버튼 1: 관광 -->
+                    <a href="/tourism" class="category-button hot">
+                        <div class="category-button-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <h3>관광</h3>
+                        <p>K-투어 패키지</p>
+                    </a>
+
+                    <!-- 카테고리 버튼 2: 성형 -->
+                    <a href="/location?category=성형" class="category-button new">
+                        <div class="category-button-icon">
+                            <i class="fas fa-hospital"></i>
+                        </div>
+                        <h3>성형</h3>
+                        <p>성형외과 전문의</p>
+                    </a>
+
+                    <!-- 카테고리 버튼 3: 피부 -->
+                    <a href="/location?category=피부" class="category-button hot">
+                        <div class="category-button-icon">
+                            <img src="/resources/images/mask.png" alt="피부관리">
+                        </div>
+                        <h3>피부</h3>
+                        <p>피부관리 전문</p>
+                    </a>
+
+                    <!-- 카테고리 버튼 4: 치과 -->
+                    <a href="/location?category=치과" class="category-button">
+                        <div class="category-button-icon">
+                            <i class="fas fa-tooth"></i>
+                        </div>
+                        <h3>치과</h3>
+                        <p>치과 전문의</p>
+                    </a>
+
+                    <!-- 카테고리 버튼 5: 약국 -->
+                    <a href="/location?category=약국" class="category-button">
+                        <div class="category-button-icon">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <h3>약국</h3>
+                        <p>약국 서비스</p>
+                    </a>
+
+                    <!-- 카테고리 버튼 6: 한의학 -->
+                    <a href="/location?category=한의원" class="category-button new">
+                        <div class="category-button-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3>한의학</h3>
+                        <p>한의학 전문</p>
+                    </a>
+
+                    <!-- 카테고리 버튼 7: 마사지 -->
+                    <a href="/location?category=마사지" class="category-button hot">
+                        <div class="category-button-icon">
+                            <img src="/resources/images/massage.png" alt="마사지">
+                        </div>
+                        <h3>마사지</h3>
+                        <p>마사지 서비스</p>
+                    </a>
+
+                    <!-- 카테고리 버튼 8: 왁싱 -->
+                    <a href="/location?category=왁싱" class="category-button">
+                        <div class="category-button-icon">
+                            <img src="/resources/images/waxing.png" alt="왁싱">
+                        </div>
+                        <h3>왁싱</h3>
+                        <p>왁싱 서비스</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 인기 도시 및 TOP3 의료기관 섹션 -->
+        <section class="popular-section">
+            <div class="container">
+                <div class="popular-content-wrapper">
+                    <!-- 왼쪽: 공지사항 -->
+                    <div class="community-comments">
+                        <div class="community-header">
+                            <div class="title">공지사항</div>
+                            <a href="/notice" class="more-link">더보기<i class="fas fa-chevron-right"></i></a>
+                        </div>
+
+                        <div class="comments-list">
+                            <div th:each="notice : ${notices}" class="comment-card" 
+                                 th:onclick="'location.href=\'/notice/view/' + ${notice.noticeId} + '\''"
+                                 style="cursor: pointer;">
+                                <div class="content">
+                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                        <span th:if="${notice.isPinned}" class="tag" style="background: #ff6b6b; color: white;">공지</span>
+                                        <span th:if="${notice.audience.name() == 'ALL'}" class="tag" style="background: #4dabf7;">전체</span>
+                                        <span th:if="${notice.audience.name() == 'SOCIAL'}" class="tag" style="background: #51cf66;">사용자</span>
+                                        <span th:if="${notice.audience.name() == 'COMPANY'}" class="tag" style="background: #ff922b;">업체</span>
+                                    </div>
+                                    <div class="text" style="font-weight: 600; font-size: 14px; color: #2c3e50; margin-bottom: 4px;" th:text="${notice.title}">공지사항 제목</div>
+                                    <div class="date" style="font-size: 12px; color: #868e96;" th:text="${#temporals.format(notice.publishAt, 'yyyy-MM-dd HH:mm')}">2025-10-17</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 공지사항이 없을 때 -->
+                            <div th:if="${notices == null or notices.isEmpty()}" class="comment-card" style="text-align: center; color: #adb5bd;">
+                                <i class="fas fa-inbox" style="font-size: 24px; margin-bottom: 8px;"></i>
+                                <p style="margin: 0;">등록된 공지사항이 없습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center divider -->
+                    <div class="content-divider"></div>
+
+                    <!-- Right: TOP3 Medical Institutions -->
+                    <div class="popular-right">
+                        <div class="popular-title">
+                            <h2>인기 의료기관 TOP3</h2>
+                            <p>최근 7일간 가장 많이 조회된 의료기관입니다</p>
+                        </div>
+
+                        <div class="company-cards-wrapper">
+                            <!-- 인기 업체 1 -->
+                            <a th:if="${medicalInstitutions != null and medicalInstitutions.size() > 0}" 
+                               th:href="@{/list(category=${medicalInstitutions[0].category}, region=${medicalInstitutions[0].region}, Id=${medicalInstitutions[0].id}, name=${medicalInstitutions[0].name})}" 
+                               class="company-card">
+                                <div class="card-image">
+                                    <img src="" th:alt="'의료기관 이미지: ' + ${medicalInstitutions[0].name}" 
+                                         th:data-gquery="${medicalInstitutions[0].name} + ' ' + ${medicalInstitutions[0].subregion != null ? medicalInstitutions[0].subregion : medicalInstitutions[0].region}" 
+                                         loading="lazy" 
+                                         onerror="this.onerror=null;this.src='/resources/images/dump.jpg';">
+                                    <div class="card-badge">1위</div>
+                                </div>
+                                <div class="card-content">
+                                    <h4 class="company-name" th:text="${medicalInstitutions[0].name}">의료기관명</h4>
+                                    <div class="company-details">
+                                        <span class="location">
+                                            <i class="fas fa-map-marker-alt"></i> 
+                                            위치: <span th:text="${medicalInstitutions[0].subregion != null ? medicalInstitutions[0].subregion : medicalInstitutions[0].region}">지역</span>
+                                        </span>
+                                    </div>
+                                    <span class="specialty-tag">
+                                        전문분야: <span th:text="${medicalInstitutions[0].category}">카테고리</span>
+                                    </span>
+                                </div>
+                            </a>
+
+                            <!-- 인기 업체 2 -->
+                            <a th:if="${medicalInstitutions != null and medicalInstitutions.size() > 1}" 
+                               th:href="@{/list(category=${medicalInstitutions[1].category}, region=${medicalInstitutions[1].region}, Id=${medicalInstitutions[1].id}, name=${medicalInstitutions[1].name})}" 
+                               class="company-card">
+                                <div class="card-image">
+                                    <img src="" th:alt="'의료기관 이미지: ' + ${medicalInstitutions[1].name}" 
+                                         th:data-gquery="${medicalInstitutions[1].name} + ' ' + ${medicalInstitutions[1].subregion != null ? medicalInstitutions[1].subregion : medicalInstitutions[1].region}" 
+                                         loading="lazy" 
+                                         onerror="this.onerror=null;this.src='/resources/images/dump.jpg';">
+                                    <div class="card-badge">2위</div>
+                                </div>
+                                <div class="card-content">
+                                    <h4 class="company-name" th:text="${medicalInstitutions[1].name}">의료기관명</h4>
+                                    <div class="company-details">
+                                        <span class="location">
+                                            <i class="fas fa-map-marker-alt"></i> 
+                                            위치: <span th:text="${medicalInstitutions[1].subregion != null ? medicalInstitutions[1].subregion : medicalInstitutions[1].region}">지역</span>
+                                        </span>
+                                    </div>
+                                    <span class="specialty-tag">
+                                        전문분야: <span th:text="${medicalInstitutions[1].category}">카테고리</span>
+                                    </span>
+                                </div>
+                            </a>
+
+                            <!-- 인기 업체 3 -->
+                            <a th:if="${medicalInstitutions != null and medicalInstitutions.size() > 2}" 
+                               th:href="@{/list(category=${medicalInstitutions[2].category}, region=${medicalInstitutions[2].region}, Id=${medicalInstitutions[2].id}, name=${medicalInstitutions[2].name})}" 
+                               class="company-card">
+                                <div class="card-image">
+                                    <img src="" th:alt="'의료기관 이미지: ' + ${medicalInstitutions[2].name}" 
+                                         th:data-gquery="${medicalInstitutions[2].name} + ' ' + ${medicalInstitutions[2].subregion != null ? medicalInstitutions[2].subregion : medicalInstitutions[2].region}" 
+                                         loading="lazy" 
+                                         onerror="this.onerror=null;this.src='/resources/images/dump.jpg';">
+                                    <div class="card-badge">3위</div>
+                                </div>
+                                <div class="card-content">
+                                    <h4 class="company-name" th:text="${medicalInstitutions[2].name}">의료기관명</h4>
+                                    <div class="company-details">
+                                        <span class="location">
+                                            <i class="fas fa-map-marker-alt"></i> 
+                                            위치: <span th:text="${medicalInstitutions[2].subregion != null ? medicalInstitutions[2].subregion : medicalInstitutions[2].region}">지역</span>
+                                        </span>
+                                    </div>
+                                    <span class="specialty-tag">
+                                        전문분야: <span th:text="${medicalInstitutions[2].category}">카테고리</span>
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 유튜브 영상 매거진 -->
+        <section class="youtube-section mt-5">
+            <div class="container">
+                <div class="section-title">
+                    <h2>추천 영상</h2>
+                    <p>K-메디컬 투어에 대한 유용한 정보를 확인하세요</p>
+                </div>
+
+                <div class="scroll-container">
+                    <div class="youtube-grid" id="youtube-videos">
+                        <!-- YouTube 영상 1 -->
+                        <div class="youtube-card">
+                            <div class="youtube-image">
+                                <img src="https://img.youtube.com/vi/hC9h4AzbwLw/maxresdefault.jpg" alt="소개 영상 1">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="youtube-badge">추천</div>
+                            </div>
+                            <div class="youtube-content">
+                                <h3 class="youtube-title">K-메디컬 투어 가이드</h3>
+                                <p class="youtube-description">한국의 의료 서비스를 체험하는 방법</p>
+                                <div class="youtube-features">
+                                    <span class="feature-tag">의료관광</span>
+                                    <span class="feature-tag">가이드</span>
+                                </div>
+                                <button class="youtube-button" data-video="hC9h4AzbwLw">
+                                    시청하기
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- YouTube 영상 2 -->
+                        <div class="youtube-card">
+                            <div class="youtube-image">
+                                <img src="https://img.youtube.com/vi/cmn3J6E2PaA/maxresdefault.jpg" alt="소개 영상 2">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="youtube-badge">인기</div>
+                            </div>
+                            <div class="youtube-content">
+                                <h3 class="youtube-title">성형외과 전문의 인터뷰</h3>
+                                <p class="youtube-description">전문의가 알려주는 안전한 성형수술</p>
+                                <div class="youtube-features">
+                                    <span class="feature-tag">성형외과</span>
+                                    <span class="feature-tag">전문의</span>
+                                </div>
+                                <button class="youtube-button" data-video="cmn3J6E2PaA">
+                                    시청하기
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- YouTube 영상 3 -->
+                        <div class="youtube-card">
+                            <div class="youtube-image">
+                                <img src="https://img.youtube.com/vi/f5Hit9JQCkY/maxresdefault.jpg" alt="소개 영상 3">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="youtube-badge">신규</div>
+                            </div>
+                            <div class="youtube-content">
+                                <h3 class="youtube-title">피부관리 전문가 팁</h3>
+                                <p class="youtube-description">건강한 피부를 위한 관리법</p>
+                                <div class="youtube-features">
+                                    <span class="feature-tag">피부관리</span>
+                                    <span class="feature-tag">팁</span>
+                                </div>
+                                <button class="youtube-button" data-video="f5Hit9JQCkY">
+                                    시청하기
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- YouTube 영상 4 -->
+                        <div class="youtube-card">
+                            <div class="youtube-image">
+                                <img src="https://img.youtube.com/vi/8I-08wGeZIE/maxresdefault.jpg" alt="소개 영상 4">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="youtube-badge">추천</div>
+                            </div>
+                            <div class="youtube-content">
+                                <h3 class="youtube-title">치과 치료 과정</h3>
+                                <p class="youtube-description">안전하고 효과적인 치과 치료</p>
+                                <div class="youtube-features">
+                                    <span class="feature-tag">치과</span>
+                                    <span class="feature-tag">치료</span>
+                                </div>
+                                <button class="youtube-button" data-video="8I-08wGeZIE">
+                                    시청하기
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- YouTube 영상 5 -->
+                        <div class="youtube-card">
+                            <div class="youtube-image">
+                                <img src="https://img.youtube.com/vi/Dy7X4dEed1I/maxresdefault.jpg" alt="소개 영상 5">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="youtube-badge">인기</div>
+                            </div>
+                            <div class="youtube-content">
+                                <h3 class="youtube-title">한의학의 세계</h3>
+                                <p class="youtube-description">전통 한의학의 현대적 활용</p>
+                                <div class="youtube-features">
+                                    <span class="feature-tag">한의학</span>
+                                    <span class="feature-tag">전통</span>
+                                </div>
+                                <button class="youtube-button" data-video="Dy7X4dEed1I">
+                                    시청하기
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 스크롤 버튼 -->
+                    <button class="scroll-button prev" onclick="scrollYouTube('left')" title="이전">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="scroll-button next" onclick="scrollYouTube('right')" title="다음">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- YouTube 모달 -->
+        <div id="youtubeModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeYouTubeModal()">&times;</span>
+                <div class="youtube-video-container">
+                    <iframe id="youtubeIframe" src="" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+
+    <!-- 부트스트랩 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 카테고리 버튼 JS -->
+    <script src="/resources/js/category-buttons.js"></script>
+    <!-- 메인 페이지 JS -->
+    <script src="/resources/js/main.js"></script>
+    
+    <!-- YouTube 섹션 JavaScript -->
+    <script>
+    // YouTube 스크롤 기능
+    function scrollYouTube(direction) {
+        const grid = document.getElementById('youtube-videos');
+        const scrollAmount = 300;
+
+        if (direction === 'left') {
+            grid.scrollBy({
+                left: -scrollAmount,
+                behavior: 'smooth'
+            });
+        } else {
+            grid.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    // YouTube 모달 열기
+    function openYouTubeModal(videoId) {
+        const modal = document.getElementById('youtubeModal');
+        const iframe = document.getElementById('youtubeIframe');
+
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        modal.style.display = 'block';
+
+        // 모달 외부 클릭 시 닫기
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+                closeYouTubeModal();
+            }
+        };
+    }
+
+    // YouTube 모달 닫기
+    function closeYouTubeModal() {
+        const modal = document.getElementById('youtubeModal');
+        const iframe = document.getElementById('youtubeIframe');
+
+        iframe.src = '';
+        modal.style.display = 'none';
+        // 스크롤 복원
+        document.body.style.overflow = '';
+    }
+
+    // ESC 키로 모달 닫기
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeYouTubeModal();
+        }
+    });
+    </script>
+
+    <!-- Google Maps Places API: TOP3 업체 이미지 자동 교체 -->
+    <script>
+      // Google Places에서 사진을 찾아 카드 이미지에 세팅
+      function initTopCompaniesPhotos() {
+        try {
+          const imgs = document.querySelectorAll('.company-cards-wrapper .company-card .card-image img[data-gquery]');
+          if (!imgs.length) {
+            return;
+          }
+          // 구글 API 미로딩 시: 구글 이미지를 가져올 수 없으므로 기본 이미지로 대체
+          if (typeof google === 'undefined' || !google.maps || !google.maps.places) {
+            imgs.forEach(function(img) {
+              if (!img.getAttribute('src')) {
+                img.src = '/resources/images/dump.jpg';
+              }
+            });
+            return;
+          }
+          // 보이지 않는 맵 컨테이너 (PlacesService를 위한 의존성)
+          const holder = document.createElement('div');
+          holder.style.display = 'none';
+          document.body.appendChild(holder);
+          const map = new google.maps.Map(holder);
+          const service = new google.maps.places.PlacesService(map);
+
+          imgs.forEach(function(img) {
+            const query = img.getAttribute('data-gquery');
+            if (!query) return;
+            service.findPlaceFromQuery(
+              { query: query, fields: ['photos'] },
+              function(results, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK &&
+                    results && results.length &&
+                    results[0].photos && results[0].photos.length) {
+                  try {
+                    const url = results[0].photos[0].getUrl({ maxWidth: 560, maxHeight: 380 });
+                    if (url) img.src = url;
+                  } catch (e) {
+                    console.warn('사진 URL 생성 실패:', e);
+                    img.src = '/resources/images/dump.jpg';
+                  }
+                } else {
+                  // 구글 사진이 없을 때만 기본 이미지로 표시
+                  img.src = '/resources/images/dump.jpg';
+                }
+              }
+            );
+          });
+        } catch (e) {
+          console.error('TOP3 사진 초기화 실패:', e);
+        }
+      }
+
+      // API가 이미 로드된 경우 대비
+      if (typeof google !== 'undefined' && google.maps && google.maps.places) {
+        initTopCompaniesPhotos();
+      }
+    </script>
+    <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQVKpyFKKbsxbwSkllx6uLr41-OM6ga44&libraries=places&callback=initTopCompaniesPhotos">
+    </script>
+    
+        <div th:replace="~{common/footer :: footer}"></div>
+</body>
+</html>

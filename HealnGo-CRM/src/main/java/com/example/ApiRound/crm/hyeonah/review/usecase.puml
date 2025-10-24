@@ -1,0 +1,47 @@
+@startuml
+left to right direction
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #F4F9FD
+  BorderColor #3F8CFF
+}
+
+rectangle "HealnGo 시스템" {
+  (클리닉 검색)
+  (시술/가격 보기)
+  (상담 요청)
+  (예약하기)
+  (결제하기)
+  (리뷰 작성)
+  (시술메뉴 관리)
+  (일정 관리)
+  (예약 승인/취소)
+  (리뷰 응답)
+  (로그인/본인인증)
+  (PG 연동)
+}
+
+actor "사용자" as User
+actor "업체" as Partner
+actor "운영 관리자" as Admin
+actor "결제 PG" as PG
+
+User --> (클리닉 검색)
+User --> (시술/가격 보기)
+User --> (상담 요청)
+User --> (예약하기)
+User --> (결제하기)
+User --> (리뷰 작성)
+
+Partner --> (시술메뉴 관리)
+Partner --> (일정 관리)
+Partner --> (예약 승인/취소)
+Partner --> (리뷰 응답)
+
+Admin --> (카테고리/태그 관리)
+Admin --> (파트너 승인)
+
+(예약하기) ..> (로그인/본인인증) : «include»
+(결제하기) ..> (PG 연동)       : «include»
+(예약하기) ..> (쿠폰 적용)       : «extend»
+@enduml

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Header</title>
+    <link rel="stylesheet" href="/crm/css/admin_header.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- 관리자 헤더 Fragment -->
+<header th:fragment="admin_header" class="main-header">
+
+    <div class="header-actions">
+        <div class="user-profile">
+            <img src="/crm/images/로고 블랙.png.png" alt="Profile" class="profile-img">
+            <div class="user-dropdown">
+                <span class="user-name" th:text="${managerName != null ? managerName + ' 관리자님' : '관리자님'}"></span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script src="/crm/js/admin_header.js"></script>
+</body>
+</html>

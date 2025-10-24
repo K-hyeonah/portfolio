@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예약 관리 - HealnGo Admin</title>
+    <link rel="stylesheet" href="/crm/css/admin_sidebar.css">
+    <link rel="stylesheet" href="/crm/css/admin_header.css">
+    <link rel="stylesheet" href="/crm/css/admin_reservations.css">
+    <style>
+        /* 추가 스타일 오버라이드 */
+        body {
+            display: block !important;
+            background-color: #F4F9FD !important;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 사이드바 -->
+    <div th:replace="common/admin_sidebar :: admin_sidebar"></div>
+    
+    <!-- 메인 컨텐츠 -->
+    <div class="admin-main-content">
+        <!-- 헤더 -->
+        <div th:replace="common/admin_header :: admin_header"></div>
+
+        <!-- 페이지 컨텐츠 -->
+        <div class="admin-page-content">
+            <!-- 페이지 헤더 -->
+            <div class="page-header">
+                <h1 class="page-title">이벤트/프로모션 신청 관리</h1>
+                <div class="page-actions">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-download"></i>
+                        엑셀 다운로드
+                    </button>
+                </div>
+            </div>
+
+            <!-- 통계 카드 -->
+            <div class="reservation-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" th:text="${totalRequests}">0</h3>
+                        <p class="stat-label">총 신청</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" th:text="${pendingCount}">0</h3>
+                        <p class="stat-label">대기중</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" th:text="${approvedCount}">0</h3>
+                        <p class="stat-label">승인</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" th:text="${rejectedCount}">0</h3>
+                        <p class="stat-label">반려</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 필터 및 검색 -->
+            <div class="filters-section">
+                <div class="search-bar">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="업체명, 이벤트명으로 검색..." class="search-input" 
+                               id="searchInput" onkeyup="searchEvents()">
+                    </div>
+                    <button type="button" class="btn btn-search" onclick="searchEvents()">
+                        검색
+                    </button>
+                </div>
+                
+                <div class="filter-controls">
+                    <select class="filter-select" id="statusFilter" onchange="filterByStatus()">
+                        <option value="" th:selected="${selectedStatus == null}">전체 상태</option>
+                        <option value="PENDING" th:selected="${selectedStatus == 'PENDING'}">대기중</option>
+                        <option value="APPROVED" th:selected="${selectedStatus == 'APPROVED'}">승인</option>
+                        <option value="REJECTED" th:selected="${selectedStatus == 'REJECTED'}">반려</option>
+                    </select>
+                    
+                    <select class="filter-select" id="typeFilter" onchange="filterByType()">
+                        <option value="">전체 유형</option>
+                        <option value="placement">노출 요청</option>
+                        <option value="coupon">쿠폰</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 이벤트/프로모션 신청 목록 -->
+            <div class="events-table-container">
+                <div class="table-header">
+                    <div class="table-info">
+                        <span class="total-count">총 <strong th:text="${totalRequests}">0</strong>건</span>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="events-table">
+                        <thead>
+                            <tr>
+                                <th>신청 ID</th>
+                                <th>업체 ID</th>
+                                <th>제목/이름</th>
+                                <th>유형</th>
+                                <th>기간</th>
+                                <th>신청일</th>
+                                <th>상태</th>
+                                <th>액션</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Placement (노출 요청) -->
+                            <tr th:each="placement : ${placements}" 
+                                class="event-row" 
+                                th:data-status="${placement.approvalStatus.name().toLowerCase()}" 
+                                data-type="placement">
+                                <td class="event-id" th:text="'P' + ${placement.id}">P001</td>
+                                <td class="company-name" th:text="${placement.companyId}">3</td>
+                                <td class="event-name" th:text="${placement.target}">브이라인 리프팅</td>
+                                <td class="event-type">
+                                    <span class="type-badge type-event">노출</span>
+                                </td>
+                                <td class="event-period">
+                                    <div class="date">
+                                        <span th:text="${placement.startDate}">2024-10-15</span> ~ 
+                                        <span th:text="${placement.endDate}">2024-10-31</span>
+                                    </div>
+                                </td>
+                                <td class="apply-date" th:text="${#temporals.format(placement.createdAt, 'yyyy-MM-dd')}">2024-10-09</td>
+                                <td class="event-status">
+                                    <span class="status-badge" 
+                                          th:classappend="${placement.approvalStatus.name() == 'PENDING'} ? 'status-pending' : (${placement.approvalStatus.name() == 'APPROVED'} ? 'status-approved' : 'status-rejected')"
+                                          th:text="${placement.approvalStatus.name() == 'PENDING' ? '대기중' : (placement.approvalStatus.name() == 'APPROVED' ? '승인' : '반려')}">대기중</span>
+                                </td>
+                                <td class="actions">
+                                    <div class="action-buttons">
+                                        <button th:if="${placement.approvalStatus.name() == 'PENDING'}" 
+                                                class="btn btn-sm btn-success" 
+                                                th:onclick="'approvePlacement(' + ${placement.id} + ')'" 
+                                                title="승인">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        <button th:if="${placement.approvalStatus.name() == 'PENDING'}" 
+                                                class="btn btn-sm btn-danger" 
+                                                th:onclick="'rejectPlacement(' + ${placement.id} + ')'" 
+                                                title="반려">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <span th:if="${placement.approvalStatus.name() == 'REJECTED'}" 
+                                              style="color: #999; font-size: 12px;">
+                                            반려 사유: <span th:text="${placement.rejectReason}">-</span>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Coupon (쿠폰) -->
+                            <tr th:each="coupon : ${coupons}" 
+                                class="event-row" 
+                                th:data-status="${coupon.approvalStatus.name().toLowerCase()}" 
+                                data-type="coupon">
+                                <td class="event-id" th:text="'C' + ${coupon.id}">C001</td>
+                                <td class="company-name" th:text="${coupon.companyId}">3</td>
+                                <td class="event-name" th:text="${coupon.name}">가을맞이 할인 쿠폰</td>
+                                <td class="event-type">
+                                    <span class="type-badge type-promotion">쿠폰</span>
+                                </td>
+                                <td class="event-period">
+                                    <div class="date">
+                                        <span th:text="${coupon.validFrom}">2024-10-01</span> ~ 
+                                        <span th:text="${coupon.validUntil}">2024-10-30</span>
+                                    </div>
+                                </td>
+                                <td class="apply-date" th:text="${#temporals.format(coupon.createdAt, 'yyyy-MM-dd')}">2024-09-28</td>
+                                <td class="event-status">
+                                    <span class="status-badge" 
+                                          th:classappend="${coupon.approvalStatus.name() == 'PENDING'} ? 'status-pending' : (${coupon.approvalStatus.name() == 'APPROVED'} ? 'status-approved' : 'status-rejected')"
+                                          th:text="${coupon.approvalStatus.name() == 'PENDING' ? '대기중' : (coupon.approvalStatus.name() == 'APPROVED' ? '승인' : '반려')}">대기중</span>
+                                </td>
+                                <td class="actions">
+                                    <div class="action-buttons">
+                                        <button th:if="${coupon.approvalStatus.name() == 'PENDING'}" 
+                                                class="btn btn-sm btn-success" 
+                                                th:onclick="'approveCoupon(' + ${coupon.id} + ')'" 
+                                                title="승인">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        <button th:if="${coupon.approvalStatus.name() == 'PENDING'}" 
+                                                class="btn btn-sm btn-danger" 
+                                                th:onclick="'rejectCoupon(' + ${coupon.id} + ')'" 
+                                                title="반려">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <span th:if="${coupon.approvalStatus.name() == 'REJECTED'}" 
+                                              style="color: #999; font-size: 12px;">
+                                            반려 사유: <span th:text="${coupon.rejectReason}">-</span>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 반려 사유 입력 모달 -->
+    <div id="rejectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>반려 사유</h2>
+                <span class="close" onclick="closeRejectModal()">&times;</span>
+            </div>
+            <form id="rejectForm" onsubmit="submitReject(event)">
+                <input type="hidden" id="rejectItemId">
+                <input type="hidden" id="rejectItemType">
+                
+                <div class="form-group">
+                    <label for="rejectReason">반려 사유</label>
+                    <textarea id="rejectReason" name="reason" placeholder="반려 사유를 입력하세요" rows="5" required></textarea>
+                    <small class="form-help">업체에 반려 사유가 전달됩니다.</small>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeRejectModal()">취소</button>
+                    <button type="submit" class="btn-reject">반려 처리</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    // 상태별 필터
+    function filterByStatus() {
+        const status = document.getElementById('statusFilter').value;
+        window.location.href = '/admin/event-promotion?status=' + status;
+    }
+    
+    // 유형별 클라이언트 필터
+    function filterByType() {
+        const type = document.getElementById('typeFilter').value;
+        const rows = document.querySelectorAll('.event-row');
+        
+        rows.forEach(row => {
+            if (type === '' || row.getAttribute('data-type') === type) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+    
+    // 검색
+    function searchEvents() {
+        const searchValue = document.getElementById('searchInput').value.toLowerCase();
+        const rows = document.querySelectorAll('.event-row');
+        
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            if (text.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+    
+    // Placement 승인
+    function approvePlacement(id) {
+        if (!confirm('이 노출 요청을 승인하시겠습니까?')) {
+            return;
+        }
+        
+        fetch(`/admin/api/placement/${id}/approve`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('승인되었습니다.');
+                location.reload();
+            } else {
+                alert('승인 실패: ' + (data.message || '알 수 없는 오류'));
+            }
+        })
+        .catch(error => {
+            console.error('승인 에러:', error);
+            alert('승인에 실패했습니다.');
+        });
+    }
+    
+    // Placement 반려
+    let currentRejectId = null;
+    let currentRejectType = null;
+    
+    function rejectPlacement(id) {
+        currentRejectId = id;
+        currentRejectType = 'placement';
+        document.getElementById('rejectItemId').value = id;
+        document.getElementById('rejectItemType').value = 'placement';
+        document.getElementById('rejectModal').style.display = 'block';
+    }
+    
+    // Coupon 승인
+    function approveCoupon(id) {
+        if (!confirm('이 쿠폰을 승인하시겠습니까?')) {
+            return;
+        }
+        
+        fetch(`/admin/api/coupon/${id}/approve`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('승인되었습니다.');
+                location.reload();
+            } else {
+                alert('승인 실패: ' + (data.message || '알 수 없는 오류'));
+            }
+        })
+        .catch(error => {
+            console.error('승인 에러:', error);
+            alert('승인에 실패했습니다.');
+        });
+    }
+    
+    // Coupon 반려
+    function rejectCoupon(id) {
+        currentRejectId = id;
+        currentRejectType = 'coupon';
+        document.getElementById('rejectItemId').value = id;
+        document.getElementById('rejectItemType').value = 'coupon';
+        document.getElementById('rejectModal').style.display = 'block';
+    }
+    
+    // 반려 모달 닫기
+    function closeRejectModal() {
+        document.getElementById('rejectModal').style.display = 'none';
+        document.getElementById('rejectReason').value = '';
+        currentRejectId = null;
+        currentRejectType = null;
+    }
+    
+    // 반려 처리 제출
+    function submitReject(event) {
+        event.preventDefault();
+        
+        const id = document.getElementById('rejectItemId').value;
+        const type = document.getElementById('rejectItemType').value;
+        const reason = document.getElementById('rejectReason').value;
+        
+        if (!reason || reason.trim() === '') {
+            alert('반려 사유를 입력해주세요.');
+            return;
+        }
+        
+        const apiUrl = type === 'placement' 
+            ? `/admin/api/placement/${id}/reject`
+            : `/admin/api/coupon/${id}/reject`;
+        
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ reason: reason })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('반려되었습니다.');
+                closeRejectModal();
+                location.reload();
+            } else {
+                alert('반려 실패: ' + (data.message || '알 수 없는 오류'));
+            }
+        })
+        .catch(error => {
+            console.error('반려 에러:', error);
+            alert('반려에 실패했습니다.');
+        });
+    }
+    
+    // 모달 외부 클릭 시 닫기
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = 'none';
+        }
+    }
+    </script>
+</body>
+</html>

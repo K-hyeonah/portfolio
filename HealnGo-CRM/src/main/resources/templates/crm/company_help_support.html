@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>도움말 / 고객센터 - HealnGo</title>
+    <link rel="stylesheet" href="/crm/css/company_sidebar.css">
+    <link rel="stylesheet" href="/crm/css/company_header.css">
+    <link rel="stylesheet" href="/crm/css/company_help_support.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 사이드바 -->
+    <div th:replace="common/company_sidebar :: company_sidebar"></div>
+
+    <!-- 메인 콘텐츠 -->
+    <div class="main-content">
+
+
+        <!-- 상단 헤더 -->
+        <div class="help-top-header">
+            <!-- 헤더 -->
+            <div th:replace="common/company_header :: company_header"></div>
+
+            <div class="help-header-content">
+                <h1 class="help-page-title">
+                    <i class="fas fa-headset"></i>
+                    도움말 / 고객센터
+                </h1>
+            </div>
+        </div>
+
+        <!-- 탭 네비게이션 -->
+        <div class="help-tabs">
+            <ul class="tab-list">
+                <li class="tab-item active" data-tab="requests">요청 내역</li>
+                <li class="tab-item" data-tab="new-request">새 요청하기</li>
+                <li class="tab-item" data-tab="faq">FAQ</li>
+                <li class="tab-item" data-tab="policy">정책안내</li>
+            </ul>
+        </div>
+        
+        <!-- 메인 콘텐츠 영역 -->
+        <div class="help-content-area">
+            <!-- 탭1: 요청 내역 -->
+            <div id="requests-tab" class="tab-content active">
+                <!-- 왼쪽: 요청 리스트 -->
+                <div class="requests-list-section">
+                    <div class="section-header">
+                        <h2 class="section-title">📁 요청 내역</h2>
+                        <button class="new-request-btn" onclick="switchTab('new-request')">
+                            <i class="fas fa-plus"></i>
+                            새 요청하기
+                        </button>
+                    </div>
+                    
+                    <!-- 필터 -->
+                    <div class="filter-section">
+                        <button class="filter-btn active" data-filter="all">전체</button>
+                        <button class="filter-btn" data-filter="processing">처리중</button>
+                        <button class="filter-btn" data-filter="completed">완료</button>
+                        <button class="filter-btn" data-filter="rejected">반려</button>
+                    </div>
+                    
+                    <!-- 요청 테이블 -->
+                    <table class="requests-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 35%">제목</th>
+                                <th style="width: 15%">유형</th>
+                                <th style="width: 12%">상태</th>
+                                <th style="width: 12%">우선순위</th>
+                                <th style="width: 13%">등록일</th>
+                                <th style="width: 13%">답변일</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="request : ${requests}" 
+                                th:onclick="|viewRequest(${request.id})|"
+                                th:data-status="${request.status}">
+                                <td class="request-title" th:text="${request.title}">11월 프로모션 요청</td>
+                                <td>
+                                    <span class="type-badge" 
+                                          th:classappend="${request.type == '프로모션'} ? 'promotion' : 
+                                                          (${request.type == '고객신고'} ? 'report' : 
+                                                          (${request.type == '기술지원'} ? 'tech' : 
+                                                          (${request.type == '정산'} ? 'payment' : 'account')))"
+                                          th:text="${request.type}">프로모션</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge" 
+                                          th:classappend="${request.status == '처리중'} ? 'processing' : 
+                                                          (${request.status == '완료'} ? 'completed' : 'rejected')"
+                                          th:text="${request.status}">처리중</span>
+                                </td>
+                                <td>
+                                    <span class="priority-badge" 
+                                          th:classappend="${request.priority == '긴급'} ? 'urgent' : 'normal'"
+                                          th:text="${request.priority}">일반</span>
+                                </td>
+                                <td th:text="${request.createdDate}">2025-10-03</td>
+                                <td th:text="${request.answeredDate != null ? request.answeredDate : '-'}">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- 오른쪽: 요청 상세 -->
+                <div class="request-detail-section" id="requestDetail">
+                    <div style="text-align: center; padding: 60px 20px; color: #bdc3c7;">
+                        <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 16px;"></i>
+                        <p>요청을 선택해주세요</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 탭2: 새 요청하기 -->
+            <div id="new-request-tab" class="tab-content">
+                <div class="requests-list-section">
+                    <h2 class="section-title" style="margin-bottom: 24px;">📝 새 요청하기</h2>
+                    
+                    <form class="new-request-form active" id="helpRequestForm" 
+                          action="/company/api/help-support/submit" method="POST" 
+                          enctype="multipart/form-data" 
+                          onsubmit="submitRequest(event)">
+                        <div class="form-group">
+                            <label class="form-label">요청 제목 *</label>
+                            <input type="text" class="form-input" name="subject" 
+                                   placeholder="요청 제목을 입력하세요" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">요청 유형 *</label>
+                            <select class="form-select" name="requestType" required>
+                                <option value="">선택해주세요</option>
+                                <option value="CUSTOMER_REPORT">고객 신고</option>
+                                <option value="TECH_SUPPORT">기술 지원</option>
+                                <option value="SETTLEMENT">정산 문의</option>
+                                <option value="ACCOUNT">계정 관리</option>
+                                <option value="OTHER">기타</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">우선순위 *</label>
+                            <select class="form-select" name="priority" required>
+                                <option value="NORMAL">일반</option>
+                                <option value="URGENT">긴급</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">요청 내용 *</label>
+                            <textarea class="form-textarea" name="content" 
+                                      placeholder="요청 내용을 상세히 입력해주세요" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">관련 URL (선택)</label>
+                            <input type="url" class="form-input" name="targetUrl" 
+                                   placeholder="관련 URL이 있으면 입력하세요">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">첨부 파일</label>
+                            <div class="file-upload-area" onclick="document.getElementById('fileInput').click()">
+                                <div class="file-upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <p class="file-upload-text">클릭하거나 파일을 드래그하여 업로드</p>
+                                <p class="file-upload-text" style="font-size: 12px; color: #bdc3c7;">이미지, PDF (최대 10MB)</p>
+                            </div>
+                            <input type="file" id="fileInput" name="attachment" 
+                                   style="display: none" accept="image/*,.pdf">
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            요청 제출
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- 탭3: FAQ -->
+            <div id="faq-tab" class="tab-content">
+                <div style="width: 100%;">
+                    <h2 class="section-title" style="margin-bottom: 24px;">❓ 자주 묻는 질문 (FAQ)</h2>
+                    
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>프로모션 등록은 어떻게 하나요?</span>
+                                <i class="fas fa-chevron-down faq-icon"></i>
+                            </div>
+                            <div class="faq-answer">
+                                "의료 서비스 관리" 메뉴에서 이벤트 등록하기 버튼을 클릭하여 프로모션을 등록할 수 있습니다. 
+                                등록된 프로모션은 관리자 승인 후 메인 페이지에 노출됩니다.
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>예약 캘린더는 어떻게 관리하나요?</span>
+                                <i class="fas fa-chevron-down faq-icon"></i>
+                            </div>
+                            <div class="faq-answer">
+                                "예약 관리" 메뉴에서 Google Calendar와 연동하여 예약을 관리할 수 있습니다. 
+                                예약 추가, 수정, 삭제가 실시간으로 동기화됩니다.
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>정산은 언제 이루어지나요?</span>
+                                <i class="fas fa-chevron-down faq-icon"></i>
+                            </div>
+                            <div class="faq-answer">
+                                매월 1일에 전월 매출이 정산됩니다. 정산 내역은 등록된 이메일로 발송되며, 
+                                영업일 기준 3일 이내에 지정 계좌로 입금됩니다.
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>악성 리뷰는 어떻게 신고하나요?</span>
+                                <i class="fas fa-chevron-down faq-icon"></i>
+                            </div>
+                            <div class="faq-answer">
+                                "후기 관리" 메뉴에서 해당 리뷰의 신고 버튼을 클릭하거나, 
+                                도움말/고객센터에서 "고객신고" 유형으로 요청을 등록해주세요. 
+                                운영팀에서 커뮤니티 가이드라인 위반 여부를 검토합니다.
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>업체 정보 수정은 어떻게 하나요?</span>
+                                <i class="fas fa-chevron-down faq-icon"></i>
+                            </div>
+                            <div class="faq-answer">
+                                "업체 정보 수정" 메뉴에서 업체명, 연락처, 주소, 운영시간 등을 수정할 수 있습니다. 
+                                사업자등록번호 등 중요 정보 변경은 관리자 승인이 필요합니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 탭4: 정책안내 -->
+            <div id="policy-tab" class="tab-content">
+                <div style="width: 100%;">
+                    <h2 class="section-title" style="margin-bottom: 24px;">📋 정책 안내</h2>
+                    
+                    <div class="policy-list">
+                        <div class="policy-card">
+                            <h3 class="policy-title">
+                                <i class="fas fa-file-contract"></i>
+                                서비스 이용 정책
+                            </h3>
+                            <div class="policy-content">
+                                <ul>
+                                    <li>업체는 정확하고 최신의 정보를 유지할 책임이 있습니다.</li>
+                                    <li>허위 또는 과장 광고는 즉시 삭제되며, 계정 정지 사유가 될 수 있습니다.</li>
+                                    <li>고객과의 분쟁은 우선적으로 당사자 간 해결을 권장하며, 필요시 운영팀이 중재합니다.</li>
+                                    <li>예약 취소는 24시간 전까지 가능하며, 그 이후는 수수료가 발생할 수 있습니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="policy-card">
+                            <h3 class="policy-title">
+                                <i class="fas fa-coins"></i>
+                                정산 및 수수료 정책
+                            </h3>
+                            <div class="policy-content">
+                                <ul>
+                                    <li>플랫폼 수수료: 거래액의 10% (VAT 별도)</li>
+                                    <li>정산 주기: 매월 1일 (전월 1일 ~ 말일 매출)</li>
+                                    <li>정산 방법: 등록된 사업자 계좌로 자동 입금</li>
+                                    <li>최소 정산 금액: 10,000원 이상</li>
+                                    <li>정산 보류: 환불 요청 처리 중인 금액은 익월로 이월</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="policy-card">
+                            <h3 class="policy-title">
+                                <i class="fas fa-shield-alt"></i>
+                                환불 및 분쟁 정책
+                            </h3>
+                            <div class="policy-content">
+                                <ul>
+                                    <li>예약 취소 시 24시간 전: 전액 환불</li>
+                                    <li>예약 취소 시 24시간 이내: 50% 환불</li>
+                                    <li>시술 당일 취소: 환불 불가</li>
+                                    <li>고객 요청 환불은 업체 정책에 따르며, 분쟁 시 운영팀이 중재합니다.</li>
+                                    <li>부당한 환불 요구는 거부할 수 있으며, 증빙 자료를 제출해주세요.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="policy-card">
+                            <h3 class="policy-title">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                제재 및 패널티 정책
+                            </h3>
+                            <div class="policy-content">
+                                <ul>
+                                    <li>1차 위반: 경고 및 해당 콘텐츠 삭제</li>
+                                    <li>2차 위반: 7일 계정 정지</li>
+                                    <li>3차 위반: 30일 계정 정지</li>
+                                    <li>중대한 위반: 즉시 계정 영구 정지</li>
+                                    <li>계정 정지 기간 중 발생한 예약은 자동 취소되며, 고객에게 전액 환불됩니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.requestsData = /*[[${requests}]]*/ [];
+        /*]]>*/
+    </script>
+    <script src="/crm/js/company_sidebar.js"></script>
+    <script src="/crm/js/company_header.js"></script>
+    <script src="/crm/js/company_help_support.js"></script>
+</body>
+</html>
+

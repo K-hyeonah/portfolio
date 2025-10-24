@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>힝거 피부과 - HealnGo</title>
+    
+    <!-- CSS 파일들 -->
+    <link rel="stylesheet" href="/crm/css/company_sidebar.css">
+    <link rel="stylesheet" href="/crm/css/company_header.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        
+        /* 메인 콘텐츠 */
+               
+        .company-page-title {
+            font-size: 16px !important;
+            color: #7f8c8d !important;
+            margin-bottom: 5px !important;
+        }
+        
+        .company-page-subtitle {
+            font-size: 28px !important;
+            font-weight: bold !important;
+            color: #2c3e50 !important;
+            margin-bottom: 30px !important;
+        }
+        
+        /* 카드 그리드 */
+        .company-cards-grid {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            grid-template-rows: auto auto !important;
+            gap: 20px !important;
+        }
+        
+        .company-card {
+            background: white !important;
+            border-radius: 12px !important;
+            padding: 25px !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+            overflow: hidden !important;
+        }
+        
+        .company-card-header {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            margin-bottom: 20px !important;
+        }
+        
+        .company-card-title {
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            color: #2c3e50 !important;
+        }
+        
+        .company-view-all-link {
+            color: #3498db !important;
+            text-decoration: none !important;
+            font-size: 14px !important;
+        }
+        
+        /* 예약 관리 카드 */
+        .company-reservation-chart-container {
+            height: 200px !important;
+            position: relative !important;
+        }
+        
+        /* 캘린더 카드 */
+        .company-calendar-container {
+            display: flex !important;
+            gap: 20px !important;
+            height: 100% !important;
+        }
+        
+        .company-calendar-grid {
+            flex: 1 !important;
+            min-width: 200px !important;
+        }
+        
+        .company-calendar-header {
+            display: grid !important;
+            grid-template-columns: repeat(7, 1fr) !important;
+            gap: 2px !important;
+            margin-bottom: 10px !important;
+        }
+        
+        .company-calendar-day-header {
+            text-align: center !important;
+            font-size: 12px !important;
+            color: #7f8c8d !important;
+            padding: 8px 4px !important;
+            font-weight: 600 !important;
+        }
+        
+        .company-calendar-days {
+            display: grid !important;
+            grid-template-columns: repeat(7, 1fr) !important;
+            gap: 2px !important;
+        }
+        
+        .company-calendar-day {
+            text-align: center !important;
+            padding: 8px 4px !important;
+            font-size: 14px !important;
+            border-radius: 4px !important;
+            cursor: pointer !important;
+            transition: background-color 0.2s !important;
+            min-height: 30px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: #2c3e50 !important;
+        }
+        
+        .company-calendar-day:hover {
+            background-color: #f8f9fa !important;
+        }
+        
+        .company-calendar-day.has-event {
+            background-color: #e3f2fd !important;
+            color: #1976d2 !important;
+            font-weight: 600 !important;
+        }
+        
+        .company-calendar-day.today {
+            background-color: #3498db !important;
+            color: white !important;
+            font-weight: 600 !important;
+        }
+        
+        .company-schedule-section {
+            flex: 1 !important;
+            padding-left: 20px !important;
+            border-left: 1px solid #eee !important;
+        }
+        
+        .company-schedule-date {
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            color: #2c3e50 !important;
+            margin-bottom: 15px !important;
+        }
+        
+        .company-schedule-item {
+            margin-bottom: 10px !important;
+            font-size: 14px !important;
+            color: #555 !important;
+        }
+        
+        .company-schedule-item::before {
+            content: "•" !important;
+            color: #3498db !important;
+            margin-right: 8px !important;
+        }
+        
+        /* 요약 카드 */
+        .company-summary-cards {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 15px !important;
+            margin-top: 20px !important;
+        }
+        
+        .company-summary-card {
+            background: #f8f9fa !important;
+            border-radius: 8px !important;
+            padding: 15px !important;
+            text-align: center !important;
+        }
+        
+        .company-summary-title {
+            font-size: 12px !important;
+            color: #7f8c8d !important;
+            margin-bottom: 8px !important;
+        }
+        
+        .company-summary-value {
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            color: #2c3e50 !important;
+        }
+        
+        /* 후기 관리 카드 */
+        .company-review-list {
+            height: 100% !important;
+            overflow-y: auto !important;
+        }
+        
+        .company-review-item {
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 15px !important;
+            padding: 15px !important;
+            border: 1px solid #eee !important;
+            border-radius: 8px !important;
+            margin-bottom: 15px !important;
+        }
+        
+        .company-review-image {
+            width: 80px !important;
+            height: 80px !important;
+            border-radius: 8px !important;
+            background: #f0f0f0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: #7f8c8d !important;
+            font-size: 12px !important;
+        }
+        
+        .company-review-content {
+            flex: 1 !important;
+        }
+        
+        .company-review-name {
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            color: #2c3e50 !important;
+            margin-bottom: 5px !important;
+        }
+        
+        .company-review-id {
+            font-size: 12px !important;
+            color: #7f8c8d !important;
+            margin-bottom: 5px !important;
+        }
+        
+        .company-review-rating {
+            font-size: 14px !important;
+            color: #f39c12 !important;
+            margin-bottom: 10px !important;
+        }
+        
+        .company-review-price {
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            color: #e74c3c !important;
+            margin-bottom: 10px !important;
+        }
+        
+        .company-review-text {
+            font-size: 12px !important;
+            color: #555 !important;
+            line-height: 1.4 !important;
+        }
+        
+        /* 인기 서비스 카드 */
+        .company-events-list {
+            height: 100% !important;
+            overflow-y: auto !important;
+        }
+        
+        .company-event-item {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding: 15px !important;
+            border: 1px solid #eee !important;
+            border-radius: 8px !important;
+            margin-bottom: 15px !important;
+        }
+        
+        .company-event-info {
+            flex: 1 !important;
+        }
+        
+        .company-event-name {
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            color: #2c3e50 !important;
+            margin-bottom: 5px !important;
+        }
+        
+        .company-event-price {
+            font-size: 14px !important;
+            color: #e74c3c !important;
+            font-weight: 600 !important;
+        }
+        
+        .company-event-stats {
+            text-align: right !important;
+        }
+        
+        .company-event-count {
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            color: #2c3e50 !important;
+            margin-bottom: 5px !important;
+        }
+        
+        .company-event-trend {
+            font-size: 14px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+        }
+        
+        .company-event-trend.up {
+            color: #27ae60 !important;
+        }
+        
+        .company-event-trend.down {
+            color: #e74c3c !important;
+        }
+        
+    
+        
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+                       
+            .company-sidebar-area {
+                width: 100% !important;
+                padding: 10px !important;
+                position: relative !important;
+                height: auto !important;
+            }
+            
+            .company-main-content-area {
+                margin-left: 0 !important;
+            }
+            
+            .company-cards-grid {
+                grid-template-columns: 1fr !important;
+                grid-template-rows: auto !important;
+            }
+            
+            .company-search-input {
+                width: 200px !important;
+            }
+            
+            .company-calendar-container {
+                flex-direction: column !important;
+            }
+            
+            .company-schedule-section {
+                padding-left: 0 !important;
+                border-left: none !important;
+                border-top: 1px solid #eee !important;
+                padding-top: 20px !important;
+            }
+            
+            .company-summary-cards {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- 사이드바 -->
+        <div th:replace="common/company_sidebar :: company_sidebar"></div>
+        
+        <!-- 메인 콘텐츠 -->
+        <div class="main-content">
+            <!-- 헤더 -->
+            <div th:replace="common/company_header :: company_header"></div>
+        
+            <!-- 메인 콘텐츠 -->
+            <div class="company-dashboard-container">
+                <div class="company-main-content" style="padding: 20px;">
+                    <h2 class="company-page-subtitle">Dashboard</h2>
+                        
+                        <!-- 카드 그리드 -->
+                        <div class="company-cards-grid">
+                            <!-- 예약 관리 카드 -->
+                            <div class="company-card">
+                                <div class="company-card-header">
+                                    <h3 class="company-card-title">예약 관리</h3>
+                                    <a href="#" class="company-view-all-link">View all ></a>
+                                </div>
+                                <div class="company-reservation-chart-container">
+                                    <canvas id="companyReservationChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <!-- 10월 캘린더 카드 -->
+                            <div class="company-card">
+                                <div class="company-card-header">
+                                    <h3 class="company-card-title">10월</h3>
+                                </div>
+                                <div class="company-calendar-container">
+                                    <div class="company-calendar-grid">
+                                        <div class="company-calendar-header">
+                                            <div class="company-calendar-day-header">일</div>
+                                            <div class="company-calendar-day-header">월</div>
+                                            <div class="company-calendar-day-header">화</div>
+                                            <div class="company-calendar-day-header">수</div>
+                                            <div class="company-calendar-day-header">목</div>
+                                            <div class="company-calendar-day-header">금</div>
+                                            <div class="company-calendar-day-header">토</div>
+                                        </div>
+                                        <div class="company-calendar-days">
+                                            <!-- 10월 1주차 -->
+                                            <div class="company-calendar-day"></div>
+                                            <div class="company-calendar-day">01</div>
+                                            <div class="company-calendar-day has-event">02</div>
+                                            <div class="company-calendar-day has-event">03</div>
+                                            <div class="company-calendar-day">04</div>
+                                            <div class="company-calendar-day">05</div>
+                                            <div class="company-calendar-day">06</div>
+                                            
+                                            <!-- 10월 2주차 -->
+                                            <div class="company-calendar-day">07</div>
+                                            <div class="company-calendar-day has-event">08</div>
+                                            <div class="company-calendar-day has-event">09</div>
+                                            <div class="company-calendar-day has-event">10</div>
+                                            <div class="company-calendar-day">11</div>
+                                            <div class="company-calendar-day">12</div>
+                                            <div class="company-calendar-day">13</div>
+                                            
+                                            <!-- 10월 3주차 -->
+                                            <div class="company-calendar-day">14</div>
+                                            <div class="company-calendar-day">15</div>
+                                            <div class="company-calendar-day has-event">16</div>
+                                            <div class="company-calendar-day has-event">17</div>
+                                            <div class="company-calendar-day">18</div>
+                                            <div class="company-calendar-day today">19</div>
+                                            <div class="company-calendar-day">20</div>
+                                            
+                                            <!-- 10월 4주차 -->
+                                            <div class="company-calendar-day">21</div>
+                                            <div class="company-calendar-day">22</div>
+                                            <div class="company-calendar-day">23</div>
+                                            <div class="company-calendar-day">24</div>
+                                            <div class="company-calendar-day">25</div>
+                                            <div class="company-calendar-day">26</div>
+                                            <div class="company-calendar-day">27</div>
+                                            
+                                            <!-- 10월 5주차 -->
+                                            <div class="company-calendar-day">28</div>
+                                            <div class="company-calendar-day">29</div>
+                                            <div class="company-calendar-day">30</div>
+                                            <div class="company-calendar-day">31</div>
+                                            <div class="company-calendar-day"></div>
+                                            <div class="company-calendar-day"></div>
+                                            <div class="company-calendar-day"></div>
+                                        </div>
+                                    </div>
+                                    <div class="company-schedule-section">
+                                        <div class="company-schedule-date">10/3</div>
+                                        <div class="company-schedule-item">신규 이벤트 공지</div>
+                                        <div class="company-schedule-item">계절상품 선정</div>
+                                        <div class="company-schedule-item">테스트 리뷰어 선정</div>
+                                        
+                                        <div class="company-schedule-date" style="margin-top: 20px;">10/16</div>
+                                        <div class="company-schedule-item">외국인 관광객 단체 예약</div>
+                                        <div class="company-schedule-item">중국인 관광객 단체 상담 예약</div>
+                                        
+                                        <!-- 요약 카드 -->
+                                        <div class="company-summary-cards">
+                                            <div class="company-summary-card">
+                                                <div class="company-summary-title">외국인 관광객 9월 대비 10월 매출</div>
+                                                <div class="company-summary-value" th:text="${companyStats.foreignTouristIncrease}">15% 증가</div>
+                                            </div>
+                                            <div class="company-summary-card">
+                                                <div class="company-summary-title">한국 관광객 9월 대비 10월 매출</div>
+                                                <div class="company-summary-value" th:text="${companyStats.koreanTouristIncrease}">5% 증가</div>
+                                            </div>
+                                            <div class="company-summary-card">
+                                                <div class="company-summary-title">신규 이벤트 상품 개시</div>
+                                                <div class="company-summary-value" th:text="${companyStats.newEventProducts}">4건</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 후기 관리 카드 -->
+                            <div class="company-card">
+                            <div class="company-card-header">
+                                <h3 class="company-card-title">후기 관리</h3>
+                                <a href="/company/review" class="company-view-all-link">View all ></a>
+                            </div>
+
+                            <div class="company-review-list">
+                                <div class="company-review-item" th:each="rv, iterStat : ${latestReviews}" th:if="${iterStat.index < 3}">
+                                <div class="company-review-image">
+                                    <img th:src="@{|/review/${rv.reviewId}/image|}"
+                                        alt="리뷰 이미지"
+                                        style="width:80px;height:80px;object-fit:cover;border-radius:8px;"
+                                        onerror="this.parentElement.textContent='이미지'; this.remove();">
+                                </div>
+
+                                <div class="company-review-content">
+                                    <div class="company-review-name" th:text="${rv.itemName != null ? rv.itemName : '상품/시술명 미입력'}">시술명</div>
+                                    <div class="company-review-id">
+                                    <span th:text="'#' + ${rv.reviewId}">#1</span>
+                                    <span style="margin-left:8px;color:#999;" th:text="${#temporals.format(rv.createdAt, 'yyyy-MM-dd')}">2025-10-18</span>
+                                    </div>
+
+                                    <div class="company-review-rating">
+                                    <span th:utext="${'★'.repeat(rv.rating != null ? rv.rating : 0)}"></span>
+                                    <span th:text="'(' + ${rv.rating} + ')'"> (5) </span>
+                                    </div>
+
+                                    <div class="company-review-text"
+                                        th:text="${#strings.length(rv.content) > 60 ? #strings.substring(rv.content,0,60) + '…' : (rv.content != null ? rv.content : '내용 없음')}">
+                                    내용 미리보기…
+                                    </div>
+                                </div>
+                                </div>
+
+                                <!-- 리뷰가 없을 때 -->
+                                <div class="company-review-item" th:if="${#lists.isEmpty(latestReviews)}">
+                                <div class="company-review-content">
+                                    <div class="company-review-name">최근 리뷰 없음</div>
+                                    <div class="company-review-text">아직 등록된 리뷰가 없습니다.</div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+
+                            
+                            <!-- 인기 서비스 카드 -->
+                            <div class="company-card">
+                                <div class="company-card-header">
+                                    <h3 class="company-card-title">인기 서비스</h3>
+                                    <a href="#" class="company-view-all-link">View all ></a>
+                                </div>
+                                <div class="company-events-list">
+                                    <div class="company-event-item" th:each="event : ${popularEvents}">
+                                        <div class="company-event-info">
+                                            <div class="company-event-name" th:text="${event.name}">브이라인 리프팅</div>
+                                            <div class="company-event-price" th:text="${event.price}">290,000원</div>
+                                        </div>
+                                        <div class="company-event-stats">
+                                            <div class="company-event-count" th:text="${event.count}">553+</div>
+                                            <div class="company-event-trend" th:classappend="${event.trend == 'up'} ? 'up' : 'down'">
+                                                <i class="fas" th:classappend="${event.trend == 'up'} ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/crm/js/company_sidebar.js"></script>
+    <script src="/crm/js/company_header.js"></script>
+    <script th:inline="javascript">
+        // 예약 관리 차트 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('companyReservationChart');
+            if (ctx) {
+                // Thymeleaf에서 전달받은 실제 DB 데이터
+                /*<![CDATA[*/
+                const days = [[${reservationChartData.days}]];
+                const reservations = [[${reservationChartData.reservations}]];
+                const currentMonth = [[${reservationChartData.currentMonth}]];
+                /*]]>*/
+                
+                // 디버깅 로그
+                console.log('=== 프론트엔드 차트 데이터 디버깅 ===');
+                console.log('days length:', days.length);
+                console.log('days:', days);
+                console.log('reservations:', reservations);
+                console.log('currentMonth:', currentMonth);
+                console.log('=====================================');
+                
+                // x축 라벨: 중간 지점에만 현재 달 표시, 나머지는 빈 문자열
+                const middleIndex = Math.floor(days.length / 2);
+                const labels = days.map((day, index) => index === middleIndex ? currentMonth : '');
+                
+                // 최대값 계산 (여유있게 표시하기 위해)
+                const maxValue = Math.max(...reservations, 10);
+                const yAxisMax = Math.ceil(maxValue * 1.2);
+                
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: currentMonth + ' 예약 수',
+                            data: reservations,
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#3498db',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    title: function(context) {
+                                        // 툴팁에서는 정확한 날짜 표시
+                                        const index = context[0].dataIndex;
+                                        return currentMonth.replace('월', '') + '월 ' + (index + 1) + '일';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: yAxisMax,
+                                ticks: {
+                                    stepSize: Math.ceil(yAxisMax / 5),
+                                    precision: 0
+                                },
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.1)'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    autoSkip: true,
+                                    maxTicksLimit: 10,
+                                    maxRotation: 0,
+                                    minRotation: 0
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

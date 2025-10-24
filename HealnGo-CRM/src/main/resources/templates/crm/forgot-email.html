@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이메일 찾기 - HealnGo</title>
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/crm/css/forgot-email.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <div th:replace="~{common/header :: header}"></div>
+
+    <div class="forgot-email-wrapper">
+        <div class="forgot-email-container">
+            <div class="forgot-email-header">
+                <div class="forgot-email-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h1>이메일 찾기</h1>
+                <p>가입하신 이름과 전화번호로 이메일을 찾아드립니다</p>
+            </div>
+
+            <!-- 이메일 찾기 폼 -->
+            <form id="forgot-email-form" class="forgot-email-form" th:action="@{/forgot-email}" method="post">
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" id="name" name="name" placeholder="가입하신 이름을 입력하세요" required>
+                    <span class="error-message" id="name-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">전화번호</label>
+                    <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" required>
+                    <span class="error-message" id="phone-error"></span>
+                </div>
+
+                <button type="submit" class="submit-btn">이메일 찾기</button>
+            </form>
+
+            <!-- 로그인 링크 -->
+            <div class="login-link">
+                <p>이메일을 기억하셨나요? <a th:href="@{/login}">로그인</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <div th:replace="~{common/footer :: footer}"></div>
+
+    <script th:src="@{/crm/js/forgot-email.js}"></script>
+</body>
+</html>

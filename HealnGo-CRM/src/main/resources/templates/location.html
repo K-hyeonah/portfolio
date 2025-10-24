@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="location.title">지역 선택</title>
+    <!-- 부트스트랩 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 공통 스타일시트 -->
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <!-- Location 전용 스타일시트 -->
+    <link rel="stylesheet" href="/resources/css/location.css">
+    <!-- Font Awesome 5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div th:replace="common/header :: header"></div>
+
+    <div class="location-content">
+        <div class="container">
+            <a href="/main" class="back-btn">
+                <i class="fas fa-arrow-left"></i> <span data-i18n="location.back.home">홈으로 돌아가기</span>
+            </a>
+            
+            <div class="row">
+                <!-- 왼쪽: 시도 선택 -->
+                <div class="card left">
+                    <ul class="sido" id="sidoList">
+                        <!-- JavaScript로 동적 생성 -->
+                    </ul>
+                </div>
+                
+                <!-- 오른쪽: 세부 지역 선택 -->
+                <div class="card right">
+                    <div class="header">
+                        <div class="title" data-i18n="location.select.region">지역을 선택하세요</div>
+                        <i class="fas fa-chevron-up" id="scrollTop"></i>
+                    </div>
+                    
+                    <div class="list" id="distList">
+                        <!-- JavaScript로 동적 생성 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+
+    <!-- 부트스트랩 JS 및 의존성 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 공통 JavaScript -->
+    <script src="/resources/js/includeHTML.js"></script>
+    <script src="/resources/js/i18n.js"></script>
+    <!-- Location 전용 JavaScript -->
+    <script src="/resources/js/location.js"></script>
+    <!-- 푸터 -->
+    <div th:replace="common/footer :: footer"></div>
+</body>
+</html>

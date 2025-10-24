@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>즐겨찾기 - HealnGo</title>
+    <link rel="stylesheet" href="/resources/css/favorite.css">
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <!-- 헤더 -->
+    <div th:replace="~{common/header :: header}"></div>
+
+    <div class="favorite-container">
+        <!-- 상단 제목 섹션 -->
+        <div class="favorite-header">
+            <div class="favorite-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h1 class="favorite-title">즐겨찾기</h1>
+        </div>
+
+        <!-- 즐겨찾기 목록 -->
+        <div class="favorite-list">
+            <!-- 로그인하지 않은 사용자 메시지 -->
+            <div th:if="${!isLoggedIn}" class="login-prompt">
+                <div class="login-prompt-content">
+                    <i class="fas fa-heart-broken"></i>
+                    <h3>로그인이 필요한 서비스입니다</h3>
+                    <p>즐겨찾기 기능을 사용하려면 로그인해주세요.</p>
+                    <div class="login-actions">
+                        <a th:href="@{/login}" class="login-btn">로그인</a>
+                        <a th:href="@{/signup}" class="signup-btn">회원가입</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 로그인한 사용자 즐겨찾기 목록 -->
+            <div th:if="${isLoggedIn}" id="favorites-content" style="width: 100%;">
+                <!-- JavaScript로 내용이 채워집니다 -->
+                <p style="text-align: center; color: #999; padding: 40px;">로딩 중...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상세보기 모달 -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" title="닫기">&times;</span>
+            <div id="modalBody">
+                <!-- 상세 내용이 여기에 동적으로 로드됩니다 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/resources/js/favorite.js"></script>
+
+    <!-- 푸터 -->
+    <div th:replace="~{common/footer :: footer}"></div>
+</body>
+</html>

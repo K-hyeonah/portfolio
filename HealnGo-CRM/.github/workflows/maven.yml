@@ -1,0 +1,91 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Java CI with Maven
+
+env:
+  EC2_USER: ${{ secrets.EC2_USER }}
+  EC2_HOST: ${{ secrets.EC2_HOST }}
+  EC2_KEY: ${{ secrets.EC2_KEY }}
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+    - name: env print
+      run: |
+          echo "User: $EC2_USER"
+          echo "Host: $EC2_HOST"
+          echo "Key: $EC2_KEY"
+
+    
+    # pem 파일 만들기
+    - name: EC2서버 키 파일 생성
+      run: |
+        echo "${{ secrets.EC2_KEY }}" > ec2-key.pem
+        chmod 400 ec2-key.pem
+        
+    # AWS에 JAR파일 저장
+    - name: 패키징파일을 EC2 서버로 복사
+      run: |
+        scp -i ec2-key.pem -o StrictHostKeyChecking=no \
+        target/*.jar \
+        ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app.jar
+        
+    # 실행중인 프로세스 종료
+    - name: 실행중인 프로세서(app.jar) 종료
+      run: |
+        ssh -i ec2-key.pem -o StrictHostKeyChecking=no \
+        ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+          echo '🛑 기존 실행 중인 애플리케이션 종료 중...'
+          pids=\$(pgrep -f app.jar)
+          current_pid=\$\$
+          parent_pid=\$PPID
+          echo \"현재 세션 PID: \$current_pid, 부모 PID: \$parent_pid\"
+          # 현재 세션과 부모 PID를 제거
+          safe_pids=\$(echo \$pids | tr ' ' '\n' | grep -v \"^\$current_pid\$\" | grep -v \"^\$parent_pid\$\" | tr '\n' ' ')
+          echo \"pid : \$safe_pids\"
+          if [ -n \"\$safe_pids\" ]; then
+            echo \"Would terminate PIDs: \$safe_pids\"
+            sudo kill \$safe_pids
+            echo '프로세스 종료'
+          else
+            echo '종료할 프로세스 없음'
+          fi
+        "
+    
+    # EC2에서 jar파일 실행
+    - name: EC2 서버에서 app.jar 실행
+      run: |
+        ssh -i ec2-key.pem -o StrictHostKeyChecking=no \
+        ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+          echo '🚀 새 애플리케이션 시작...'
+          sudo env DB_HOST=${{ secrets.DB_HOST }} \
+          DB_PORT=${{ secrets.DB_PORT }} \
+          DB_NAME=${{ secrets.DB_NAME }} \
+          DB_USER=${{ secrets.DB_USER }} \
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+          nohup java -jar /home/${{ secrets.EC2_USER }}/app.jar > app.log 2>&1 & "
+    

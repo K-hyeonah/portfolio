@@ -1,0 +1,45 @@
+@startuml
+!theme plain
+left to right direction
+
+' === 한글/가독성 설정 ===
+skinparam defaultFontName "Malgun Gothic"    ' mac: "Apple SD Gothic Neo", Linux: "Noto Sans CJK KR"
+skinparam defaultFontSize 14
+skinparam dpi 220
+skinparam shadowing false
+
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #F4F9FD
+  BorderColor #3F8CFF
+  FontSize 12
+}
+skinparam actor {
+  BackgroundColor #E8F4FD
+  BorderColor #3F8CFF
+  FontSize 14
+}
+
+title HealnGo 유스케이스 (관리자)
+
+actor "시스템 관리자" as Admin
+
+rectangle "HealnGo Admin" {
+  (인증/권한 확인) as UC_AUTH
+
+  (사용자 관리) as UC_USER_MGMT
+  (업체 승인/관리) as UC_VENDOR_APPROVE
+  (공지사항 관리) as UC_NOTICE
+  (신고/문의 처리) as UC_REPORTS
+
+  Admin --> UC_USER_MGMT
+  Admin --> UC_VENDOR_APPROVE
+  Admin --> UC_NOTICE
+  Admin --> UC_REPORTS
+
+  UC_USER_MGMT ..> UC_AUTH : «include»
+  UC_VENDOR_APPROVE ..> UC_AUTH : «include»
+  UC_NOTICE ..> UC_AUTH : «include»
+  UC_REPORTS ..> UC_AUTH : «include»
+}
+@enduml

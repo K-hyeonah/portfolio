@@ -1,0 +1,88 @@
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    gap: 5px;
+}
+
+.pagination .page-link {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 2px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    min-width: 40px;
+    text-align: center;
+}
+
+.pagination .page-link:hover {
+    background-color: #f8f9fa;
+    border-color: #005a66;
+    color: #005a66;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.pagination .page-link.active {
+    background-color: #005a66;
+    border-color: #005a66;
+    color: #fff;
+    font-weight: bold;
+}
+
+.pagination .page-link.active:hover {
+    background-color: #004a56;
+    border-color: #004a56;
+    color: #fff;
+}
+
+/* Responsive pagination */
+@media (max-width: 768px) {
+    .pagination {
+        flex-wrap: wrap;
+        gap: 3px;
+    }
+    
+    .pagination .page-link {
+        padding: 6px 10px;
+        font-size: 12px;
+        min-width: 35px;
+    }
+}
+
+/* Pagination for specific pages */
+.list-pagination {
+    margin: 30px 0;
+}
+
+.community-pagination {
+    margin: 20px 0;
+}
+
+.booking-pagination {
+    margin: 15px 0;
+}
+
+/* Pagination info */
+.pagination-info {
+    text-align: center;
+    margin: 10px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.pagination-info .current-page {
+    font-weight: bold;
+    color: #005a66;
+}
+
+.pagination-info .total-pages {
+    color: #999;
+}

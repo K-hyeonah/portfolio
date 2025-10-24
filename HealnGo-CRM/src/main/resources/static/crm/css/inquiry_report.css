@@ -1,0 +1,358 @@
+/* 문의/신고 접수 페이지 스타일 */
+
+/* 기본 리셋 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    background-color: #f8f9fa !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    min-height: 100vh !important;
+}
+
+/* 메인 컨테이너 */
+.report-dashboard-container {
+    display: flex !important;
+    min-height: 100vh !important;
+    background-color: #f8f9fa !important;
+}
+
+/* 메인 콘텐츠 */
+.report-main-content {
+    padding: 0 30px 30px 30px !important;
+    margin-left: 290px;
+}
+
+.report-page-title {
+    font-size: 28px !important;
+    font-weight: bold !important;
+    color: #2c3e50 !important;
+    margin-bottom: 30px !important;
+}
+
+/* 필터 및 검색 영역 */
+.report-filter-section {
+    background: white !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    margin-bottom: 20px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+}
+
+.report-filter-row {
+    display: flex !important;
+    gap: 20px !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+}
+
+.report-filter-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.report-filter-label {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #2c3e50 !important;
+}
+
+.report-filter-select {
+    padding: 8px 12px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    background: white !important;
+}
+
+.report-date-input {
+    padding: 8px 12px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+}
+
+.report-search-btn {
+    padding: 8px 16px !important;
+    background: #3498db !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s !important;
+}
+
+.report-search-btn:hover {
+    background: #2980b9 !important;
+}
+
+/* 문의/신고 목록 */
+.report-list-section {
+    background: white !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+    overflow: hidden !important;
+}
+
+.report-list-header {
+    padding: 20px !important;
+    border-bottom: 1px solid #eee !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.report-list-title {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #2c3e50 !important;
+}
+
+.report-list-count {
+    font-size: 14px !important;
+    color: #7f8c8d !important;
+}
+
+.report-list-content {
+    max-height: 600px !important;
+    overflow-y: auto !important;
+}
+
+.report-item {
+    padding: 20px !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s !important;
+}
+
+.report-item:hover {
+    background-color: #f8f9fa !important;
+}
+
+.report-item:last-child {
+    border-bottom: none !important;
+}
+
+.report-item-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    margin-bottom: 12px !important;
+}
+
+.report-item-info {
+    flex: 1 !important;
+}
+
+.report-item-title {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #2c3e50 !important;
+    margin-bottom: 4px !important;
+}
+
+.report-item-meta {
+    display: flex !important;
+    gap: 15px !important;
+    font-size: 12px !important;
+    color: #7f8c8d !important;
+}
+
+.report-item-status {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.report-status-badge {
+    padding: 4px 8px !important;
+    border-radius: 12px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+}
+
+.report-status-badge.pending {
+    background: #f39c12 !important;
+    color: white !important;
+}
+
+.report-status-badge.processing {
+    background: #3498db !important;
+    color: white !important;
+}
+
+.report-status-badge.resolved {
+    background: #27ae60 !important;
+    color: white !important;
+}
+
+.report-status-badge.rejected {
+    background: #e74c3c !important;
+    color: white !important;
+}
+
+.report-priority-badge {
+    padding: 2px 6px !important;
+    border-radius: 8px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+}
+
+.report-priority-badge.high {
+    background: #e74c3c !important;
+    color: white !important;
+}
+
+.report-priority-badge.medium {
+    background: #f39c12 !important;
+    color: white !important;
+}
+
+.report-priority-badge.low {
+    background: #95a5a6 !important;
+    color: white !important;
+}
+
+.report-item-content {
+    margin-bottom: 12px !important;
+}
+
+.report-item-description {
+    font-size: 14px !important;
+    color: #555 !important;
+    line-height: 1.5 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+}
+
+.report-item-footer {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.report-item-actions {
+    display: flex !important;
+    gap: 8px !important;
+}
+
+.report-action-btn {
+    padding: 6px 12px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    background: white !important;
+    color: #2c3e50 !important;
+    font-size: 12px !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+}
+
+.report-action-btn:hover {
+    background: #f8f9fa !important;
+}
+
+.report-action-btn.primary {
+    background: #3498db !important;
+    color: white !important;
+    border-color: #3498db !important;
+}
+
+.report-action-btn.primary:hover {
+    background: #2980b9 !important;
+}
+
+.report-action-btn.danger {
+    background: #e74c3c !important;
+    color: white !important;
+    border-color: #e74c3c !important;
+}
+
+.report-action-btn.danger:hover {
+    background: #c0392b !important;
+}
+
+.report-item-date {
+    font-size: 12px !important;
+    color: #7f8c8d !important;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .report-dashboard-container {
+        flex-direction: column !important;
+    }
+    
+    .report-sidebar-area {
+        width: 100% !important;
+        padding: 10px !important;
+        position: relative !important;
+        height: auto !important;
+    }
+    
+    .report-main-content-area {
+        margin-left: 0 !important;
+    }
+    
+    .report-search-input {
+        width: 200px !important;
+    }
+    
+    .report-filter-row {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+    
+    .report-filter-group {
+        justify-content: space-between !important;
+    }
+    
+    .report-item-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+    
+    .report-item-footer {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+    }
+}
+
+/* 구분 버튼 스타일 */
+.reporter-type-btn {
+    padding: 8px 16px !important;
+    background: white !important;
+    color: #6c757d !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+.reporter-type-btn:hover {
+    background: #f8f9fa !important;
+    border-color: #3498db !important;
+    color: #3498db !important;
+}
+
+.reporter-type-btn.active {
+    background: #3498db !important;
+    border-color: #3498db !important;
+    color: white !important;
+}
+

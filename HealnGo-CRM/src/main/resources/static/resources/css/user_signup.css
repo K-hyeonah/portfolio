@@ -1,0 +1,33 @@
+/* user-signup 페이지는 company_signup.css를 재사용하므로 추가 스타일만 정의 */
+
+.success-icon-circle {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 40px;
+    color: white;
+}
+
+.success-message {
+    text-align: center;
+    padding: 40px 0;
+}
+
+.success-message h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 12px 0;
+}
+
+.success-message p {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0 0 32px 0;
+}
+

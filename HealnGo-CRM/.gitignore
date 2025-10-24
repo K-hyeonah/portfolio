@@ -1,0 +1,83 @@
+############################
+# Build / Output
+############################
+# Maven / Gradle / Common
+target/
+**/target/
+build/
+**/build/
+out/
+*.jar
+*.war
+*.ear
+
+############################
+# IDE / Editors
+############################
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea/workspace.xml
+
+# Eclipse / STS
+.project
+.classpath
+.settings/
+.factorypath
+.apt_generated/
+.springBeans
+.sts4-cache/
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# VS Code
+.vscode/
+
+############################
+# OS-specific
+############################
+.DS_Store
+Thumbs.db
+
+############################
+# Logs / Temp
+############################
+*.log
+logs/
+hs_err_pid*
+replay_pid*
+
+############################
+# Secrets & Config (DO NOT COMMIT)
+############################
+# Spring config (real values). Keep only example files in git.
+src/main/resources/application.properties
+src/main/resources/application-*.properties
+!src/main/resources/application-example.properties
+
+# API / OAuth credentials & keys
+credentials.json
+*.keystore
+*.p12
+*.pem
+*.crt
+*.key
+
+# Env files
+.env
+.env.*
+*.secret
+*.credentials
+
+############################
+# Maven Wrapper (keep)
+############################
+# NOTE: keep the Maven wrapper JAR tracked
+# .mvn/wrapper/maven-wrapper.jar  <-- do NOT ignore

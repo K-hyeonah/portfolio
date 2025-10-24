@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>업체 관리 - HealnGo Admin</title>
+    <link rel="stylesheet" href="/crm/css/admin_sidebar.css">
+    <link rel="stylesheet" href="/crm/css/admin_header.css">
+    <link rel="stylesheet" href="/crm/css/admin_companies.css">
+    <style>
+        /* 추가 스타일 오버라이드 */
+        body {
+            display: block !important;
+            background-color: #F4F9FD !important;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 사이드바 -->
+    <div th:replace="common/admin_sidebar :: admin_sidebar"></div>
+    
+    <!-- 메인 컨텐츠 -->
+    <div class="admin-main-content">
+        <!-- 헤더 -->
+        <div th:replace="common/admin_header :: admin_header"></div>
+
+        <!-- 페이지 컨텐츠 -->
+        <div class="admin-page-content">
+            <!-- 페이지 헤더 -->
+            <div class="page-header">
+                <h1 class="page-title">업체 관리</h1>
+                <div class="page-actions">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-download"></i>
+                        엑셀 다운로드
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        업체 추가
+                    </button>
+                </div>
+            </div>
+
+            <!-- 필터 및 검색 -->
+            <div class="filters-section">
+                <div class="search-bar">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="업체명, 사업자명으로 검색..." class="search-input" 
+                               th:value="${search}" id="searchInput">
+                    </div>
+                    <button type="button" class="btn btn-search" onclick="performSearch()">
+                        검색
+                    </button>
+                </div>
+                
+                <div class="filter-controls">
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">전체 상태</option>
+                        <option value="approved">승인완료</option>
+                        <option value="pending">승인대기</option>
+                        <option value="rejected">승인거부</option>
+                        <option value="suspended">정지</option>
+                    </select>
+                    
+                    <select class="filter-select" id="categoryFilter">
+                        <option value="">전체 카테고리</option>
+                        <option value="hospital">병원</option>
+                        <option value="beauty">미용</option>
+                        <option value="massage">마사지</option>
+                        <option value="dental">치과</option>
+                        <option value="oriental">한의원</option>
+                    </select>
+                    
+                    <button class="btn btn-filter" onclick="applyFilters()">
+                        <i class="fas fa-filter"></i>
+                        필터 적용
+                    </button>
+                </div>
+            </div>
+
+            <!-- 업체 목록 -->
+            <div class="companies-table-container">
+                <div class="table-header">
+                    <div class="table-info">
+                        <span class="total-count">총 <strong th:text="${totalCompanies}">45</strong>개 업체</span>
+                    </div>
+                    <div class="table-actions">
+                        <button class="btn btn-sm btn-secondary" onclick="selectAll()">
+                            전체 선택
+                        </button>
+                        <button class="btn btn-sm btn-success" onclick="bulkAction('approve')">
+                            선택 승인
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="bulkAction('reject')">
+                            선택 거부
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="companies-table">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-column">
+                                    <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()">
+                                </th>
+                                <th>업체 ID</th>
+                                <th>업체명</th>
+                                <th>사업자명</th>
+                                <th>연락처</th>
+                                <th>카테고리</th>
+                                <th>상태</th>
+                                <th>등록일</th>
+                                <th>액션</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="company : ${companies}" class="company-row">
+                                <td class="checkbox-column">
+                                    <input type="checkbox" class="company-checkbox" th:value="${company.id}">
+                                </td>
+                                <td class="company-id" th:text="${company.id}">1</td>
+                                <td class="company-name" th:text="${company.name}">서울병원</td>
+                                <td class="owner-name" th:text="${company.owner}">김사업</td>
+                                <td class="phone" th:text="${company.phone}">010-1234-5678</td>
+                                <td class="category">
+                                    <span class="category-badge" th:text="${company.category}">병원</span>
+                                </td>
+                                <td class="company-status">
+                                    <span class="status-badge" 
+                                          th:classappend="${company.status == '승인완료'} ? 'status-approved' : (${company.status == '승인대기'} ? 'status-pending' : (${company.status == '승인거부'} ? 'status-rejected' : 'status-suspended'))"
+                                          th:text="${company.status}">승인완료</span>
+                                </td>
+                                <td class="join-date" th:text="${company.joinDate}">2024-01-15</td>
+                                <td class="actions">
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-info" th:onclick="|viewCompany(${company.id})|" title="상세보기">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-primary" th:onclick="|viewReservations(${company.id})|" title="예약내역">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-warning" th:onclick="|editCompany(${company.id})|" title="수정">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button th:if="${company.status == '승인대기'}" 
+                                                class="btn btn-sm btn-success" 
+                                                th:onclick="|approveCompany(${company.id})|" title="승인">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                        <button th:if="${company.status == '승인대기'}" 
+                                                class="btn btn-sm btn-danger" 
+                                                th:onclick="|rejectCompany(${company.id})|" title="거부">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 페이지네이션 -->
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    <span>페이지 <strong th:text="${currentPage}">1</strong> / <strong th:text="${totalPages}">5</strong></span>
+                </div>
+                <div class="pagination">
+                    <button class="pagination-btn" th:if="${currentPage > 1}" 
+                            th:onclick="'goToPage(' + ${currentPage - 1} + ')'">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    
+                    <span th:each="pageNum : ${#numbers.sequence(1, totalPages)}" 
+                          th:if="${pageNum >= currentPage - 2 and pageNum <= currentPage + 2}">
+                        <button class="pagination-btn" 
+                                th:classappend="${pageNum == currentPage} ? 'active'"
+                                th:onclick="'goToPage(' + ${pageNum} + ')'"
+                                th:text="${pageNum}">1</button>
+                    </span>
+                    
+                    <button class="pagination-btn" th:if="${currentPage < totalPages}" 
+                            th:onclick="'goToPage(' + ${currentPage + 1} + ')'">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 업체 상세 모달 -->
+    <div id="companyDetailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>업체 상세 정보</h3>
+                <span class="close" onclick="closeModal('companyDetailModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="companyDetailContent">
+                    <!-- 업체 상세 정보가 여기에 로드됩니다 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 예약내역 모달 -->
+    <div id="reservationsModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <div class="modal-title-section">
+                    <h3 id="reservationsModalTitle">예약내역</h3>
+                    <p class="modal-subtitle" id="reservationModalCompanyName">업체명</p>
+                </div>
+                <span class="close" onclick="closeModal('reservationsModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="reservations-container">
+                    <!-- 로딩 상태 -->
+                    <div id="reservationsLoading" class="loading-state" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>예약내역을 불러오는 중...</p>
+                    </div>
+                    
+                    <!-- 예약내역 목록 -->
+                    <div id="reservationsContent" style="display: none;">
+                        <div class="reservations-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">총 예약 수:</span>
+                                <span class="stat-value" id="totalReservations">0</span>
+                            </div>
+                        </div>
+                        
+                        <div class="reservations-list" id="reservationsList">
+                            <!-- 예약 목록이 여기에 동적으로 로드됩니다 -->
+                        </div>
+                        
+                        <!-- 페이지네이션 -->
+                        <div class="reservations-pagination" id="reservationsPagination" style="display: none;">
+                            <button class="btn btn-sm btn-secondary" id="prevPageBtn" onclick="loadReservationsPage(-1)">
+                                <i class="fas fa-chevron-left"></i> 이전
+                            </button>
+                            <span class="page-info" id="pageInfo">페이지 1 / 1</span>
+                            <button class="btn btn-sm btn-secondary" id="nextPageBtn" onclick="loadReservationsPage(1)">
+                                다음 <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 예약내역이 없을 때 -->
+                    <div id="noReservations" class="no-data-state" style="display: none;">
+                        <i class="fas fa-calendar-times"></i>
+                        <p>예약된 내역이 없습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/crm/js/admin_companies.js"></script>
+</body>
+</html>

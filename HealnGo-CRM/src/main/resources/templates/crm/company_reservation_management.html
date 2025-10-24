@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예약 관리 - HealnGo Admin</title>
+    <link rel="stylesheet" href="/crm/css/company_reservation_management.css">
+    <link rel="stylesheet" href="/crm/css/company_sidebar.css">
+    <link rel="stylesheet" href="/crm/css/company_header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- 사이드바 -->
+        <div th:replace="~{common/company_sidebar :: company_sidebar}"></div>
+        
+        <!-- 메인 콘텐츠 -->
+        <div class="main-content">
+            <!-- 헤더 -->
+            <div th:replace="~{common/company_header :: company_header}"></div>
+            
+        <!-- 페이지 컨텐츠 -->
+        <div class="page-content">
+            <div class="page-header">
+                <h1 class="page-title" th:text="${companyName != null ? companyName : '업체명'}">피부과병원_힝거피부과</h1>
+                <h2 class="section-title">예약 관리</h2>
+            </div>
+
+            <!-- 통계 카드 -->
+            <div class="reservation-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" th:text="${totalCount}">0</h3>
+                        <p class="stat-label">전체 예약</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" th:text="${confirmedCount}">0</h3>
+                        <p class="stat-label">확정된 예약</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" th:text="${cancelledCount}">0</h3>
+                        <p class="stat-label">취소된 예약</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-double"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" th:text="${completedCount}">0</h3>
+                        <p class="stat-label">완료된 예약</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-content-container">
+                <!-- 왼쪽 컬럼: 최근 업데이트만 -->
+                <div class="left-column">
+                    <!-- 최근 업데이트 -->
+                    <div class="recent-updates">
+                        <h3>최근 업데이트</h3>
+                        <div class="update-list">
+                            <!-- 최근 예약이 있을 경우 -->
+                            <div th:if="${recentReservations != null and !recentReservations.isEmpty()}">
+                                <div class="update-item" th:each="reservation : ${recentReservations}">
+                                    <span class="update-text" 
+                                          th:text="${(reservation.customerName != null and reservation.customerName != '고객 정보 없음' ? reservation.customerName : '고객') + '님께서 ' + 
+                                                    (reservation.createdAt != null ? #temporals.format(reservation.createdAt, 'M월 d일 a h시') : '최근') + ' 예약하셨습니다.'}">
+                                        고객님께서 예약하셨습니다.
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- 최근 예약이 없을 경우 -->
+                            <div th:if="${recentReservations == null or recentReservations.isEmpty()}" class="update-item">
+                                <span class="update-text" style="color: #95a5a6;">최근 예약 내역이 없습니다.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 오른쪽 컬럼: 예약 목록 -->
+                <div class="right-column">
+                    <div class="reservations-list-section">
+                        <div class="reservations-header">
+                            <h3>예약 목록</h3>
+                        </div>
+                        
+                        <!-- 선택된 날짜 표시 -->
+                        <div class="selected-date-info">
+                            <span id="selectedDateText">전체 예약</span>
+                            <button class="btn-clear-filter" id="clearFilterBtn" onclick="clearDateFilter()" style="display: none;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- 검색 바 -->
+                        <div class="search-bar-compact">
+                            <input type="text" placeholder="고객명 검색..." class="search-input-compact" id="searchInput" onkeyup="searchReservations()">
+                        </div>
+                        
+                        <!-- 예약 아이템 리스트 -->
+                        <div class="reservation-items" id="reservationList">
+                            <!-- 예약 내역이 없을 때 -->
+                            <div th:if="${#lists.isEmpty(reservations.content)}" class="no-reservations-message">
+                                <i class="fas fa-calendar-times"></i>
+                                <p>예약 내역이 없습니다.</p>
+                            </div>
+                            
+                            <!-- 실제 예약 데이터 표시 -->
+                            <div th:each="reservation : ${reservations.content}" 
+                                 class="reservation-item" 
+                                 th:attr="data-date=${#temporals.format(reservation.date, 'yyyy-MM-dd')},
+                                         data-id=${reservation.id}">
+                                <div class="item-header">
+                                    <div class="customer-info">
+                                        <span class="customer-name" th:text="${reservation.customerName}">고객명</span>
+                                        <span class="customer-phone" th:text="${reservation.customerContact}">연락처</span>
+                                    </div>
+                                    <!-- 상태 뱃지 -->
+                                    <span th:if="${reservation.status == 'CONFIRMED'}" 
+                                          class="status-badge status-confirmed">확정</span>
+                                    <span th:if="${reservation.status == 'CANCELLED'}" 
+                                          class="status-badge status-cancelled">취소</span>
+                                    <span th:if="${reservation.status == 'COMPLETED'}" 
+                                          class="status-badge status-completed">완료</span>
+                                    <span th:if="${reservation.status != 'CONFIRMED' and reservation.status != 'CANCELLED' and reservation.status != 'COMPLETED'}" 
+                                          class="status-badge status-reserved">예약</span>
+                                </div>
+                                <div class="item-datetime">
+                                    <i class="fas fa-calendar"></i>
+                                    <span th:text="${#temporals.format(reservation.date, 'yyyy-MM-dd')} + ' ' + ${#temporals.format(reservation.startTime, 'HH:mm')}">2024-10-15 14:00</span>
+                                </div>
+                                <div class="item-service" th:text="${reservation.title}">
+                                    서비스명
+                                </div>
+                                <div class="item-actions">
+                                    <!-- CONFIRMED가 아닌 경우 확정 버튼 표시 -->
+                                    <button th:if="${reservation.status != 'CONFIRMED' and reservation.status != 'CANCELLED' and reservation.status != 'COMPLETED'}" 
+                                            class="btn-action btn-confirm" 
+                                            th:onclick="'confirmReservation(' + ${reservation.id} + ')'" 
+                                            title="확정">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <!-- COMPLETED가 아닌 경우 완료 버튼 표시 -->
+                                    <button th:if="${reservation.status == 'CONFIRMED'}" 
+                                            class="btn-action btn-complete" 
+                                            th:onclick="'openCompleteModal(' + ${reservation.id} + ')'" 
+                                            title="완료">
+                                        <i class="fas fa-check-double"></i>
+                                    </button>
+                                    <!-- 취소되지 않은 예약만 취소 버튼 표시 -->
+                                    <button th:if="${reservation.status != 'CANCELLED' and reservation.status != 'COMPLETED'}" 
+                                            class="btn-action btn-cancel" 
+                                            th:onclick="'cancelReservation(' + ${reservation.id} + ')'" 
+                                            title="취소">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <!-- 항상 삭제 버튼 표시 -->
+                                    <button class="btn-action btn-delete" 
+                                            th:onclick="'deleteReservation(' + ${reservation.id} + ')'" 
+                                            title="삭제">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 예약 완료 확인 모달 -->
+<div id="completeConfirmModal" class="modal">
+    <div class="modal-content confirm-modal">
+        <div class="modal-header">
+            <h2>예약 완료 처리</h2>
+            <span class="close" onclick="closeCompleteModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="confirm-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <p class="confirm-message">예약 완료 처리하시겠습니까?</p>
+            <p class="confirm-sub-message">완료 처리된 예약은 되돌릴 수 없습니다.</p>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeCompleteModal()">취소</button>
+            <button type="button" class="btn btn-primary" onclick="confirmComplete()">확인</button>
+        </div>
+    </div>
+</div>
+
+<!-- 일정 추가 모달 -->
+<div id="eventModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>일정 추가</h2>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <form id="eventForm">
+            <div class="form-group">
+                <label for="eventTitle">제목</label>
+                <input type="text" id="eventTitle" name="title" placeholder="일정 제목을 입력하세요" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="eventDate">날짜</label>
+                <input type="date" id="eventDate" name="date" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="eventStartTime">시작 시간</label>
+                    <input type="time" id="eventStartTime" name="startTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventEndTime">종료 시간</label>
+                    <input type="time" id="eventEndTime" name="endTime" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="eventDescription">설명</label>
+                <textarea id="eventDescription" name="description" placeholder="일정에 대한 설명을 입력하세요" rows="3"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="eventLocation">장소</label>
+                <input type="text" id="eventLocation" name="location" placeholder="장소를 입력하세요">
+            </div>
+            
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="googleSyncEnabled" name="googleSyncEnabled" value="true">
+                    <span class="checkmark"></span>
+                    구글 캘린더와 동기화
+                </label>
+                <small class="form-help">체크하면 구글 캘린더에도 일정이 추가됩니다</small>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" onclick="closeModal()">취소</button>
+                <button type="submit" class="btn-save">저장</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <script src="/crm/js/company_sidebar.js"></script>
+    <script src="/crm/js/company_header.js"></script>
+    
+    <!-- Thymeleaf에서 예약 데이터를 JavaScript로 전달 -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.reservationList = [[${reservationList}]];
+        console.log('=== Thymeleaf 예약 데이터 전달 ===');
+        console.log('예약 데이터:', window.reservationList);
+        console.log('=================================');
+        /*]]>*/
+    </script>
+    
+    <script src="/crm/js/company_reservation_management.js"></script>
+</body>
+</html>

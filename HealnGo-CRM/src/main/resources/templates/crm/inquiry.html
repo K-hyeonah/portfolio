@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>신고 / 문의하기 - HealnGo</title>
+    <link rel="stylesheet" href="/resources/css/styles.css" />
+    <link rel="stylesheet" href="/crm/css/inquiry.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+</head>
+<body>
+<!-- 헤더 -->
+<div th:replace="~{common/header :: header}"></div>
+
+<div class="inquiry-page-container">
+    <div class="inquiry-page-header">
+        <h1 class="inquiry-page-title">신고 / 문의하기</h1>
+        <p class="inquiry-page-description">불편사항이나 문의사항을 남겨주세요. 빠르게 확인 후 답변드리겠습니다.</p>
+    </div>
+
+    <div class="inquiry-form-container">
+        <!-- 탭 -->
+        <div class="inquiry-tabs">
+            <button class="inquiry-tab active" data-tab="report">
+                <i class="fas fa-flag"></i><span>신고하기</span>
+            </button>
+            <button class="inquiry-tab" data-tab="inquiry">
+                <i class="fas fa-question-circle"></i><span>문의하기</span>
+            </button>
+            <button class="inquiry-tab" data-tab="history">
+                <i class="fas fa-history"></i><span>내 문의/신고 내역</span>
+            </button>
+        </div>
+
+        <!-- 폼 -->
+        <form id="mainForm" action="/api/user-inquiry/submit" method="POST" enctype="multipart/form-data" novalidate>
+            <!-- 신고 -->
+            <div class="inquiry-form-content" id="reportFormContent">
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-tags"></i> 신고 유형 <span class="required">*</span></label>
+                    <select class="form-control" name="reportType" required>
+                        <option value="">선택해주세요</option>
+                        <option value="inappropriate">부적절한 게시글</option>
+                        <option value="false_info">허위정보</option>
+                        <option value="etc">기타</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-link"></i> 신고 대상 URL</label>
+                    <input type="url" class="form-control" name="targetUrl" placeholder="https://example.com"/>
+                    <small class="form-text">신고하려는 페이지 또는 게시글의 URL을 입력해주세요.</small>
+                </div>
+
+                <!-- 이름/이메일/연락처: 화면용(백엔드 저장 X) -->
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-user"></i> 이름 <span class="required">*</span></label>
+                    <input type="text" class="form-control" name="name" placeholder="홍길동" required/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-envelope"></i> 이메일 <span class="required">*</span></label>
+                    <input type="email" class="form-control" name="email" placeholder="example@healngo.com" required/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-phone"></i> 연락처 <span class="required">*</span></label>
+                    <input type="tel" class="form-control" name="phone" placeholder="010-1234-5678" required/>
+                </div>
+
+                <!-- 백엔드 필드에 맞춰 name을 subject/content로 변경 -->
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-heading"></i> 제목 <span class="required">*</span></label>
+                    <input type="text" class="form-control" name="subject" placeholder="제목을 입력하세요" required/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-align-left"></i> 내용 <span class="required">*</span></label>
+                    <textarea class="form-control" name="content" rows="8" placeholder="상세한 내용을 입력해주세요" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-paperclip"></i> 파일 첨부 (선택)</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" class="form-control-file" name="attachment" id="reportFile" accept="image/*,.pdf,.doc,.docx"/>
+                        <label for="reportFile" class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i><span>파일 선택 또는 드래그</span>
+                        </label>
+                        <div class="file-name" id="reportFileName"></div>
+                    </div>
+                    <small class="form-text">이미지, PDF, Word (최대 10MB)</small>
+                </div>
+
+                <!-- 선택: 주문번호 -->
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-receipt"></i> 관련 주문번호(선택)</label>
+                    <input type="number" class="form-control" name="orderId" placeholder="주문번호"/>
+                </div>
+
+                <div class="form-actions">
+                    <button type="reset" class="btn btn-secondary"><i class="fas fa-redo"></i> 초기화</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> 신고 제출하기</button>
+                </div>
+            </div>
+
+            <!-- 문의 -->
+            <div class="inquiry-form-content" id="inquiryFormContent" style="display:none;">
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-tags"></i> 문의 유형 <span class="required">*</span></label>
+                    <select class="form-control" name="inquiryType" required>
+                        <option value="">선택해주세요</option>
+                        <option value="service">서비스 이용 문의</option>
+                        <option value="reservation">예약/일정 관련 문의</option>
+                        <option value="system_error">시스템 오류</option>
+                        <option value="etc">기타</option>
+                    </select>
+                    <small class="form-text">• 서비스/예약/시스템 오류 중에서 선택해 주세요.</small>
+                </div>
+
+                <!-- 화면용 필드 -->
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-user"></i> 이름 <span class="required">*</span></label>
+                    <input type="text" class="form-control" name="name" placeholder="홍길동" required/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-envelope"></i> 이메일 <span class="required">*</span></label>
+                    <input type="email" class="form-control" name="email" placeholder="example@healngo.com" required/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-phone"></i> 연락처 <span class="required">*</span></label>
+                    <input type="tel" class="form-control" name="phone" placeholder="010-1234-5678" required/>
+                </div>
+
+                <!-- 백엔드 매핑 필드 -->
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-heading"></i> 제목 <span class="required">*</span></label>
+                    <input type="text" class="form-control" name="subject" placeholder="제목을 입력하세요" required/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-align-left"></i> 내용 <span class="required">*</span></label>
+                    <textarea class="form-control" name="content" rows="8" placeholder="상세한 내용을 입력해주세요" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-paperclip"></i> 파일 첨부 (선택)</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" class="form-control-file" name="attachment" id="inquiryFile" accept="image/*,.pdf,.doc,.docx"/>
+                        <label for="inquiryFile" class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i><span>파일 선택 또는 드래그</span>
+                        </label>
+                        <div class="file-name" id="inquiryFileName"></div>
+                    </div>
+                    <small class="form-text">이미지, PDF, Word (최대 10MB)</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="reset" class="btn btn-secondary"><i class="fas fa-redo"></i> 초기화</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> 문의 제출하기</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- 내역 -->
+        <div class="inquiry-form-content" id="historyFormContent" style="display:none;">
+            <div class="history-loading" id="historyLoading">
+                <i class="fas fa-spinner fa-spin"></i><p>내역을 불러오는 중입니다...</p>
+            </div>
+            <div class="history-list" id="historyList" style="display:none;"></div>
+            <div class="history-empty" id="historyEmpty" style="display:none;">
+                <i class="fas fa-inbox"></i><p>아직 문의하거나 신고한 내역이 없습니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="inquiry-notice">
+        <h3 class="notice-title"><i class="fas fa-info-circle"></i> 안내사항</h3>
+        <ul class="notice-list">
+            <li><i class="fas fa-check"></i> 신고 및 문의는 영업일 기준 1~2일 내 답변드립니다.</li>
+            <li><i class="fas fa-check"></i> 긴급 문의는 고객센터(1588-1234)로 연락 바랍니다.</li>
+            <li><i class="fas fa-check"></i> 허위 신고 시 서비스 이용이 제한될 수 있습니다.</li>
+            <li><i class="fas fa-check"></i> 업체로부터의 문의는 채팅을 이용해주세요.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 푸터 -->
+<div th:replace="~{common/footer :: footer}"></div>
+
+<script src="/crm/js/inquiry.js"></script>
+</body>
+</html>

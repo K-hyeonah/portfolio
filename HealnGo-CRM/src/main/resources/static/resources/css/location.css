@@ -1,0 +1,146 @@
+:root { 
+    --border: #e5e7eb; 
+    --muted: #6b7280; 
+    --text: #111827; 
+    --bg: #ffffff; 
+    --bg2: #f9fafb; 
+    --black: #000; 
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    color: var(--text);
+    background: var(--bg2);
+}
+
+/* 헤더와의 간격 조정 */
+.location-content {
+    margin-top: 80px; /* 헤더 높이만큼 여백 추가 */
+}
+
+.container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.row {
+    display: grid;
+    gap: 12px;
+}
+
+@media (min-width: 900px) {
+    .row {
+        grid-template-columns: 240px 1fr;
+    }
+}
+
+.card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.left {
+    padding: 8px;
+}
+
+.right {
+    padding: 12px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* left nav */
+.sido {
+    list-style: none;
+    margin: 0;
+    padding: 4px;
+    max-height: 70vh;
+    overflow: auto;
+}
+
+.sido li {
+    border-radius: 8px;
+}
+
+.sido button {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #374151;
+}
+
+.sido button:hover {
+    background: #f3f4f6;
+}
+
+.sido .active {
+    background: #a4d6a4cc !important;
+    color: #fff !important;
+    font-weight: 600;
+}
+
+/* right panel */
+.list {
+    max-height: 64vh;
+    overflow: auto;
+    padding-right: 4px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.item:last-child {
+    border-bottom: 0;
+}
+
+.item:hover {
+    background: #f3f4f6;
+}
+
+.item .arrow {
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.back-btn {
+    background: #a4d6a4cc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 20px;
+    transition: background 0.3s ease;
+}
+
+.back-btn:hover {
+    background: #005A66;
+    color: white;
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 - HealnGo</title>
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/crm/css/signup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <div th:replace="~{common/header :: header}"></div>
+
+
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1>회원가입</h1>
+            <p>HealnGo에 오신 것을 환영합니다</p>
+        </div>
+
+        <div class="user-type-selector">
+            <button class="user-type-btn active" data-type="social">일반 사용자</button>
+        </div>
+
+        <!-- 일반 사용자 회원가입 폼 -->
+        <form id="social-signup-form" class="signup-form active">
+            <div class="form-group">
+                <label for="social-email">이메일 *</label>
+                <div class="phone-verification">
+                    <input type="email" id="social-email" name="email" required>
+                    <button type="button" class="verify-btn" id="social-verify-btn">인증번호 발송</button>
+                </div>
+                <span class="error-message" id="social-email-error"></span>
+            </div>
+
+            <div class="form-group" id="social-verification-group" style="display: none;">
+                <label for="social-verification-code">인증번호 *</label>
+                <div class="verification-input">
+                    <input type="text" id="social-verification-code" name="verificationCode" placeholder="인증번호 입력">
+                    <button type="button" class="verify-btn" id="social-verify-code-btn">인증 확인</button>
+                </div>
+                <span class="error-message" id="social-verification-error"></span>
+                <div class="verification-timer" id="social-timer" style="display: none;">
+                    <span>남은 시간: </span><span id="social-time-left">05:00</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="social-password">비밀번호 *</label>
+                <input type="password" id="social-password" name="password" required>
+                <span class="error-message" id="social-password-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="social-password-confirm">비밀번호 확인 *</label>
+                <input type="password" id="social-password-confirm" name="passwordConfirm" required>
+                <span class="error-message" id="social-password-confirm-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="social-name">이름 *</label>
+                <input type="text" id="social-name" name="name" required>
+                <span class="error-message" id="social-name-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="social-phone">전화번호 (선택)</label>
+                <input type="tel" id="social-phone" name="phone" placeholder="010-1234-5678">
+                <span class="error-message" id="social-phone-error"></span>
+            </div>
+
+            <button type="submit" class="user-signup-btn">회원가입</button>
+        </form>
+
+        <div class="login-link">
+            <p>이미 계정이 있으신가요? <a th:href="@{/login}">로그인</a></p>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <div th:replace="~{common/footer :: footer}"></div>
+
+    <script src="/crm/js/signup.js"></script>
+</body>
+</html>

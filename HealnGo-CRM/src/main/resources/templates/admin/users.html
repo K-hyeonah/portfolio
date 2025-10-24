@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 관리 - HealnGo Admin</title>
+    <link rel="stylesheet" href="/crm/css/admin_sidebar.css">
+    <link rel="stylesheet" href="/crm/css/admin_header.css">
+    <link rel="stylesheet" href="/crm/css/admin_users.css">
+    <style>
+        /* 추가 스타일 오버라이드 */
+        body {
+            display: block !important;
+            background-color: #F4F9FD !important;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 사이드바 -->
+    <div th:replace="common/admin_sidebar :: admin_sidebar"></div>
+    
+    <!-- 메인 컨텐츠 -->
+    <div class="admin-main-content">
+        <!-- 헤더 -->
+        <div th:replace="common/admin_header :: admin_header"></div>
+
+        <!-- 페이지 컨텐츠 -->
+        <div class="admin-page-content">
+            <!-- 페이지 헤더 -->
+            <div class="page-header">
+                <h1 class="page-title">사용자 관리</h1>
+                <div class="page-actions">
+                </div>
+            </div>
+
+            <!-- 필터 및 검색 -->
+            <div class="filters-section">
+                <div class="search-bar">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="사용자명, 이메일로 검색..." class="search-input" 
+                               th:value="${search}" id="searchInput">
+                    </div>
+                    <button type="button" class="btn btn-search" onclick="performSearch()">
+                        검색
+                    </button>
+                </div>
+                
+                <div class="filter-controls">
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">전체 상태</option>
+                        <option value="ACTIVE" th:selected="${statusFilter == 'ACTIVE'}">활성</option>
+                        <option value="SUSPENDED" th:selected="${statusFilter == 'SUSPENDED'}">정지</option>
+                        <option value="INACTIVE" th:selected="${statusFilter == 'INACTIVE'}">비활성</option>
+                    </select>
+                    
+                    <select class="filter-select" id="sortBy">
+                        <option value="createdAt" th:selected="${sortBy == 'createdAt' || sortBy == null}">가입일순</option>
+                        <option value="name" th:selected="${sortBy == 'name'}">이름순</option>
+                        <option value="email" th:selected="${sortBy == 'email'}">이메일순</option>
+                    </select>
+                    
+                    <select class="filter-select" id="sortDir">
+                        <option value="desc" th:selected="${sortDir == 'desc' || sortDir == null}">내림차순</option>
+                        <option value="asc" th:selected="${sortDir == 'asc'}">오름차순</option>
+                    </select>
+                    
+                    <button class="btn btn-filter" onclick="applyFilters()">
+                        <i class="fas fa-filter"></i>
+                        필터 적용
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearFilters()">
+                        <i class="fas fa-times"></i>
+                        초기화
+                    </button>
+                </div>
+            </div>
+
+            <!-- 사용자 목록 -->
+            <div class="users-table-container">
+                <div class="table-header">
+                    <div class="table-info">
+                        <span class="total-count">총 <strong th:text="${totalUsers}">1,250</strong>명</span>
+                    </div>
+                    <div class="table-actions">
+                        <button class="btn btn-sm btn-secondary" onclick="selectAll()">
+                            전체 선택
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="bulkAction('suspend')">
+                            선택 정지
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-column">
+                                    <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()">
+                                </th>
+                                <th>사용자 ID</th>
+                                <th>이름</th>
+                                <th>이메일</th>
+                                <th>전화번호</th>
+                                <th>가입일</th>
+                                <th>상태</th>
+                                <th>액션</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="user : ${users}" class="user-row">
+                                <td class="checkbox-column">
+                                    <input type="checkbox" class="user-checkbox" th:value="${user.id}">
+                                </td>
+                                <td class="user-id" th:text="${user.id}">1</td>
+                                <td class="user-name" th:text="${user.name}">김철수</td>
+                                <td class="user-email" th:text="${user.email}">kim@example.com</td>
+                                <td class="user-phone" th:text="${user.phone != null ? user.phone : '-'}">010-1234-5678</td>
+                                <td class="join-date" th:text="${user.joinDate}">2024-01-15</td>
+                                <td class="user-status">
+                                    <span class="status-badge" 
+                                          th:classappend="${user.status == '활성'} ? 'status-active' : (${user.status == '정지'} ? 'status-suspended' : 'status-inactive')"
+                                          th:text="${user.status}">활성</span>
+                                </td>
+                                <td class="actions">
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-info" th:onclick="|viewUser(${user.id})|" title="상세보기">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-warning" th:onclick="|editUser(${user.id})|" title="수정">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" th:onclick="|suspendUser(${user.id})|" title="상태 변경 (활성↔정지↔비활성화)">
+                                            <i class="fas fa-user-slash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 페이지네이션 -->
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    <span>페이지 <strong th:text="${currentPage}">1</strong> / <strong th:text="${totalPages}">125</strong></span>
+                </div>
+                <div class="pagination">
+                    <button class="pagination-btn" th:if="${currentPage > 1}" 
+                            th:onclick="'goToPage(' + ${currentPage - 1} + ')'">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    
+                    <span th:each="pageNum : ${#numbers.sequence(1, totalPages)}" 
+                          th:if="${pageNum >= currentPage - 2 and pageNum <= currentPage + 2}">
+                        <button class="pagination-btn" 
+                                th:classappend="${pageNum == currentPage} ? 'active'"
+                                th:onclick="'goToPage(' + ${pageNum} + ')'"
+                                th:text="${pageNum}">1</button>
+                    </span>
+                    
+                    <button class="pagination-btn" th:if="${currentPage < totalPages}" 
+                            th:onclick="'goToPage(' + ${currentPage + 1} + ')'">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 사용자 상세 모달 -->
+    <div id="userDetailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>사용자 상세 정보</h3>
+                <span class="close" onclick="closeModal('userDetailModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="userDetailContent">
+                    <!-- 사용자 상세 정보가 여기에 로드됩니다 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 사용자 상세 보기 모달 -->
+    <div id="userDetailModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>사용자 상세 정보</h2>
+                <span class="close" onclick="closeUserDetailModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="user-detail" id="userDetailContent">
+                    <!-- 상세 정보가 여기에 로드됩니다 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 사용자 수정 모달 -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>사용자 정보 수정</h2>
+                <span class="close" onclick="closeEditUserModal()">&times;</span>
+            </div>
+            <form id="editUserForm">
+                <input type="hidden" id="editUserId" name="userId">
+                
+                <div class="form-group">
+                    <label for="editUserName">이름</label>
+                    <input type="text" id="editUserName" name="name" placeholder="이름을 입력하세요" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editUserEmail">이메일</label>
+                    <input type="email" id="editUserEmail" name="email" placeholder="이메일을 입력하세요" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editUserPhone">전화번호</label>
+                    <input type="tel" id="editUserPhone" name="phone" placeholder="전화번호를 입력하세요">
+                </div>
+                
+                <div class="form-group">
+                    <label for="editUserStatus">상태</label>
+                    <select id="editUserStatus" name="status" required>
+                        <option value="active">활성</option>
+                        <option value="inactive">비활성</option>
+                        <option value="suspended">정지</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editUserNotes">관리자 메모</label>
+                    <textarea id="editUserNotes" name="notes" placeholder="관리자 메모를 입력하세요" rows="4"></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeEditUserModal()">취소</button>
+                    <button type="submit" class="btn-save">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/crm/js/admin_users.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+@startuml
+!theme plain
+left to right direction
+
+' 폰트 문제 있으면 awesome -> stickman
+skinparam actorStyle awesome
+
+skinparam usecase {
+  BackgroundColor #F4F9FD
+  BorderColor #3F8CFF
+  FontSize 12
+}
+skinparam actor {
+  BackgroundColor #E8F4FD
+  BorderColor #3F8CFF
+  FontSize 14
+}
+
+title HealnGo 유스케이스 (사용자/업체)
+
+actor "사용자" as User
+actor "업체" as Partner
+
+rectangle "HealnGo" {
+  (인증/권한 확인) as UC_AUTH
+
+  (회원가입) as UC_SIGNUP
+  (로그인) as UC_LOGIN
+  (프로필 관리) as UC_PROFILE
+  (클리닉 검색) as UC_SEARCH
+  (시술 정보 조회) as UC_VIEW
+  (리뷰 작성) as UC_REVIEW
+  (예약하기) as UC_BOOK
+  (즐겨찾기 관리) as UC_FAV
+  (문의 채팅) as UC_CHAT
+
+  (서비스 등록) as UC_VENDOR_APPLY
+  (시술 메뉴 관리) as UC_MENU
+  (일정 관리) as UC_SCHEDULE
+  (예약 관리) as UC_RES_MGMT
+  (리뷰 응답) as UC_REPLY
+  (리포트 통계 조회) as UC_METRIC
+
+  User --> UC_SEARCH
+  User --> UC_VIEW
+  User --> UC_BOOK
+  User --> UC_REVIEW
+  User --> UC_FAV
+  User --> UC_CHAT
+  User --> UC_PROFILE
+  User --> UC_SIGNUP
+  User --> UC_LOGIN
+
+  Partner --> UC_VENDOR_APPLY
+  Partner --> UC_MENU
+  Partner --> UC_SCHEDULE
+  Partner --> UC_RES_MGMT
+  Partner --> UC_REPLY
+  Partner --> UC_METRIC
+  Partner --> UC_CHAT
+
+  UC_LOGIN ..> UC_AUTH : «include»
+  UC_PROFILE ..> UC_AUTH : «include»
+  UC_FAV ..> UC_AUTH : «include»
+  UC_BOOK ..> UC_AUTH : «include»
+  UC_CHAT ..> UC_AUTH : «include»
+  UC_REVIEW ..> UC_AUTH : «include»
+  UC_REVIEW ..> UC_BOOK : «include»
+  UC_MENU ..> UC_AUTH : «include»
+  UC_SCHEDULE ..> UC_AUTH : «include»
+  UC_RES_MGMT ..> UC_AUTH : «include»
+  UC_REPLY ..> UC_AUTH : «include»
+  UC_METRIC ..> UC_AUTH : «include»
+  UC_VENDOR_APPLY ..> UC_AUTH : «include»
+
+}
+@enduml

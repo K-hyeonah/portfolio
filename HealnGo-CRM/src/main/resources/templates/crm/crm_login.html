@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealnGo - 업체 로그인</title>
+    <link rel="stylesheet" th:href="@{/crm/css/crm_login.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <!-- 왼쪽 사이드바 -->
+        <div class="login-sidebar">
+            <div class="sidebar-content">
+                <div class="logo-section">
+                    <img src="/crm/images/로고 화이트.png.png" alt="HealnGo Logo" class="logo-img">
+                    <h1 class="sidebar-title">업체 로그인</h1>
+                    <p class="sidebar-subtitle">HealnGo와 함께 의료 서비스를 관리하세요</p>
+                </div>
+                
+                <div class="sidebar-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h3>예약 관리</h3>
+                            <p>간편한 예약 시스템</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h3>고객 관리</h3>
+                            <p>효율적인 CRM 솔루션</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h3>데이터 분석</h3>
+                            <p>실시간 통계 및 리포트</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 오른쪽 메인 컨텐츠 -->
+        <div class="login-main">
+            <div class="login-content">
+                <div class="login-header">
+                    <h1>환영합니다! 👋</h1>
+                    <p>업체 계정으로 로그인하세요</p>
+                </div>
+
+                <div class="alert-box" id="alertBox"></div>
+
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="email">이메일</label>
+                        <input type="email" id="email" name="email" required placeholder="example@company.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">비밀번호</label>
+                        <input type="password" id="password" name="password" required placeholder="비밀번호를 입력하세요">
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" name="remember">
+                            <span>로그인 상태 유지</span>
+                        </label>
+                        <a th:href="@{/crm/forgot-password}" class="forgot-password">
+                            <i class="fas fa-lock"></i>
+                            비밀번호 찾기
+                        </a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        로그인
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>또는</span>
+                </div>
+
+                <button onclick="location.href='/crm/company_signup'" class="btn btn-secondary">
+                    <i class="fas fa-building"></i>
+                    업체 회원가입
+                </button>
+
+                <div class="back-to-user">
+                    <a href="/login">
+                        <i class="fas fa-arrow-left"></i>
+                        일반 사용자 로그인
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 승인 상태 모달 -->
+    <div id="approvalModal" class="approval-modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeApprovalModal()">&times;</span>
+            <div id="modalIcon" class="modal-icon status-pending">
+                <i class="fas fa-clock"></i>
+            </div>
+            <h2 id="modalTitle" class="modal-title">승인 대기중입니다</h2>
+            <p id="modalMessage" class="modal-message">
+                관리자의 승인을 기다리고 있습니다.<br>
+                승인 완료 후 로그인이 가능합니다.
+            </p>
+            <button onclick="closeApprovalModal()" class="modal-btn">
+                확인
+            </button>
+        </div>
+    </div>
+
+    <script th:src="@{/crm/js/crm_login.js}"></script>
+</body>
+</html>

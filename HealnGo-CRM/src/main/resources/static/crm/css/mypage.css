@@ -1,0 +1,1131 @@
+/* 마이페이지 전용 CSS - 이미지 디자인에 맞춰 재작성 */
+
+/* 기본 리셋 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 메인 컨텐츠 */
+.main-content {
+    min-height: calc(100vh - 200px);
+    margin: 40px;
+}
+
+
+/* 알림 및 예약내역 세로 배치 (첫 번째 사진처럼) */
+.content-section {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.content-section .card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 100%;
+}
+
+/* 사용자 프로필 섹션 */
+.user-profile {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.profile-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-image {
+    width: 80px;
+    height: 80px;
+    background: #e9ecef;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: #6c757d;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.settings-icon {
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.settings-icon:hover {
+    color: #005a66;
+}
+
+.profile-right {
+    flex: 1;
+}
+
+.mypage-user-name {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 15px 20px;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.action-btn:hover {
+    background: #f8f9fa;
+    border-color: #4CAF50;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.action-btn i {
+    font-size: 24px;
+    color: #4CAF50;
+}
+
+.action-btn span {
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* 알림 섹션 */
+.notifications-section {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.view-all {
+    color: #6c757d;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.view-all:hover {
+    color: #005a66;
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #f8f9fa;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.notification-item:hover {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-icon {
+    width: 40px;
+    height: 40px;
+    background: #e8f5e8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #4CAF50;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-text {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.notification-time {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+/* 예약 내역 섹션 */
+.booking-history {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.booking-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.booking-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #4CAF50;
+    transition: all 0.3s ease;
+}
+
+.booking-card:hover {
+    background: #e8f5e8;
+    transform: translateX(5px);
+}
+
+.booking-info h4 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.booking-date {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+.booking-service {
+    font-size: 14px;
+    color: #333;
+}
+
+.booking-status {
+    display: flex;
+    align-items: center;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-badge.completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-badge.confirmed {
+    background: #cce5ff;
+    color: #004085;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .user-profile {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .action-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+}
+
+@media (max-width: 480px) {
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .action-btn {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+/* 알림 섹션 스타일 */
+.notifications-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f8f9fa;
+}
+
+.notifications-section h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.notifications-section .view-all {
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.notifications-section .view-all:hover {
+    color: #4CAF50;
+}
+
+.notification-list {
+    list-style: none;
+}
+
+.notification-list li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border-bottom: 1px solid #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.notification-list li:hover {
+    background: #f8f9ff;
+    transform: translateX(4px);
+}
+
+.notification-list li:last-child {
+    border-bottom: none;
+}
+
+.notification-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.notification-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.notification-company {
+    font-size: 12px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.notification-detail {
+    font-size: 13px;
+    color: #667eea;
+    font-weight: 600;
+}
+
+.notification-text {
+    flex: 1;
+    color: #333;
+    font-size: 14px;
+}
+
+.notification-time {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+/* 예약내역 섹션 스타일 */
+.booking-history-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f8f9fa;
+}
+
+.booking-history-section h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.booking-history-section .view-all {
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.booking-history-section .view-all:hover {
+    color: #4CAF50;
+}
+
+.booking-list {
+    list-style: none;
+}
+
+.booking-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.booking-item:last-child {
+    border-bottom: none;
+}
+
+.booking-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.booking-company {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 16px;
+}
+
+.booking-date {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.booking-service {
+    color: #333;
+    font-size: 14px;
+}
+
+.booking-status {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.booking-status.completed {
+    background: #e8f5e8;
+    color: #4CAF50;
+}
+
+.booking-status.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.booking-status.confirmed {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.booking-status.cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* 예약 내역이 없을 때 */
+.no-reservations {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+    color: #999;
+    font-style: italic;
+    font-size: 14px;
+}
+
+/* 정보 수정 모달 */
+.profile-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-modal.show {
+    display: flex;
+}
+
+.profile-modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+.profile-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid #e9ecef;
+    background: #f8f9fa;
+}
+
+.profile-modal-header h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.profile-close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.profile-close-btn:hover {
+    background: #e9ecef;
+    color: #333;
+}
+
+.profile-modal-body {
+    padding: 30px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.profile-edit-section {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.profile-image-edit {
+    flex-shrink: 0;
+}
+
+.profile-image-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 3px solid #e9ecef;
+}
+
+.profile-image-large i {
+    font-size: 48px;
+    color: #6c757d;
+}
+
+.profile-image-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+}
+
+.profile-image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.camera-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.camera-btn:hover {
+    background: #45a049;
+    transform: scale(1.1);
+}
+
+.profile-form {
+    flex: 1;
+}
+
+.profile-form .form-group {
+    margin-bottom: 20px;
+}
+
+.profile-form label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.profile-form input,
+.profile-form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.profile-form input:focus,
+.profile-form select:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.profile-form input[readonly] {
+    background: #f8f9fa;
+    color: #6c757d;
+}
+
+.password-section {
+    border-top: 2px solid #e9ecef;
+    padding: 30px;
+    margin: 30px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.password-section h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.password-section h4::before {
+    content: "🔒";
+    font-size: 20px;
+}
+
+.password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.password-form .form-group {
+    margin-bottom: 0;
+    position: relative;
+}
+
+.password-form .form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+.password-form .form-group input {
+    width: 100%;
+    padding: 12px 40px 12px 16px;
+    font-size: 14px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.password-form .form-group input:focus {
+    outline: none;
+    border-color: #2a7a5b;
+    box-shadow: 0 0 0 3px rgba(42, 122, 91, 0.1);
+}
+
+.password-form .form-group input::placeholder {
+    color: #adb5bd;
+}
+
+/* 비밀번호 강도 표시 */
+.password-strength {
+    height: 4px;
+    background: #e9ecef;
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.password-strength-bar {
+    height: 100%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.password-strength-weak {
+    width: 33%;
+    background: #dc3545;
+}
+
+.password-strength-medium {
+    width: 66%;
+    background: #ffc107;
+}
+
+.password-strength-strong {
+    width: 100%;
+    background: #28a745;
+}
+
+/* 비밀번호 확인 메시지 */
+.password-match-message {
+    font-size: 12px;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.password-match-message.success {
+    color: #28a745;
+}
+
+.password-match-message.error {
+    color: #dc3545;
+}
+
+/* 비밀번호 보기 토글 버튼 */
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 38px;
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 8px;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: #2a7a5b;
+}
+
+/* 비밀번호 요구사항 안내 */
+.password-requirements {
+    background: #f8f9fa;
+    border-left: 4px solid #2a7a5b;
+    padding: 12px 16px;
+    margin-top: 16px;
+    border-radius: 4px;
+}
+
+.password-requirements p {
+    font-size: 13px;
+    color: #495057;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
+.password-requirements ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.password-requirements li {
+    font-size: 12px;
+    color: #6c757d;
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.password-requirements li::before {
+    content: "✓";
+    color: #28a745;
+    font-weight: bold;
+}
+
+.profile-modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+.profile-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.profile-btn.cancel {
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 1px solid #ddd;
+}
+
+.profile-btn.cancel:hover {
+    background: #e9ecef;
+    color: #333;
+}
+
+.profile-btn.save {
+    background: #4CAF50;
+    color: white;
+}
+
+.profile-btn.save:hover {
+    background: #45a049;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+/* 알림 모달 */
+.notification-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.notification-modal.show {
+    display: flex;
+}
+
+.notification-modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.notification-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid #e9ecef;
+    background: #f8f9fa;
+}
+
+.notification-modal-header h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.notification-close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.notification-close-btn:hover {
+    background: #e9ecef;
+    color: #333;
+}
+
+.notification-modal-body {
+    padding: 20px 25px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notification-modal-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.notification-modal-list li {
+    margin-bottom: 15px;
+}
+
+.notification-modal-list li:last-child {
+    margin-bottom: 0;
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.notification-item:hover {
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 12px 15px;
+    margin: 0 -15px;
+}
+
+/* 알림 모달 추가 스타일 */
+.notification-modal-item {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.notification-modal-item:hover {
+    background: #f8f9ff;
+}
+
+.notification-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.notification-details {
+    margin-left: 56px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.notification-details p {
+    margin: 6px 0;
+    font-size: 14px;
+    color: #495057;
+    line-height: 1.6;
+}
+
+.notification-details strong {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.notification-line {
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.notification-text {
+    flex: 1;
+    color: #333;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* 모달 스크롤바 스타일 */
+.notification-modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notification-modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.notification-modal-body::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    border-radius: 3px;
+}
+
+.notification-modal-body::-webkit-scrollbar-thumb:hover {
+    background: #45a049;
+}
+
+/* 반응형 - 모바일에서도 세로 배치 유지 */
+@media (max-width: 768px) {
+    .content-section {
+        gap: 20px;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+    
+    .notification-modal-content {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    .notification-modal-header {
+        padding: 15px 20px;
+    }
+    
+    .notification-modal-body {
+        padding: 15px 20px;
+    }
+    
+    .profile-modal-content {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    .profile-modal-body {
+        padding: 20px;
+    }
+    
+    .profile-edit-section {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .profile-image-edit {
+        align-self: center;
+    }
+    
+    .password-form {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .profile-modal-actions {
+        flex-direction: column;
+    }
+    
+    .profile-btn {
+        width: 100%;
+    }
+}

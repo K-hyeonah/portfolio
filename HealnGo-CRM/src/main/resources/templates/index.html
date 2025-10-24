@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>한국 사이트</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+  <div th:replace="common/header :: header"></div>
+
+  <main style="padding:24px;">
+    <h1>다국어 예제 (HTML + JavaScript i18n)</h1>
+    <p>번역 버튼을 눌러 언어를 선택하면 사이트 전체가 해당 언어로 다시 렌더링됩니다.</p>
+    <p><a href="/about">회사소개 페이지로 이동</a></p>
+  </main>
+
+  <script>
+    // 간단한 다국어 지원 JavaScript
+    const translations = {
+      ko: {
+        title: "한국 사이트",
+        home: "홈",
+        about: "회사소개",
+        heading: "다국어 예제 (HTML + JavaScript i18n)",
+        lead: "번역 버튼을 눌러 언어를 선택하면 사이트 전체가 해당 언어로 다시 렌더링됩니다.",
+        aboutLink: "회사소개 페이지로 이동"
+      },
+      en: {
+        title: "Korean Site",
+        home: "Home",
+        about: "About",
+        heading: "Multilingual Example (HTML + JavaScript i18n)",
+        lead: "Click the translation button to select a language and the entire site will be re-rendered in that language.",
+        aboutLink: "Go to About page"
+      },
+      ja: {
+        title: "韓国サイト",
+        home: "ホーム",
+        about: "会社紹介",
+        heading: "多言語例 (HTML + JavaScript i18n)",
+        lead: "翻訳ボタンをクリックして言語を選択すると、サイト全体がその言語で再レンダリングされます。",
+        aboutLink: "会社紹介ページへ移動"
+      },
+      zh: {
+        title: "韩国网站",
+        home: "首页",
+        about: "公司介绍",
+        heading: "多语言示例 (HTML + JavaScript i18n)",
+        lead: "点击翻译按钮选择语言，整个网站将以该语言重新渲染。",
+        aboutLink: "前往公司介绍页面"
+      }
+    };
+
+    // URL에서 언어 파라미터 읽기
+    const urlParams = new URLSearchParams(window.location.search);
+    const lang = urlParams.get('lang') || 'ko';
+    
+    // 언어에 따라 텍스트 업데이트
+    function updateLanguage(selectedLang) {
+      const t = translations[selectedLang] || translations.ko;
+      
+      document.title = t.title;
+      document.querySelector('nav a[href="/"]').textContent = t.home;
+      document.querySelector('nav a[href="/about"]').textContent = t.about;
+      document.querySelector('main h1').textContent = t.heading;
+      document.querySelector('main p').textContent = t.lead;
+      document.querySelector('main p a').textContent = t.aboutLink;
+    }
+
+    // 페이지 로드 시 언어 적용
+    updateLanguage(lang);
+
+    // 언어 선택 이벤트
+    document.querySelectorAll('header a[href*="lang="]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const newLang = this.href.split('lang=')[1];
+        const newUrl = new URL(window.location);
+        newUrl.searchParams.set('lang', newLang);
+        window.location.href = newUrl.toString();
+      });
+    });
+  </script>
+  
+  <div th:replace="common/footer :: footer"></div>
+</body>
+</html>

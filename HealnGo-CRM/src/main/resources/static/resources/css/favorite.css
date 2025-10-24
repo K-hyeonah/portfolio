@@ -1,0 +1,468 @@
+/* favorite.css */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
+}
+
+.favorite-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.favorite-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e9f7ef;
+}
+
+.favorite-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+}
+
+.favorite-icon i {
+    font-size: 24px;
+    color: white;
+}
+
+.favorite-title {
+    margin: 0;
+    font-size: 2.2em;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.favorite-list {
+    min-height: 400px;
+}
+
+.favorite-item {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.favorite-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #ff6b6b;
+}
+
+.item-banner {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.day-number {
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.item-content {
+    flex-grow: 1;
+}
+
+.item-info {
+    width: 100%;
+}
+
+.hospital-name {
+    margin: 0 0 10px 0;
+    font-size: 1.4em;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.hospital-details {
+    margin-bottom: 15px;
+}
+
+.hospital-details p {
+    margin: 5px 0;
+    color: #7f8c8d;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+}
+
+.hospital-details i {
+    margin-right: 8px;
+    width: 16px;
+    color: #95a5a6;
+}
+
+.hospital-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    background-color: #e9f7ef;
+    color: #27ae60;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.item-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.btn-detail {
+    background: linear-gradient(135deg, #3498db, #5dade2);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-detail:hover {
+    background: linear-gradient(135deg, #2980b9, #3498db);
+    transform: translateY(-1px);
+}
+
+.btn-remove {
+    background: linear-gradient(135deg, #e74c3c, #ec7063);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-remove:hover {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    transform: translateY(-1px);
+}
+
+/* 빈 즐겨찾기 상태 */
+.empty-favorites {
+    text-align: center;
+    padding: 60px 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 2px dashed #dee2e6;
+}
+
+.empty-icon {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-icon i.fa-heart {
+    font-size: 32px;
+    color: white;
+}
+
+.empty-plus {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #27ae60;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: white;
+}
+
+.empty-content h3 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 1.5em;
+}
+
+.empty-description {
+    margin: 0 0 30px 0;
+    color: #7f8c8d;
+    font-size: 1.1em;
+    line-height: 1.5;
+}
+
+.empty-actions .btn-primary {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    color: white;
+    text-decoration: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.empty-actions .btn-primary:hover {
+    background: linear-gradient(135deg, #ff5252, #ff6b6b);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+
+.close:hover {
+    color: #000;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .favorite-container {
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    .favorite-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .favorite-icon {
+        margin-bottom: 15px;
+        margin-right: 0;
+    }
+    
+    .favorite-title {
+        font-size: 1.8em;
+    }
+    
+    .favorite-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .item-banner {
+        margin-bottom: 15px;
+        margin-right: 0;
+    }
+    
+    .item-actions {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 15px;
+    }
+    
+    .btn-detail, .btn-remove {
+        flex: 1;
+        margin: 0 5px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .favorite-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .favorite-icon i {
+        font-size: 20px;
+    }
+    
+    .favorite-title {
+        font-size: 1.5em;
+    }
+    
+    .hospital-name {
+        font-size: 1.2em;
+    }
+    
+    .hospital-details p {
+        font-size: 0.85em;
+    }
+    
+    .tag {
+        font-size: 0.75em;
+        padding: 3px 8px;
+    }
+}
+
+/* 비로그인 사용자 프롬프트 스타일 */
+.login-prompt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    padding: 40px 20px;
+}
+
+.login-prompt-content {
+    text-align: center;
+    max-width: 400px;
+    padding: 40px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.login-prompt-content i {
+    font-size: 64px;
+    color: #ff6b6b;
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
+.login-prompt-content h3 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.login-prompt-content p {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.login-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.login-actions .login-btn,
+.login-actions .signup-btn {
+    padding: 12px 24px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    text-align: center;
+}
+
+.login-actions .login-btn {
+    background: linear-gradient(135deg, #2a7a5b, #1e5a3e);
+    color: white;
+    border: 2px solid transparent;
+}
+
+.login-actions .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(42, 122, 91, 0.3);
+    color: white;
+    text-decoration: none;
+}
+
+.login-actions .signup-btn {
+    background: linear-gradient(135deg, #e4ffe5, #c8f7c5);
+    color: #2a7a5b;
+    border: 2px solid #2a7a5b;
+}
+
+.login-actions .signup-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(42, 122, 91, 0.2);
+    background: linear-gradient(135deg, #2a7a5b, #1e5a3e);
+    color: white;
+    text-decoration: none;
+}
+
+/* 모바일 반응형 추가 */
+@media (max-width: 768px) {
+    .login-prompt-content {
+        padding: 30px 20px;
+        margin: 20px;
+    }
+    
+    .login-prompt-content h3 {
+        font-size: 20px;
+    }
+    
+    .login-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .login-actions .login-btn,
+    .login-actions .signup-btn {
+        width: 100%;
+        max-width: 200px;
+    }
+}

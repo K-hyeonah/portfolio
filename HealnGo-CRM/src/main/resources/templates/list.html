@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>HealnGo - 병원 목록</title>
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/resources/css/list.css">
+    <link rel="stylesheet" href="/resources/css/pagination.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        window.APP_CTX = '';
+    </script>
+</head>
+<body>
+<div th:replace="~{common/header :: header}"></div>
+
+<div class="main-container">
+    <!-- 왼쪽: 병원 목록 -->
+    <div class="left-panel">
+        <!-- 지역 정보 -->
+        <div class="region-info">
+            <h2>선택된 지역: <span th:text="${region != null ? region : '전국'}">전국</span></h2>
+        </div>
+
+        <!-- 결과 정보 -->
+        <div class="result-info">
+            <div class="total-count">
+                총 <span th:text="${totalCount != null ? totalCount : '1,221'}">1,221</span>건
+            </div>
+        </div>
+
+        <!-- 병원 목록 (DB 데이터만) -->
+        <div class="hospital-list">
+            <!-- DB 데이터 -->
+            <div th:each="h : ${lists}" class="hospital-item"
+                 th:data-item-id="${h.id}"
+                 th:data-company-id="${h.ownerCompany?.companyId}"
+                 th:data-hospital="${h.name}"
+                 th:data-address="${h.address}"
+                 th:data-phone="${h.phone}"
+                 th:data-homepage="${h.homepage}"
+                 th:data-region="${h.region}"
+                 th:data-subregion="${h.subregion}"
+                 th:data-category="${h.category}">
+                <div class="hospital-heart" onclick="toggleFavorite(this)">
+                    <i class="far fa-heart"></i>
+                </div>
+                <div class="hospital-name" th:text="${h.name}">병원명</div>
+            </div>
+        </div>
+
+        <!-- 페이지네이션 -->
+        <div class="pagination" id="pagination-content">
+            <!-- 이전 -->
+            <a class="page-link"
+               th:if="${pageNo > 1}"
+               th:href="@{/list(
+            region=${region == '전국' ? null : region},
+            subRegion=${subRegion},
+            category=${category},
+            pageNo=${pageNo - 1},
+            amount=${amount}
+       )}">&laquo;</a>
+
+            <!-- 가운데 페이지들 -->
+            <a class="page-link"
+               th:each="p : ${#numbers.sequence(startPage, endPage)}"
+               th:classappend="${p} == ${pageNo} ? 'active' : ''"
+               th:text="${p}"
+               th:href="@{/list(
+            region=${region == '전국' ? null : region},
+            subRegion=${subRegion},
+            category=${category},
+            pageNo=${p},
+            amount=${amount}
+       )}">1</a>
+
+            <!-- 다음 -->
+            <a class="page-link"
+               th:if="${pageNo < totalPages}"
+               th:href="@{/list(
+            region=${region == '전국' ? null : region},
+            subRegion=${subRegion},
+            category=${category},
+            pageNo=${pageNo + 1},
+            amount=${amount}
+       )}">&raquo;</a>
+        </div>
+
+    </div>
+
+    <!-- 오른쪽: 병원 상세 정보 -->
+    <div class="right-panel">
+        <div class="detail-container">
+            <div class="detail-placeholder">
+                <i class="fas fa-hospital"></i>
+                <p>병원을 선택해주세요</p>
+            </div>
+
+            <div class="detail-content" style="display: none;">
+                <!-- AJAX로 상세 정보가 표시됩니다 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ===== 공통 유틸 =====
+    function isBlank(v){ return !v || /^\s*$/.test(v); }
+
+    function websiteToHtml(raw){
+        const text = (raw || '').trim();
+        if (isBlank(text) || text === '-' || text === '홈페이지 정보 없음') return '홈페이지 정보 없음';
+        let url = text;
+        if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+        try { new URL(url); } catch { return '홈페이지 정보 없음'; }
+        return `<a href="${url}" target="_blank" rel="noopener">${text}</a>`;
+    }
+
+    // ===== 병원 카드 클릭 바인딩 =====
+    document.addEventListener('DOMContentLoaded', function() {
+        // 찜 상태 체크
+        checkFavoriteStatus();
+
+        document.querySelectorAll('.hospital-item').forEach(item => {
+            item.addEventListener('click', async function(e) {
+                // 하트 클릭 시 상세 페이지 이동 방지
+                if (e.target.closest('.hospital-heart')) return;
+
+                // selected 토글
+                document.querySelectorAll('.hospital-item').forEach(i => i.classList.remove('selected'));
+                this.classList.add('selected');
+
+                const itemId = this.dataset.itemId;
+                const hospitalName = this.dataset.hospital;
+                
+                console.log('🟢🟢🟢 병원 클릭! 🟢🟢🟢');
+                console.log('itemId:', itemId, '| 병원명:', hospitalName);
+                
+                // 클릭 로그 전송
+                if (itemId) {
+                    try {
+                        const response = await fetch(`/api/clicks/item/${itemId}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                        console.log('✅ 클릭 로그 전송 완료:', response.status);
+                    } catch (error) {
+                        console.error('❌ 클릭 로그 실패:', error);
+                    }
+                }
+                
+                await showHospitalDetail(itemId, hospitalName, this.dataset);
+            });
+        });
+    });
+
+    // ===== 상세 패널 표시 (실제 서비스 포함) =====
+    async function showHospitalDetail(itemId, hospitalName, dataset) {
+        const placeholder = document.querySelector('.detail-placeholder');
+        const detailContent = document.querySelector('.detail-content');
+        if (!placeholder || !detailContent) return;
+
+        placeholder.style.display = 'none';
+        detailContent.style.display = 'block';
+
+        const websiteHtml = websiteToHtml(dataset.homepage);
+        const phone = (!isBlank(dataset.phone) && dataset.phone !== '전화번호 정보 없음') ? dataset.phone : '연락처 정보 없음';
+        const address = !isBlank(dataset.address) ? dataset.address : '주소 정보 없음';
+
+        // 서비스 목록 조회
+        let services = [];
+        try {
+            const res = await fetch(`/api/items/${itemId}/services`);
+            if (res.ok) {
+                services = await res.json();
+            } else {
+                console.warn('서비스 API 응답 실패', res.status);
+            }
+        } catch (e) {
+            console.warn('서비스 API 호출 오류', e);
+        }
+
+        const servicesHtml = (Array.isArray(services) && services.length > 0)
+            ? services.map(s => {
+                const tags = (s.tags || '')
+                    .split(',')
+                    .map(t => t.trim())
+                    .filter(Boolean)
+                    .map(t => `<span class="service-hashtag">#${t}</span>`)
+                    .join('');
+                const priceText = (s.price != null ? s.price : '') + (s.currency ? ' ' + s.currency : '');
+                return `
+                <div class="service-item" onclick="goToServiceDetail(${s.serviceId})" style="cursor: pointer;">
+                    <div class="service-image">이미지</div>
+                    <div class="service-content">
+                        <h3 class="service-title">${s.name || '서비스'}</h3>
+                        <div class="service-hashtags">${tags}</div>
+                        <div class="service-info">
+                            <span class="service-price">${priceText || '가격 문의'}</span>
+                            <div class="service-rating"><span>${s.serviceCategory || ''}</span></div>
+                        </div>
+                        ${s.description ? `<p style="margin-top:8px;color:#666;">${s.description}</p>` : ''}
+                    </div>
+                </div>`;
+            }).join('')
+            : `<div class="detail-empty"><p>등록된 서비스가 없습니다.</p></div>`;
+
+        detailContent.innerHTML = `
+            <div class="hospital-detail active">
+                <div class="hospital-header">
+                    <h1 class="hospital-title">${hospitalName}</h1>
+                </div>
+
+                <div class="hospital-info-table">
+                    <table>
+                        <tr><th>홈페이지</th><td>${websiteHtml}</td></tr>
+                        <tr><th>연락처</th><td>${phone}</td></tr>
+                        <tr><th>위치</th><td>${address}</td></tr>
+                    </table>
+                </div>
+
+                <div class="services-section">
+                    ${servicesHtml}
+                </div>
+
+                <button class="consultation-btn" onclick="startConsultation(this)">병원 상담 신청</button>
+            </div>
+        `;
+    }
+
+    // ===== 서비스 상세 페이지로 이동 =====
+    function goToServiceDetail(serviceId) {
+        if (serviceId) {
+            window.location.href = `/service/detail/${serviceId}`;
+        }
+    }
+
+    // ===== 상담 신청 기능 =====
+    async function startConsultation(button) {
+        // 로그인 상태 확인
+        const isLoggedIn = await isUserLoggedIn();
+        if (!isLoggedIn) {
+            alert('상담 신청을 위해서는 로그인이 필요합니다.');
+            window.location.href = '/login';
+            return;
+        }
+
+        // 현재 선택된 병원 정보 가져오기 (여러 방법으로 시도)
+        let hospitalItem = button.closest('.hospital-item');
+
+        // hospital-item을 찾지 못했다면 다른 방법으로 시도
+        if (!hospitalItem) {
+            // 현재 선택된 병원 정보를 전역 변수에서 가져오기
+            if (window.selectedHospital) {
+                hospitalItem = window.selectedHospital;
+            } else {
+                // 마지막으로 클릭된 병원 정보 사용
+                hospitalItem = document.querySelector('.hospital-item.selected');
+            }
+        }
+
+        if (!hospitalItem) {
+            alert('병원 정보를 찾을 수 없습니다. 병원을 먼저 선택해주세요.');
+            return;
+        }
+
+        const itemId = hospitalItem.getAttribute('data-item-id');
+        const companyId = hospitalItem.getAttribute('data-company-id');
+        const hospitalName = hospitalItem.getAttribute('data-hospital');
+        const hospitalAddress = hospitalItem.getAttribute('data-address');
+        const hospitalPhone = hospitalItem.getAttribute('data-phone');
+
+        console.log('병원 정보:', { itemId, companyId, hospitalName, hospitalAddress, hospitalPhone });
+
+        if (!companyId || companyId === 'null') {
+            alert('이 병원은 아직 업체 등록이 되지 않아 채팅이 불가능합니다.');
+            return;
+        }
+
+        // 상담 신청 확인
+        if (confirm(`${hospitalName}과 상담을 시작하시겠습니까?`)) {
+            // 채팅 페이지로 이동하면서 업체 정보 전달
+            const chatUrl = `/chat?companyId=${companyId}&companyName=${encodeURIComponent(hospitalName)}&companyAddress=${encodeURIComponent(hospitalAddress)}&companyPhone=${encodeURIComponent(hospitalPhone)}`;
+            console.log('채팅 URL:', chatUrl);
+            window.location.href = chatUrl;
+        }
+    }
+
+    // 병원 선택 함수
+    function selectHospital(hospitalElement) {
+        // 이전 선택 해제
+        document.querySelectorAll('.hospital-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+
+        // 현재 선택된 병원 표시
+        hospitalElement.classList.add('selected');
+
+        // 전역 변수에 저장
+        window.selectedHospital = hospitalElement;
+
+        console.log('선택된 병원:', {
+            id: hospitalElement.getAttribute('data-item-id'),
+            name: hospitalElement.getAttribute('data-hospital'),
+            address: hospitalElement.getAttribute('data-address'),
+            phone: hospitalElement.getAttribute('data-phone')
+        });
+    }
+
+    // 로그인 상태 확인 함수
+    function isUserLoggedIn() {
+        // 실제 로그인 상태 확인을 위해 서버 API 호출
+        return fetch('/favorite/check-login', {
+            method: 'GET',
+            credentials: 'include' // 쿠키 포함
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return false;
+            }
+        })
+        .then(data => {
+            return data === true;
+        })
+        .catch(error => {
+            console.error('로그인 상태 확인 실패:', error);
+            return false;
+        });
+    }
+
+    // 쿠키에서 값 가져오기
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+    }
+
+    // 세션 스토리지에서 값 가져오기
+    function getSessionStorage(name) {
+        return sessionStorage.getItem(name);
+    }
+
+    // ===== 페이지 변경(더미 버튼용) =====
+    function changePage(pageNumber) {
+        document.querySelectorAll('.pagination button').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        console.log('페이지', pageNumber, '로 이동합니다.');
+        // 실제 사용 시 location.href 갱신 또는 AJAX 페이지 로딩으로 교체
+    }
+
+    // ===== 찜(하트) =====
+    function toggleFavorite(element) {
+        event.stopPropagation();
+        const heartIcon = element.querySelector('i');
+        const hospitalItem = element.closest('.hospital-item');
+        const itemId = hospitalItem.dataset.itemId;
+        if (!itemId) return console.error('Item ID not found');
+
+        if (heartIcon.classList.contains('far')) {
+            addToFavorite(itemId, element, heartIcon);
+        } else {
+            removeFromFavorite(itemId, element, heartIcon);
+        }
+    }
+
+    async function addToFavorite(itemId, element, heartIcon) {
+        try {
+            const response = await fetch(`/favorite/add/${itemId}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+            if (response.ok) {
+                heartIcon.classList.remove('far');
+                heartIcon.classList.add('fas');
+                element.classList.add('favorited');
+            } else if (response.status === 401) {
+                alert('로그인이 필요한 서비스입니다.');
+                window.location.href = '/login';
+            } else {
+                alert('찜하기 추가에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('네트워크 오류가 발생했습니다.');
+        }
+    }
+
+    async function removeFromFavorite(itemId, element, heartIcon) {
+        try {
+            const response = await fetch(`/favorite/remove/${itemId}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'}
+            });
+            if (response.ok) {
+                heartIcon.classList.remove('fas');
+                heartIcon.classList.add('far');
+                element.classList.remove('favorited');
+            } else if (response.status === 401) {
+                alert('로그인이 필요한 서비스입니다.');
+                window.location.href = '/login';
+            } else {
+                alert('찜하기 제거에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('네트워크 오류가 발생했습니다.');
+        }
+    }
+
+    // ===== 페이지 로드 시 찜 상태 초기화 =====
+    async function checkFavoriteStatus() {
+        const hospitalItems = document.querySelectorAll('.hospital-item');
+        for (const item of hospitalItems) {
+            const itemId = item.dataset.itemId;
+            if (!itemId) continue;
+            try {
+                const response = await fetch(`/favorite/check/${itemId}`);
+                if (response.ok) {
+                    const isFavorite = await response.json();
+                    if (isFavorite) {
+                        const heartIcon = item.querySelector('.hospital-heart i');
+                        const heartContainer = item.querySelector('.hospital-heart');
+                        if (heartIcon && heartContainer) {
+                            heartIcon.classList.remove('far');
+                            heartIcon.classList.add('fas');
+                            heartContainer.classList.add('favorited');
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking favorite status:', error);
+            }
+        }
+    }
+</script>
+
+<div th:replace="~{common/footer :: footer}"></div>
+</body>
+</html>

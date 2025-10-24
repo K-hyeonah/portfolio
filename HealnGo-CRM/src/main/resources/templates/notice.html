@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 - HealnGo</title>
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/resources/css/notice.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <div th:replace="~{common/header :: header}"></div>
+
+    <div class="community-container">
+        <!-- 상단 제목 섹션 -->
+        <div class="community-header">
+            <h1 class="community-title">공지사항</h1>
+            <p class="community-subtitle">HealnGo의 새로운 소식과 공지사항을 확인하세요</p>
+        </div>
+
+        <!-- 공지사항 목록 -->
+        <div class="notice-list">
+            <table class="notice-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">번호</th>
+                        <th>제목</th>
+                        <th style="width: 120px;">대상</th>
+                        <th style="width: 120px;">작성일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 고정(Pinned) 공지사항 -->
+                    <tr th:each="notice : ${notices}" 
+                        th:if="${notice.isPinned}" 
+                        class="notice-row pinned"
+                        th:onclick="'location.href=\'/notice/view/' + ${notice.noticeId} + '\''"
+                        style="cursor: pointer;">
+                        <td><i class="fas fa-thumbtack"></i></td>
+                        <td class="notice-title">
+                            <span class="pinned-badge">공지</span>
+                            <span th:text="${notice.title}">공지사항 제목</span>
+                        </td>
+                        <td>
+                            <span th:if="${notice.audience.name() == 'ALL'}" class="audience-badge all">전체</span>
+                            <span th:if="${notice.audience.name() == 'SOCIAL'}" class="audience-badge social">사용자</span>
+                            <span th:if="${notice.audience.name() == 'COMPANY'}" class="audience-badge company">업체</span>
+                        </td>
+                        <td th:text="${#temporals.format(notice.publishAt, 'yyyy-MM-dd')}">2025-10-17</td>
+                    </tr>
+                    
+                    <!-- 일반 공지사항 -->
+                    <tr th:each="notice, stat : ${notices}" 
+                        th:unless="${notice.isPinned}"
+                        class="notice-row"
+                        th:onclick="'location.href=\'/notice/view/' + ${notice.noticeId} + '\''"
+                        style="cursor: pointer;">
+                        <td th:text="${totalCount - (currentPage - 1) * 10 - stat.index}">1</td>
+                        <td class="notice-title" th:text="${notice.title}">공지사항 제목</td>
+                        <td>
+                            <span th:if="${notice.audience.name() == 'ALL'}" class="audience-badge all">전체</span>
+                            <span th:if="${notice.audience.name() == 'SOCIAL'}" class="audience-badge social">사용자</span>
+                            <span th:if="${notice.audience.name() == 'COMPANY'}" class="audience-badge company">업체</span>
+                        </td>
+                        <td th:text="${#temporals.format(notice.publishAt, 'yyyy-MM-dd')}">2025-10-17</td>
+                    </tr>
+                    
+                    <!-- 데이터 없을 때 -->
+                    <tr th:if="${notices == null or notices.isEmpty()}">
+                        <td colspan="4" class="empty-message">등록된 공지사항이 없습니다.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 페이지네이션 -->
+        <div class="pagination" th:if="${totalPages > 0}">
+            <!-- 처음 페이지 -->
+            <a th:if="${currentPage > 1}" 
+               th:href="@{/notice(page=1)}"
+               class="page-link">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            
+            <!-- 이전 페이지 -->
+            <a th:if="${currentPage > 1}" 
+               th:href="@{/notice(page=${currentPage - 1})}"
+               class="page-link">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            
+            <!-- 페이지 번호 -->
+            <a th:each="pageNum : ${#numbers.sequence(startPage, endPage)}"
+               th:href="@{/notice(page=${pageNum})}"
+               th:text="${pageNum}"
+               th:classappend="${pageNum == currentPage} ? 'active' : ''"
+               class="page-link">
+                1
+            </a>
+            
+            <!-- 다음 페이지 -->
+            <a th:if="${currentPage < totalPages}" 
+               th:href="@{/notice(page=${currentPage + 1})}"
+               class="page-link">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            
+            <!-- 마지막 페이지 -->
+            <a th:if="${currentPage < totalPages}" 
+               th:href="@{/notice(page=${totalPages})}"
+               class="page-link">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <div th:replace="~{common/footer :: footer}"></div>
+</body>
+</html>
+

@@ -1,0 +1,526 @@
+/* Company Edit Page Styles */
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #F8FAFC;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 280px; /* 사이드바 너비만큼 여백 */
+}
+
+.content-wrapper {
+    flex: 1;
+    padding: 24px;
+}
+
+/* 페이지 헤더 */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.header-left h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1A202C;
+    margin: 0 0 8px 0;
+}
+
+.header-left p {
+    font-size: 16px;
+    color: #718096;
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-cancel,
+.btn-save {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-cancel {
+    background: white;
+    color: #718096;
+    border: 1px solid #E2E8F0;
+}
+
+.btn-cancel:hover {
+    background: #F7FAFC;
+    border-color: #CBD5E0;
+}
+
+.btn-save {
+    background: #3182CE;
+    color: white;
+}
+
+.btn-save:hover {
+    background: #2C5AA0;
+}
+
+/* 메인 콘텐츠 영역 */
+.main-content-area {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+}
+
+/* 폼 섹션 */
+.form-section {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* 탭 네비게이션 */
+.tab-navigation {
+    display: flex;
+    border-bottom: 1px solid #E2E8F0;
+    background: #F7FAFC;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 16px 24px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #718096;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.tab-btn:hover {
+    background: #EDF2F7;
+    color: #4A5568;
+}
+
+.tab-btn.active {
+    color: #3182CE;
+    background: white;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #3182CE;
+}
+
+/* 탭 콘텐츠 */
+.tab-content {
+    padding: 32px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* 폼 그룹 */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2D3748;
+    margin-bottom: 8px;
+}
+
+.required {
+    color: #E53E3E;
+    margin-left: 4px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #3182CE;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* 아이콘이 있는 입력 필드 */
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #A0AEC0;
+    font-size: 14px;
+}
+
+.input-with-icon input {
+    padding-left: 44px;
+}
+
+/* 주소 입력 그룹 */
+.address-input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.address-input-group input {
+    flex: 1;
+}
+
+.btn-postal {
+    padding: 12px 16px;
+    background: #F7FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #4A5568;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.btn-postal:hover {
+    background: #EDF2F7;
+    border-color: #CBD5E0;
+}
+
+/* 문자 수 카운터 */
+.character-count {
+    text-align: left;
+    font-size: 12px;
+    color: #718096;
+    margin-top: 4px;
+}
+
+/* 우측 사이드바 */
+.right-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* 미리보기 카드 */
+.preview-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.preview-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3748;
+    margin: 0 0 20px 0;
+}
+
+.company-preview {
+    text-align: center;
+}
+
+.company-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    overflow: hidden;
+    position: relative;
+}
+
+.company-logo .logo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.company-logo #logoInitial {
+    display: block;
+}
+
+.logo-upload-section {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.btn-upload-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #F7FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #4A5568;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-upload-logo:hover {
+    background: #EDF2F7;
+    border-color: #CBD5E0;
+}
+
+.btn-upload-logo i {
+    font-size: 12px;
+}
+
+.company-info h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3748;
+    margin: 0 0 4px 0;
+}
+
+.company-info p {
+    font-size: 14px;
+    color: #718096;
+    margin: 0 0 20px 0;
+}
+
+.contact-info {
+    text-align: left;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #4A5568;
+}
+
+.contact-item:last-child {
+    margin-bottom: 0;
+}
+
+.contact-item i {
+    width: 16px;
+    color: #A0AEC0;
+}
+
+/* 팁 카드 */
+.tips-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tips-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3748;
+    margin: 0 0 16px 0;
+}
+
+.tips-card i {
+    color: #F6AD55;
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tips-list li {
+    padding: 8px 0;
+    font-size: 14px;
+    color: #4A5568;
+    position: relative;
+    padding-left: 16px;
+}
+
+.tips-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #3182CE;
+    font-weight: bold;
+}
+
+/* 상태 카드 */
+.status-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.status-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2D3748;
+    margin: 0 0 16px 0;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.status-label {
+    font-size: 14px;
+    color: #718096;
+}
+
+.status-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: #2D3748;
+}
+
+/* 진행률 바 */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #E2E8F0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #3182CE;
+    transition: width 0.3s ease;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .main-content-area {
+        grid-template-columns: 1fr;
+    }
+    
+    .right-sidebar {
+        order: -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .content-wrapper {
+        padding: 16px;
+    }
+    
+    .page-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+    
+    .header-actions {
+        justify-content: flex-end;
+    }
+    
+    .header-left h1 {
+        font-size: 24px;
+    }
+    
+    .tab-content {
+        padding: 20px;
+    }
+    
+    .address-input-group {
+        flex-direction: column;
+    }
+    
+    .btn-postal {
+        align-self: flex-start;
+    }
+}
+
+/* 포커스 스타일 */
+input:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+/* 스크롤바 스타일링 */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F1F5F9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #CBD5E0;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #A0AEC0;
+}

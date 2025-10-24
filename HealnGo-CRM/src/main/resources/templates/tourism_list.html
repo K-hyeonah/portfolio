@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="tourism.title">관광 패키지 - HealnGo</title>
+    <!-- 부트스트랩 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 공통 스타일시트 -->
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <!-- Font Awesome 5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/resources/css/tourism_list.css">
+</head>
+<body>
+    <div th:replace="common/header :: header"></div>
+
+    <!-- 브레드크럼 -->
+    <section class="breadcrumb-section">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/main">홈</a></li>
+                    <li class="breadcrumb-item"><a href="/main">메인</a></li>
+                    <li class="breadcrumb-item active" data-i18n="tourism.breadcrumb">관광 패키지</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- 히어로 섹션 -->
+    <section class="tourism-hero">
+        <div class="banner-slider">
+            <!-- 배너 1 -->
+            <div class="banner-slide active" style="background-image: url('/resources/images/패키지배너1.png');">
+                <div class="banner-overlay"></div>
+                <div class="banner-content">
+                    <h1 data-i18n="tourism.title">관광 패키지</h1>
+                    <p data-i18n="tourism.subtitle">완벽한 미용 관광을 위한 맞춤형 패키지</p>
+                </div>
+            </div>
+
+            <!-- 배너 2 -->
+            <div class="banner-slide" style="background-image: url('/resources/images/패키지배너2.png');">
+                <div class="banner-overlay"></div>
+                <div class="banner-content">
+                    <h1 data-i18n="tourism.title">관광 패키지</h1>
+                    <p data-i18n="tourism.subtitle">완벽한 미용 관광을 위한 맞춤형 패키지</p>
+                </div>
+            </div>
+
+            <!-- 배너 3 -->
+            <div class="banner-slide" style="background-image: url('/resources/images/패키지배너3.png');">
+                <div class="banner-overlay"></div>
+                <div class="banner-content">
+                    <h1 data-i18n="tourism.title">관광 패키지</h1>
+                    <p data-i18n="tourism.subtitle">완벽한 미용 관광을 위한 맞춤형 패키지</p>
+                </div>
+            </div>
+
+            <!-- 배너 4 -->
+            <div class="banner-slide" style="background-image: url('/resources/images/패키지배너4.png');">
+                <div class="banner-overlay"></div>
+                <div class="banner-content">
+                    <h1 data-i18n="tourism.title">관광 패키지</h1>
+                    <p data-i18n="tourism.subtitle">완벽한 미용 관광을 위한 맞춤형 패키지</p>
+                </div>
+            </div>
+
+            <!-- 인디케이터 -->
+            <div class="banner-indicators">
+                <div class="banner-indicator active" data-slide="0"></div>
+                <div class="banner-indicator" data-slide="1"></div>
+                <div class="banner-indicator" data-slide="2"></div>
+                <div class="banner-indicator" data-slide="3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 인기 패키지 섹션 -->
+    <section class="package-section">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-i18n="tourism.best.packages.title">인기 패키지</h2>
+                <p data-i18n="tourism.best.packages.subtitle">가장 인기 있는 미용 관광 패키지</p>
+            </div>
+
+            <div class="scroll-container">
+                <div class="package-grid" id="popular-packages">
+                    <!-- 인기 패키지 1 -->
+                    <div class="package-card" data-category="popular package">
+                        <div class="package-image">
+                            <img src="/resources/images/화이트닝패키지.png" alt="화이트닝 패키지">
+                        </div>
+                        <div class="package-content">
+                            <h3 class="package-title" data-i18n="tourism.package.whitening.title">화이트닝 패키지</h3>
+                            <p class="package-description" data-i18n="tourism.package.whitening.description">완벽한 화이트닝을 위한 종합 패키지</p>
+                            <div class="package-features">
+                                <span class="feature-tag">피부과</span>
+                                <span class="feature-tag">치과</span>
+                                <span class="feature-tag">왁싱샵</span>
+                            </div>
+                            <button class="package-button" data-i18n="tourism.button.detail">자세히 보기</button>
+                        </div>
+                    </div>
+
+                    <!-- 인기 패키지 2 -->
+                    <div class="package-card" data-category="popular package">
+                        <div class="package-image">
+                            <img src="/resources/images/시술패키지.png" alt="시술 패키지">
+                            <div class="package-badge" data-i18n="tourism.badge.popular">인기</div>
+                        </div>
+                        <div class="package-content">
+                            <h3 class="package-title" data-i18n="tourism.package.procedure.title">시술 패키지</h3>
+                            <p class="package-description" data-i18n="tourism.package.procedure.description">다양한 시술을 한 번에</p>
+                            <div class="package-features">
+                                <span class="feature-tag">피부과</span>
+                                <span class="feature-tag">한의원</span>
+                                <span class="feature-tag">약국</span>
+                            </div>
+                            <button class="package-button" data-i18n="tourism.button.detail">자세히 보기</button>
+                        </div>
+                    </div>
+
+                    <!-- 인기 패키지 3 -->
+                    <div class="package-card" data-category="popular package">
+                        <div class="package-image">
+                            <img src="/resources/images/밝은미소패키지.jpg" alt="밝은 미소 패키지">
+                            <div class="package-badge" data-i18n="tourism.badge.popular">인기</div>
+                        </div>
+                        <div class="package-content">
+                            <h3 class="package-title" data-i18n="tourism.package.brightsmile.title">밝은 미소 패키지</h3>
+                            <p class="package-description" data-i18n="tourism.package.brightsmile.description">완벽한 미소를 위한 패키지</p>
+                            <div class="package-features">
+                                <span class="feature-tag">치과</span>
+                                <span class="feature-tag">약국</span>
+                                <span class="feature-tag">마사지샵</span>
+                            </div>
+                            <button class="package-button" data-i18n="tourism.button.detail">자세히 보기</button>
+                        </div>
+                    </div>
+
+                    <!-- 인기 패키지 4 -->
+                    <div class="package-card" data-category="popular package">
+                        <div class="package-image">
+                            <img src="/resources/images/자기관리패키지.png" alt="자기관리 패키지">
+                            <div class="package-badge" data-i18n="tourism.badge.popular">인기</div>
+                        </div>
+                        <div class="package-content">
+                            <h3 class="package-title" data-i18n="tourism.package.selfcare.title">자기관리 패키지</h3>
+                            <p class="package-description" data-i18n="tourism.package.selfcare.description">완벽한 자기관리를 위한 패키지</p>
+                            <div class="package-features">
+                                <span class="feature-tag">한방병원</span>
+                                <span class="feature-tag">피부과</span>
+                                <span class="feature-tag">왁싱샵</span>
+                                <span class="feature-tag">마사지샵</span>
+                            </div>
+                            <button class="package-button" data-i18n="tourism.button.detail">자세히 보기</button>
+                        </div>
+                    </div>
+                    <!-- 스크롤 버튼 -->
+                    <button class="scroll-button prev" onclick="scrollPackages('popular-packages', 'left')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="scroll-button next" onclick="scrollPackages('popular-packages', 'right')">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 새로운 패키지 섹션 -->
+    <section class="package-section" style="background: #f8f9fa;">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-i18n="tourism.new.packages.title">새로운 패키지</h2>
+                <p data-i18n="tourism.new.packages.subtitle">최신 미용 관광 패키지</p>
+            </div>
+
+            <div class="scroll-container">
+                <div class="package-grid" id="new-packages">
+                    <!-- 새로운 패키지 1 -->
+                    <div class="package-card" data-category="new package">
+                        <div class="package-image">
+                            <img src="/resources/images/여름패키지.png" alt="여름 패키지">
+                            <div class="package-badge" data-i18n="tourism.badge.new">신규</div>
+                        </div>
+                        <div class="package-content">
+                            <h3 class="package-title" data-i18n="tourism.package.summer.title">여름 패키지</h3>
+                            <p class="package-description" data-i18n="tourism.package.summer.description">여름을 위한 특별한 패키지</p>
+                            <div class="package-features">
+                                <span class="feature-tag">피부과</span>
+                                <span class="feature-tag">왁싱샵</span>
+                                <span class="feature-tag">한의원</span>
+                            </div>
+                            <button class="package-button" data-i18n="tourism.button.detail">자세히 보기</button>
+                        </div>
+                    </div>
+
+                    <!-- 새로운 패키지 2 -->
+                    <div class="package-card" data-category="new package">
+                        <div class="package-image">
+                            <img src="/resources/images/힐링패키지.jpg" alt="힐링 패키지">
+                            <div class="package-badge" data-i18n="tourism.badge.new">신규</div>
+                        </div>
+                        <div class="package-content">
+                            <h3 class="package-title" data-i18n="tourism.package.healing.title">힐링 패키지</h3>
+                            <p class="package-description" data-i18n="tourism.package.healing.description">마음과 몸의 힐링을 위한 패키지</p>
+                            <div class="package-features">
+                                <span class="feature-tag">마사지샵</span>
+                                <span class="feature-tag">성형외과</span>
+                                <span class="feature-tag">한의원</span>
+                            </div>
+                            <button class="package-button" data-i18n="tourism.button.detail">자세히 보기</button>
+                        </div>
+                    </div>
+
+                    <!-- 새로운 패키지 3 -->
+                    <div class="package-card" data-category="new package">
+                        <div class="package-image">
+                            <img src="/resources/images/다이어트패키지.png" alt="다이어트 패키지">
+                            <div class="package-badge" data-i18n="tourism.badge.new">신규</div>
+                        </div>
+                        <div class="package-content">
+                            <h3 class="package-title" data-i18n="tourism.package.diet.title">다이어트 패키지</h3>
+                            <p class="package-description" data-i18n="tourism.package.diet.description">완벽한 다이어트를 위한 패키지</p>
+                            <div class="package-features">
+                                <span class="feature-tag">성형외과</span>
+                                <span class="feature-tag">한의원</span>
+                                <span class="feature-tag">마사지샵</span>
+                            </div>
+                            <button class="package-button" data-i18n="tourism.button.detail">자세히 보기</button>
+                        </div>
+                    </div>
+
+                    <!-- 새로운 패키지 4 -->
+                    <div class="package-card" data-category="new package">
+                        <div class="package-image">
+                            <img src="/resources/images/브이라인패키지.png" alt="브이라인 패키지">
+                            <div class="package-badge" data-i18n="tourism.badge.new">신규</div>
+                        </div>
+                        <div class="package-content">
+                            <h3 class="package-title" data-i18n="tourism.package.vline.title">브이라인 패키지</h3>
+                            <p class="package-description" data-i18n="tourism.package.vline.description">완벽한 브이라인을 위한 패키지</p>
+                            <div class="package-features">
+                                <span class="feature-tag">성형외과</span>
+                                <span class="feature-tag">치과</span>
+                                <span class="feature-tag">마사지샵</span>
+                            </div>
+                            <button class="package-button" data-i18n="tourism.button.detail">자세히 보기</button>
+                        </div>
+                    </div>
+                    <!-- 스크롤 버튼 -->
+                    <button class="scroll-button prev" onclick="scrollPackages('new-packages', 'left')">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="scroll-button next" onclick="scrollPackages('new-packages', 'right')">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BEST 플래너 섹션 -->
+    <section class="planner-section">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-i18n="tourism.best.planners.title">BEST 플래너</h2>
+                <p data-i18n="tourism.best.planners.subtitle">전문 플래너와 함께하는 완벽한 미용 관광</p>
+            </div>
+
+            <div class="planner-grid">
+                <!-- 플래너 1 -->
+                <div class="planner-card" onclick="showPlannerModal('kimhyuna')">
+                    <div class="planner-image">
+                        <img src="/resources/images/김현아.png" alt="김현아 플래너">
+                    </div>
+                    <div class="planner-content">
+                        <div class="planner-company" data-i18n="tourism.planner.kimhyuna.company">맘랑핑</div>
+                        <h3 class="planner-name" data-i18n="tourism.planner.kimhyuna.name">김현아</h3>
+                        <p class="planner-description" data-i18n="tourism.planner.kimhyuna.description">전문적인 미용 관광 플래너</p>
+                    </div>
+                </div>
+
+                <!-- 플래너 2 -->
+                <div class="planner-card" onclick="showPlannerModal('kangyukyung')">
+                    <div class="planner-image">
+                        <img src="/resources/images/강유경.png" alt="강유경 플래너">
+                    </div>
+                    <div class="planner-content">
+                        <div class="planner-company" data-i18n="tourism.planner.kangyukyung.company">맘랑핑</div>
+                        <h3 class="planner-name" data-i18n="tourism.planner.kangyukyung.name">강유경</h3>
+                        <p class="planner-description" data-i18n="tourism.planner.kangyukyung.description">경험 많은 미용 관광 플래너</p>
+                    </div>
+                </div>
+
+                <!-- 플래너 3 -->
+                <div class="planner-card" onclick="showPlannerModal('kimhaemin')">
+                    <div class="planner-image">
+                        <img src="/resources/images/김해민.png" alt="김해민 플래너">
+                    </div>
+                    <div class="planner-content">
+                        <div class="planner-company" data-i18n="tourism.planner.kimhaemin.company">맘랑핑</div>
+                        <h3 class="planner-name" data-i18n="tourism.planner.kimhaemin.name">김해민</h3>
+                        <p class="planner-description" data-i18n="tourism.planner.kimhaemin.description">친절한 미용 관광 플래너</p>
+                    </div>
+                </div>
+
+                <!-- 플래너 4 -->
+                <div class="planner-card" onclick="showPlannerModal('jungminseo')">
+                    <div class="planner-image">
+                        <img src="/resources/images/정민서.png" alt="정민서 플래너">
+                    </div>
+                    <div class="planner-content">
+                        <div class="planner-company" data-i18n="tourism.planner.jungminseo.company">맘랑핑</div>
+                        <h3 class="planner-name" data-i18n="tourism.planner.jungminseo.name">정민서</h3>
+                        <p class="planner-description" data-i18n="tourism.planner.jungminseo.description">세심한 미용 관광 플래너</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 플래너 팝업 모달 -->
+    <div id="plannerModal" class="planner-modal">
+        <div class="planner-modal-content">
+            <span class="planner-modal-close" onclick="closePlannerModal()">&times;</span>
+
+            <!-- 첫 번째 화면: 업체 이미지 -->
+            <div id="companyImageScreen" class="modal-screen">
+                <div class="company-image-container">
+                    <img id="companyImage" src="" alt="업체 이미지" onclick="showPlannerInfo()">
+                </div>
+            </div>
+
+            <!-- 두 번째 화면: 플래너 정보 -->
+            <div id="plannerInfoScreen" class="modal-screen" style="display: none;">
+                <div class="planner-info-container">
+                    <div class="planner-info-left">
+                        <div class="planner-profile">
+                            <img id="plannerProfileImage" src="" alt="플래너 프로필">
+                        </div>
+                        <div class="planner-details">
+                            <div class="planner-company-info" id="plannerCompanyInfo"></div>
+                            <h2 class="planner-name-info" id="plannerNameInfo"></h2>
+                            <div class="planner-contact">
+                                <div class="contact-item">
+                                    <i class="fas fa-phone" style="color: #FFD700;"></i>
+                                    <span id="plannerPhone">010-1234-1234</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope" style="color: #6c757d;"></i>
+                                    <span id="plannerEmail">mallangping33@gmail.com</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-heart" style="color: #dc3545;"></i>
+                                    <span id="plannerWebsite">www.mallangping.co.kr</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="planner-info-right">
+                        <div class="service-categories">
+                            <div class="service-category" data-i18n="planner.modal.service.skin">피부과</div>
+                            <div class="service-category" data-i18n="planner.modal.service.dental">치과</div>
+                            <div class="service-category" data-i18n="planner.modal.service.diet">다이어트</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 패키지 상세 모달 -->
+    <div id="packageModal" class="planner-modal">
+        <div class="planner-modal-content">
+            <span class="planner-modal-close" onclick="closePackageModal()">&times;</span>
+
+            <div class="package-modal-header">
+                <h2 id="packageModalTitle" class="package-name"></h2>
+            </div>
+
+            <div class="package-modal-body">
+                <!-- 이미지 타일 3개 -->
+                <div class="package-images-section">
+                    <div class="package-image-grid">
+                        <div class="tile-card" data-category="waxing">
+                            <img src="/resources/images/packages/packagewaxing.png" alt="왁싱" class="tile-img">
+                            <div class="tile-caption">왁싱</div>
+                        </div>
+                        <div class="tile-card" data-category="plasticsurgery">
+                            <img src="/resources/images/packages/packageplastic.png" alt="성형외과" class="tile-img">
+                            <div class="tile-caption">성형외과</div>
+                        </div>
+                        <div class="tile-card" data-category="dermatology">
+                            <img src="/resources/images/packages/packageph.png" alt="피부과" class="tile-img">
+                            <div class="tile-caption">피부과</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 서비스 목록 -->
+                <div class="service-list-section">
+                    <div class="service-list" id="serviceList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 부트스트랩 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 공통 JavaScript -->
+    <script src="/resources/js/i18n.js"></script>
+    <!-- Tourism List 전용 JavaScript -->
+    <script src="/resources/js/tourism_list.js"></script>
+    
+    <div th:replace="common/footer :: footer"></div>
+</body>
+</html>

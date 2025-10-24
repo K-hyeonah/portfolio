@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${notice.title} + ' - HealnGo'">공지사항 - HealnGo</title>
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/resources/css/notice.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <div th:replace="~{common/header :: header}"></div>
+
+    <div class="community-container">
+        <div class="notice-detail">
+            <!-- 제목 섹션 -->
+            <div class="notice-header">
+                <h1 class="notice-title">
+                    <span th:if="${notice.isPinned}" class="pinned-badge">공지</span>
+                    <span th:text="${notice.title}">공지사항 제목</span>
+                </h1>
+                <div class="notice-meta">
+                    <span>
+                        <i class="fas fa-users"></i>
+                        <span th:if="${notice.audience.name() == 'ALL'}">전체</span>
+                        <span th:if="${notice.audience.name() == 'SOCIAL'}">사용자</span>
+                        <span th:if="${notice.audience.name() == 'COMPANY'}">업체</span>
+                    </span>
+                    <span>
+                        <i class="fas fa-calendar"></i> 
+                        <span th:text="${#temporals.format(notice.publishAt, 'yyyy-MM-dd HH:mm')}">2025-10-17 15:30</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- 내용 섹션 -->
+            <div class="notice-content">
+                <div style="white-space: pre-wrap; line-height: 1.8;" th:text="${notice.body}">
+                    공지사항 내용
+                </div>
+            </div>
+
+            <!-- 버튼 섹션 -->
+            <div class="notice-actions">
+                <button onclick="location.href='/notice'" class="btn-list">
+                    <i class="fas fa-list"></i> 목록으로
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <div th:replace="~{common/footer :: footer}"></div>
+</body>
+</html>
+

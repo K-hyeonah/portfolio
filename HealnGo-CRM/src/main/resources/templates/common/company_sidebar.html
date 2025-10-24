@@ -1,0 +1,74 @@
+<!-- Company Sidebar Fragment -->
+<div th:fragment="company_sidebar" class="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">
+            <img src="/crm/images/로고 블랙.png.png" alt="HealnGo Logo" class="logo-img">
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="/company/dashboard" class="nav-link">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/company/medical-services" class="nav-link">
+                        <i class="fas fa-file-medical"></i>
+                        <span>의료 서비스 관리</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/company/company_reservation_management" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>예약 관리</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/company/review" class="nav-link">
+                        <i class="fas fa-comment-alt"></i>
+                        <span>후기 관리</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/company/inquiry-chat" class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        <span>문의 & 채팅</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/company/marketing" class="nav-link">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>마케팅</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/company/report" class="nav-link">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>리포트 & 통계</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/company/edit" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>업체 정보 수정</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/company/help-support" class="nav-link">
+                        <i class="fas fa-headset"></i>
+                        <span>도움말/고객센터</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    <div class="sidebar-footer">
+        <button class="logout-btn" onclick="confirmLogout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </button>
+    </div>
+</div>

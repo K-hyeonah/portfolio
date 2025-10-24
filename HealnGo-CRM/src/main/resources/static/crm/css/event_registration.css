@@ -1,0 +1,272 @@
+/* 기본 리셋 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    background-color: #f8f9fa !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    min-height: 100vh !important;
+}
+
+/* 메인 컨테이너 */
+.dashboard-container {
+    display: flex !important;
+    min-height: 100vh !important;
+    background-color: #f8f9fa !important;
+}
+
+/* 메인 콘텐츠 영역 */
+.main-content {
+    flex: 1 !important;
+    background-color: #f8f9fa !important;
+    min-height: 100vh !important;
+    margin-left: 250px !important;
+}
+
+/* 메인 콘텐츠 */
+.event-main-content {
+    padding: 0 30px 30px 30px !important;
+}
+
+.event-page-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 30px !important;
+}
+
+.event-page-title {
+    font-size: 28px !important;
+    font-weight: bold !important;
+    color: #2c3e50 !important;
+}
+
+.event-approval-btn {
+    background: #3498db !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    border-radius: 6px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s !important;
+}
+
+.event-approval-btn:hover {
+    background: #2980b9 !important;
+}
+
+/* 폼 섹션 */
+.event-form-section {
+    background: white !important;
+    border-radius: 12px !important;
+    padding: 30px !important;
+    margin-bottom: 20px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+}
+
+.event-section-title {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    color: #2c3e50 !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 10px !important;
+    border-bottom: 2px solid #3498db !important;
+}
+
+.event-form-group {
+    margin-bottom: 25px !important;
+}
+
+.event-form-label {
+    display: block !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #2c3e50 !important;
+    margin-bottom: 8px !important;
+}
+
+.event-form-input {
+    width: 100% !important;
+    padding: 12px 15px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    transition: border-color 0.3s !important;
+}
+
+.event-form-input:focus {
+    outline: none !important;
+    border-color: #3498db !important;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2) !important;
+}
+
+.event-form-textarea {
+    width: 100% !important;
+    padding: 12px 15px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    resize: vertical !important;
+    min-height: 100px !important;
+    transition: border-color 0.3s !important;
+}
+
+.event-form-textarea:focus {
+    outline: none !important;
+    border-color: #3498db !important;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2) !important;
+}
+
+.event-form-note {
+    font-size: 12px !important;
+    color: #7f8c8d !important;
+    margin-top: 5px !important;
+}
+
+.event-char-counter {
+    font-size: 12px !important;
+    color: #7f8c8d !important;
+    text-align: right !important;
+    margin-top: 5px !important;
+}
+
+/* 날짜 입력 */
+.event-date-group {
+    display: flex !important;
+    gap: 20px !important;
+    align-items: center !important;
+}
+
+.event-date-input {
+    position: relative !important;
+    flex: 1 !important;
+}
+
+.event-date-input input {
+    padding-right: 40px !important;
+}
+
+.event-date-icon {
+    position: absolute !important;
+    right: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    color: #7f8c8d !important;
+    pointer-events: none !important;
+}
+
+.event-checkbox-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.event-checkbox {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.event-checkbox-label {
+    font-size: 14px !important;
+    color: #2c3e50 !important;
+    margin: 0 !important;
+}
+
+/* 라디오 버튼 그룹 */
+.event-radio-group {
+    display: flex !important;
+    gap: 20px !important;
+    flex-wrap: wrap !important;
+}
+
+.event-radio-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.event-radio {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.event-radio-label {
+    font-size: 14px !important;
+    color: #2c3e50 !important;
+    margin: 0 !important;
+}
+
+/* 태그 입력 */
+.event-tags-container {
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    padding: 10px !important;
+    min-height: 50px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    align-items: center !important;
+}
+
+.event-tag {
+    background: #e9ecef !important;
+    color: #495057 !important;
+    padding: 4px 8px !important;
+    border-radius: 12px !important;
+    font-size: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+}
+
+.event-tag-remove {
+    background: none !important;
+    border: none !important;
+    color: #6c757d !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    padding: 0 !important;
+    width: 16px !important;
+    height: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.event-tag-input {
+    border: none !important;
+    outline: none !important;
+    flex: 1 !important;
+    min-width: 100px !important;
+    padding: 4px !important;
+    font-size: 14px !important;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column !important;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+    }
+    
+    .event-date-group {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+    
+    .event-radio-group {
+        flex-direction: column !important;
+    }
+}
+

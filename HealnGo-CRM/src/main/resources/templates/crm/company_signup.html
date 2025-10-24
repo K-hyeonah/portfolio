@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회사 회원가입 - HealnGo</title>
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/crm/css/company_signup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+    <div class="signup-container">
+        <!-- 왼쪽 사이드바 -->
+        <div class="signup-sidebar">
+            <div class="sidebar-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="/crm/images/로고 화이트.png.png" alt="HealnGo Logo" class="logo-img">
+                    </div>
+                </div>
+                
+                <div class="progress-steps">
+                    <div class="step" id="step1">
+                        <div class="step-circle active">
+                            <span class="step-number">1</span>
+                        </div>
+                        <span class="step-text">이메일 인증</span>
+                    </div>
+                    
+                    <div class="step" id="step2">
+                        <div class="step-circle">
+                            <span class="step-number">2</span>
+                        </div>
+                        <span class="step-text">회사 정보</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 오른쪽 메인 컨텐츠 -->
+        <div class="signup-main">
+            <!-- Step 1: 이메일 인증 -->
+            <div class="step-content active" id="step1-content">
+                <div class="step-header">
+                    <span class="step-indicator">STEP 1/2</span>
+                    <h2 class="step-title">이메일 인증</h2>
+                </div>
+                
+                <form class="signup-form" id="step1-form">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <div class="phone-input-group">
+                            <input type="email" class="email-input" id="email" placeholder="company@example.com" required>
+                            <button type="button" class="btn-send-sms" onclick="sendEmailCode()">인증하기</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>인증번호</label>
+                        <input type="text" class="verification-code" id="emailCode" placeholder="인증번호 입력" required>
+                    </div>
+                    
+                    <div class="sms-info" id="emailInfo" style="display: none;">
+                        <i class="fas fa-info-circle"></i>
+                        <span>인증 코드가 <span id="sentEmail"></span>로 전송되었습니다. <span id="timer">05:00</span></span>
+                    </div>
+                    
+                    <div class="form-group company-only">
+                        <label>대표 전화번호 (Main Phone) <span style="color: #E53E3E;">*</span></label>
+                        <input type="tel" class="main-phone" id="mainPhone" placeholder="대표 전화번호를 입력하세요" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>전화번호 <span style="color: #6b7280; font-size: 12px;">(선택)</span></label>
+                        <input type="tel" class="phone-number" id="phoneNumber" placeholder="010-1234-5678">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Create Password</label>
+                        <div class="password-input-group">
+                            <input type="password" class="password-input" id="password" placeholder="비밀번호를 입력하세요 (8자 이상)" required>
+                            <i class="fas fa-eye password-toggle" onclick="togglePassword()"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-next" onclick="verifyAndNext()">Next Step <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 2: 회사 정보 -->
+            <div class="step-content" id="step2-content">
+                <div class="step-header">
+                    <span class="step-indicator">STEP 2/2</span>
+                    <h2 class="step-title">Tell about your company</h2>
+                </div>
+                
+                <form class="signup-form" id="step2-form">
+                    <!-- 회원 유형 선택 -->
+                    <div class="form-group">
+                        <label>회원 유형 (User Type)</label>
+                        <div class="user-type-selection">
+                            <label class="radio-option">
+                                <input type="radio" name="userType" value="company" checked onchange="toggleUserTypeFields()">
+                                <span class="radio-label">업체</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="userType" value="manager" onchange="toggleUserTypeFields()">
+                                <span class="radio-label">관리자</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- 관리자 전용 필드 -->
+                    <div class="form-group manager-only" style="display: none;">
+                        <label>이름 (Name)</label>
+                        <input type="text" class="manager-name" id="managerName" placeholder="홍길동">
+                    </div>
+                    
+                    <div class="form-group manager-only" style="display: none;">
+                        <label>관리자 초대 코드 (Admin Invite Code)</label>
+                        <input type="text" class="admin-code" id="adminInviteCode" placeholder="초대 코드를 입력하세요"><br>
+                        <small style="color: #6b7280; font-size: 12px;">※ 관리자 회원가입은 초대 코드가 필요합니다.</small>
+                    </div>
+                    
+                    <!-- 업체 전용 필드 -->
+                    <div class="form-group company-only">
+                        <label>업체명 (Company's Name) <span style="color: #E53E3E;">*</span></label>
+                        <input type="text" class="company-name" id="companyName" placeholder="업체명을 입력하세요" required>
+                    </div>
+                    
+                    <div class="form-group company-only">
+                        <label>사업자등록번호 (Business Number) <span style="color: #E53E3E;">*</span></label>
+                        <input type="text" class="company-number" id="companyNumber" placeholder="사업자등록번호를 입력하세요" required>
+                    </div>
+                    
+                    <div class="form-group company-only">
+                        <label>대표자명 (Representative) <span style="color: #E53E3E;">*</span></label>
+                        <input type="text" class="representative" id="representative" placeholder="대표자명을 입력하세요" required>
+                    </div>
+                    
+                    
+                    <div class="form-group company-only">
+                        <label>팩스 (Fax) <span style="color: #6b7280; font-size: 12px;">(선택)</span></label>
+                        <input type="tel" class="fax" id="fax" placeholder="팩스번호를 입력하세요">
+                    </div>
+                    
+                    <div class="form-group company-only">
+                        <label>우편번호 (Postcode) <span style="color: #E53E3E;">*</span></label>
+                        <div class="phone-input-group">
+                            <input type="text" class="address" id="postcode" placeholder="우편번호" readonly required>
+                            <button type="button" class="btn-send-sms" onclick="searchAddress()">우편번호 찾기</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group company-only">
+                        <label>주소 (Address) <span style="color: #E53E3E;">*</span></label>
+                        <input type="text" class="address" id="deliveryAddress" placeholder="주소" readonly required>
+                    </div>
+                    
+                    <div class="form-group company-only">
+                        <label>상세주소 (Detail Address)</label>
+                        <input type="text" class="address" id="detailAddress" placeholder="상세주소를 입력하세요">
+                    </div>
+                    
+                    <!-- 우편번호 검색 팝업 영역 -->
+                    <div id="wrap" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
+                        <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+                    </div>
+                    
+                    <div class="form-group company-only">
+                        <label>카테고리 (Category) <span style="color: #E53E3E;">*</span></label>
+                        <select class="category-select" id="category" required>
+                            <option value="">카테고리를 선택하세요</option>
+                            <option value="성형외과">성형외과</option>
+                            <option value="피부과">피부과</option>
+                            <option value="치과">치과</option>
+                            <option value="약국">약국</option>
+                            <option value="한의원">한의원</option>
+                            <option value="마사지">마사지</option>
+                            <option value="왁싱">왁싱</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group company-only">
+                        <label>업체 소개 (Company Introduction) <span style="color: #6b7280; font-size: 12px;">(선택)</span></label>
+                        <textarea class="company-introduction" id="companyIntroduction" placeholder="업체 소개를 입력하세요 (최대 500자)" maxlength="500" rows="4"></textarea>
+                        <div style="text-align: right; font-size: 12px; color: #6b7280; margin-top: 4px;">
+                            <span id="charCount">0</span> / 500자
+                        </div>
+                    </div>
+                    
+                    <div class="form-group company-only">
+                        <label>웹사이트 (Website) <span style="color: #6b7280; font-size: 12px;">(선택)</span></label>
+                        <input type="url" class="website" id="website" placeholder="웹사이트 URL을 입력하세요">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-previous" onclick="previousStep()"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button type="button" class="btn-next" onclick="submitSignup()">회원가입 완료 <i class="fas fa-check"></i></button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 성공 페이지 -->
+            <div class="step-content success-page" id="success-content" style="display: none;">
+                <div class="success-illustration">
+                    <img src="/crm/images/로고 블랙.png.png" alt="Success" class="success-image">
+                </div>
+                <h2 class="success-title">You are successfully registered!</h2>
+                <button type="button" class="btn-start" onclick="goToDashboard()">Let's Start <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/crm/js/company_signup.js"></script>
+</body>
+</html>

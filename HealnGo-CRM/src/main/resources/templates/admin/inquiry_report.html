@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>문의/신고 접수 - HealnGo</title>
+    <link rel="stylesheet" href="/crm/css/admin_sidebar.css" />
+    <link rel="stylesheet" href="/crm/css/admin_header.css" />
+    <link rel="stylesheet" href="/crm/css/inquiry_report.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+</head>
+<body data-sidebar-type="admin">
+<div class="dashboard-container">
+    <div th:replace="common/admin_sidebar :: admin_sidebar"></div>
+
+    <div class="admin-content">
+        <div th:replace="common/admin_header :: admin_header"></div>
+
+        <div class="report-main-content">
+            <h2 class="report-page-title">문의/신고 접수</h2>
+
+            <!-- 필터 -->
+            <div class="report-filter-section">
+                <div class="report-filter-row">
+                    <div class="report-filter-group">
+                        <label class="report-filter-label">구분:</label>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="reporter-type-btn active" data-type="ALL" onclick="filterByReporterType('ALL')">
+                                <i class="fas fa-list"></i> 전체
+                            </button>
+                            <button class="reporter-type-btn" data-type="SOCIAL" onclick="filterByReporterType('SOCIAL')">
+                                <i class="fas fa-user"></i> 사용자 문의/신고
+                            </button>
+                            <button class="reporter-type-btn" data-type="COMPANY" onclick="filterByReporterType('COMPANY')">
+                                <i class="fas fa-building"></i> 업체 문의/신고
+                            </button>
+                        </div>
+                    </div>
+                    <div class="report-filter-group">
+                        <label class="report-filter-label">상태:</label>
+                        <select class="report-filter-select" id="statusFilter">
+                            <option value="">전체</option>
+                            <option value="OPEN">대기중</option>
+                            <option value="ANSWERED">답변완료</option>
+                            <option value="CLOSED">종료</option>
+                        </select>
+                    </div>
+                    <button class="report-search-btn" onclick="loadAdminInquiries()"><i class="fas fa-search"></i> 검색</button>
+                </div>
+            </div>
+
+            <!-- 목록 -->
+            <div class="report-list-section">
+                <div class="report-list-header">
+                    <div>
+                        <h3 class="report-list-title">문의/신고 목록</h3>
+                        <div class="report-list-count">총 <span th:text="${totalReports}">0</span>건</div>
+                    </div>
+                </div>
+
+                <div class="report-list-content">
+                    <!-- 실제 DB 데이터 표시 -->
+                    <div th:if="${reports != null and !reports.isEmpty()}">
+                        <div th:each="inquiry : ${reports}" class="report-item" 
+                             style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin-bottom: 12px; cursor: pointer;"
+                             th:onclick="|location.href='/admin/inquiry-report/detail/${inquiry.inquiryId}'|">
+                            <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 8px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: bold; font-size: 16px; margin-bottom: 4px;" 
+                                         th:text="${inquiry.subject}">제목</div>
+                                    <div style="font-size: 14px; color: #666; margin-bottom: 8px;" 
+                                         th:text="${inquiry.content != null ? (inquiry.content.length() > 100 ? inquiry.content.substring(0, 97) + '...' : inquiry.content) : '내용 없음'}">내용</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 12px; color: #999; margin-bottom: 4px;" 
+                                         th:text="${inquiry.createdAt != null ? #temporals.format(inquiry.createdAt, 'yyyy-MM-dd HH:mm') : ''}">날짜</div>
+                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                        <span th:if="${inquiry.reporterType != null and inquiry.reporterType.name() == 'COMPANY'}" 
+                                              style="background: #e3f2fd; color: #1976d2; padding: 2px 8px; border-radius: 12px; font-size: 12px;">업체</span>
+                                        <span th:if="${inquiry.reporterType != null and inquiry.reporterType.name() == 'SOCIAL'}" 
+                                              style="background: #f3e5f5; color: #7b1fa2; padding: 2px 8px; border-radius: 12px; font-size: 12px;">사용자</span>
+                                        <span th:if="${inquiry.status != null and inquiry.status.name() == 'OPEN'}" 
+                                              style="background: #fff3e0; color: #f57c00; padding: 2px 8px; border-radius: 12px; font-size: 12px;">대기중</span>
+                                        <span th:if="${inquiry.status != null and inquiry.status.name() == 'ANSWERED'}" 
+                                              style="background: #e8f5e8; color: #2e7d32; padding: 2px 8px; border-radius: 12px; font-size: 12px;">답변완료</span>
+                                        <span th:if="${inquiry.status != null and inquiry.status.name() == 'CLOSED'}" 
+                                              style="background: #f5f5f5; color: #616161; padding: 2px 8px; border-radius: 12px; font-size: 12px;">종료</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 문의/신고가 없을 때 -->
+                    <div th:if="${reports == null or reports.isEmpty()}" 
+                         style="text-align: center; padding: 40px; color: #999;">
+                        <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 16px;"></i>
+                        <p>문의/신고 내역이 없습니다.</p>
+                    </div>
+                </div>
+
+                <!-- 페이지네이션 -->
+                <div th:if="${totalPages > 1}" class="pagination" style="margin-top: 16px; display: flex; gap: 8px; justify-content: center;">
+                    <a th:if="${currentPage > 1}" 
+                       th:href="@{/admin/inquiry-report(page=${currentPage - 1}, status=${status}, type=${type})}" 
+                       style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; text-decoration: none; color: #333;">이전</a>
+                    
+                    <span th:each="pageNum : ${#numbers.sequence(1, totalPages)}" 
+                          th:if="${pageNum >= currentPage - 2 and pageNum <= currentPage + 2}">
+                        <a th:if="${pageNum != currentPage}" 
+                           th:href="@{/admin/inquiry-report(page=${pageNum}, status=${status}, type=${type})}" 
+                           th:text="${pageNum}" 
+                           style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; text-decoration: none; color: #333;"></a>
+                        <span th:if="${pageNum == currentPage}" 
+                              th:text="${pageNum}" 
+                              style="padding: 8px 12px; background: #007bff; color: white; border-radius: 4px;"></span>
+                    </span>
+                    
+                    <a th:if="${currentPage < totalPages}" 
+                       th:href="@{/admin/inquiry-report(page=${currentPage + 1}, status=${status}, type=${type})}" 
+                       style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; text-decoration: none; color: #333;">다음</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/crm/js/inquiry_report.js"></script>
+</body>
+</html>
+

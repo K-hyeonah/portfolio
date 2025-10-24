@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시술 예약 - HealnGo</title>
+    <link rel="stylesheet" th:href="@{/resources/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/reservation.css}">
+</head>
+<body>
+    <!-- Header -->
+    <div th:replace="common/header :: header"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="reservation-container">
+            <!-- Page Title -->
+            <div class="page-title">
+                <div class="title-icon">📅</div>
+                <h1>시술 예약</h1>
+            </div>
+
+            <!-- Procedure Categories -->
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="botox">보톡스</button>
+                <button class="category-tab" data-category="filler">필러</button>
+                <button class="category-tab" data-category="laser">레이저 토닝</button>
+                <button class="category-tab" data-category="lifting">리프팅</button>
+                <button class="category-tab" data-category="pigmentation">색소 침착</button>
+            </div>
+
+            <!-- Procedure Selection -->
+            <div class="procedure-selection">
+                <div class="procedure-option">
+                    <div class="option-content">
+                        <input type="checkbox" id="procedure1" class="procedure-checkbox">
+                        <label for="procedure1" class="procedure-label">
+                            <div class="procedure-info">
+                                <div class="procedure-name">주름톡 볼륨 1CC 1회 한정가</div>
+                                <div class="procedure-detail">제외부위: 눈썹, 미간 등</div>
+                            </div>
+                            <div class="procedure-price">55,000 원</div>
+                        </label>
+                        <button class="detail-btn" onclick="toggleDetail(1)">▼</button>
+                    </div>
+                    <div class="procedure-detail-content" id="detail1" style="display: none;">
+                        <div class="detail-section">
+                            <h3>시술정보</h3>
+                            <p>주름톡 볼륨은 과도하게 발달한 근육을 축소시켜 얼굴 라인을 개선하는 시술입니다. 개인의 근육량에 따라 용량이 달라지며, 근육이 많거나 사용량이 많은 경우 추가 용량이 필요할 수 있습니다. 개인의 턱 근육 위치, 움직임, 피부 타입, 노화 정도를 고려한 균형 잡힌 시술이 중요하며, 숙련된 의료진이 맞춤형 시술을 제공합니다.</p>
+                        </div>
+                        <div class="detail-section">
+                            <h3>주의사항</h3>
+                            <p>시술 부위에 따라 효과 시기가 다르지만 보통 시술 후 2-4주 후에 효과가 나타납니다. 시술 부위를 비비거나 자극하지 마세요. 둔탁한 통증이 있을 수 있지만 정상적인 반응입니다. 효과 유지를 위해 딱딱하고 씹는 음식은 피해주세요. 시술 후 2-3일간 흡연과 음주를 피해주세요. 시술 후 약 일주일간 찜질방이나 사우나 등 고온 노출을 피해주세요.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="procedure-option">
+                    <div class="option-content">
+                        <input type="checkbox" id="procedure2" class="procedure-checkbox">
+                        <label for="procedure2" class="procedure-label">
+                            <div class="procedure-info">
+                                <div class="procedure-name">국산 틱톡스 50U 1회 한정가</div>
+                                <div class="procedure-detail">제외부위: 없음</div>
+                            </div>
+                            <div class="procedure-price">32,000 원</div>
+                        </label>
+                        <button class="detail-btn" onclick="toggleDetail(2)">▼</button>
+                    </div>
+                    <div class="procedure-detail-content" id="detail2" style="display: none;">
+                        <div class="detail-section">
+                            <h3>시술정보</h3>
+                            <p>국산 틱톡스는 과도하게 발달한 근육을 축소시켜 얼굴 라인을 개선하는 시술입니다. 개인의 근육량에 따라 용량이 달라지며, 근육이 많거나 사용량이 많은 경우 추가 용량이 필요할 수 있습니다. 개인의 턱 근육 위치, 움직임, 피부 타입, 노화 정도를 고려한 균형 잡힌 시술이 중요하며, 숙련된 의료진이 맞춤형 시술을 제공합니다.</p>
+                        </div>
+                        <div class="detail-section">
+                            <h3>주의사항</h3>
+                            <p>시술 부위에 따라 효과 시기가 다르지만 보통 시술 후 2-4주 후에 효과가 나타납니다. 시술 부위를 비비거나 자극하지 마세요. 둔탁한 통증이 있을 수 있지만 정상적인 반응입니다. 효과 유지를 위해 딱딱하고 씹는 음식은 피해주세요. 시술 후 2-3일간 흡연과 음주를 피해주세요. 시술 후 약 일주일간 찜질방이나 사우나 등 고온 노출을 피해주세요.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Sections -->
+            <div class="info-sections">
+                <div class="info-section">
+                    <h3>시술정보</h3>
+                    <p>안전하고 효과적인 시술을 위해 전문의가 직접 상담 후 진행됩니다. 개인별 맞춤 시술로 최적의 결과를 제공합니다.</p>
+                </div>
+                <div class="info-section">
+                    <h3>주의사항</h3>
+                    <p>시술 전 24시간 금주, 시술 후 6시간 동안 마사지 금지, 일주일간 사우나 및 찜질방 이용 금지 등이 있습니다.</p>
+                </div>
+            </div>
+
+            <!-- Total Price and Actions -->
+            <div class="total-section">
+                <div class="total-info">
+                    <div class="total-label">총 시술 금액 <span class="vat-note">(VAT 별도)</span></div>
+                    <div class="payment-note">• 결제는 내원시 진행돼요.</div>
+                </div>
+                <div class="total-price">
+                    <span class="price-amount">32,000</span>
+                    <span class="price-unit">원</span>
+                </div>
+                <div class="action-buttons">
+                    <button class="wishlist-btn">찜</button>
+                    <button class="reservation-btn" onclick="openReservationModal()">예약하기</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Reservation Modal -->
+    <div id="reservationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>예약 확인</h2>
+                <p>예약 정보를 확인해주세요.</p>
+            </div>
+
+            <div class="modal-body">
+                <!-- 예약자 정보 -->
+                <div class="info-card">
+                    <h3>예약자 정보</h3>
+                    <div class="info-row">
+                        <span class="label">이름</span>
+                        <span class="value" th:text="${session.userName != null ? session.userName : '로그인 필요'}">로그인 필요</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">연락처</span>
+                        <span class="value" th:text="${session.userPhone != null ? session.userPhone : '-'}">-</span>
+                    </div>
+                </div>
+
+                <!-- 회담 날짜 -->
+                <div class="info-card">
+                    <h3>예약 날짜</h3>
+                    <div class="date-picker">
+                        <input type="date" id="reservationDate" th:value="${#temporals.format(#temporals.createToday(), 'yyyy-MM-dd')}" min="2025-01-01" max="2025-12-31">
+                    </div>
+                </div>
+
+                <!-- 예약 시간 -->
+                <div class="info-card">
+                    <h3>예약 시간</h3>
+                    <div class="time-slots">
+                        <button class="time-slot">09:00</button>
+                        <button class="time-slot">10:00</button>
+                        <button class="time-slot">11:00</button>
+                        <button class="time-slot unavailable">12:00</button>
+                        <button class="time-slot">14:00</button>
+                        <button class="time-slot selected">15:00</button>
+                        <button class="time-slot">16:00</button>
+                        <button class="time-slot">17:00</button>
+                    </div>
+                    <p class="time-note">*회색으로 표시된 시간은 예약이 마감되었습니다</p>
+                </div>
+
+                <!-- 선택 서비스 -->
+                <div class="info-card">
+                    <h3>선택 서비스</h3>
+                    <div class="info-row">
+                        <span class="label">서비스명</span>
+                        <span class="value" id="serviceName">서비스명</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">예약 일시</span>
+                        <span class="value" id="reservationDateTime">예약 일시</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">병원명</span>
+                        <span class="value" id="hospitalName">병원명</span>
+                    </div>
+                </div>
+
+                <!-- 총 결제 금액 -->
+                <div class="info-card">
+                    <h3>총 결제 금액</h3>
+                    <div class="total-amount">
+                        <span class="amount">32,000</span>
+                        <span class="unit">원</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="cancel-btn" onclick="closeReservationModal()">취소</button>
+                <button class="confirm-btn">예약 확정</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="common/footer :: footer"></div>
+
+    <script th:src="@{/resources/js/reservation.js}"></script>
+</body>
+</html>

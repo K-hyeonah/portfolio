@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 - HealnGo</title>
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/crm/css/company_signup.css">
+    <link rel="stylesheet" href="/resources/css/user_signup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="signup-container">
+        <!-- 왼쪽 사이드바 -->
+        <div class="signup-sidebar">
+            <div class="sidebar-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="/crm/images/로고 블랙.png.png" alt="HealnGo Logo" class="logo-img">
+                    </div>
+                </div>
+                
+                <div class="progress-steps">
+                    <div class="step" id="step1">
+                        <div class="step-circle active">
+                            <span class="step-number">1</span>
+                        </div>
+                        <span class="step-text">이메일 인증</span>
+                    </div>
+                    
+                    <div class="step" id="step2">
+                        <div class="step-circle">
+                            <span class="step-number">2</span>
+                        </div>
+                        <span class="step-text">개인 정보</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 오른쪽 메인 컨텐츠 -->
+        <div class="signup-main">
+            <!-- Step 1: 이메일 인증 -->
+            <div class="step-content active" id="step1-content">
+                <div class="step-header">
+                    <span class="step-indicator">STEP 1/2</span>
+                    <h2 class="step-title">이메일 인증</h2>
+                </div>
+                
+                <form class="signup-form" id="step1-form">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <div class="phone-input-group">
+                            <input type="email" class="email-input" id="email" placeholder="your@email.com" required>
+                            <button type="button" class="btn-send-sms" onclick="sendEmailCode()">인증하기</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>인증번호</label>
+                        <input type="text" class="verification-code" id="emailCode" placeholder="6자리 인증번호 입력" maxlength="6" required>
+                    </div>
+                    
+                    <div class="sms-info" id="emailInfo" style="display: none;">
+                        <i class="fas fa-info-circle"></i>
+                        <span>인증 코드가 <span id="sentEmail"></span>로 전송되었습니다. <span id="timer">05:00</span></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>비밀번호</label>
+                        <div class="password-input-group">
+                            <input type="password" class="password-input" id="password" placeholder="비밀번호를 입력하세요 (8자 이상)" required>
+                            <i class="fas fa-eye password-toggle" onclick="togglePassword()"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-next" onclick="verifyAndNext()">Next Step <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 2: 개인 정보 -->
+            <div class="step-content" id="step2-content">
+                <div class="step-header">
+                    <span class="step-indicator">STEP 2/2</span>
+                    <h2 class="step-title">개인 정보 입력</h2>
+                </div>
+                
+                <form class="signup-form" id="step2-form">
+                    <div class="form-group">
+                        <label>이름 (Name)</label>
+                        <input type="text" id="name" placeholder="이름을 입력하세요" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>전화번호 (선택)</label>
+                        <input type="tel" id="phoneNumber" placeholder="010-1234-5678">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-previous" onclick="previousStep()"><i class="fas fa-arrow-left"></i> Previous</button>
+                        <button type="button" class="btn-next" onclick="submitSignup()">회원가입 <i class="fas fa-check"></i></button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 성공 페이지 -->
+            <div class="step-content success-page" id="success-content" style="display: none;">
+                <div class="success-message">
+                    <div class="success-icon-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2 class="success-title">회원가입이 완료되었습니다!</h2>
+                    <p>HealnGo의 다양한 의료 서비스를 이용해보세요</p>
+                    <button type="button" class="btn-start" onclick="goToMain()">시작하기 <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/resources/js/user_signup.js"></script>
+</body>
+</html>
+

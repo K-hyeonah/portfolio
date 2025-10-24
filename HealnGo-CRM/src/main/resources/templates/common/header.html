@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css">
+</head>
+<body>
+    <header id="main-header" th:fragment="header">
+        <div class="header-container">
+            <a href="/main" class="logo">
+                <img src="/crm/images/로고 블랙.png.png" alt="HealnGo 로고" class="logo-image">
+            </a>
+            <div class="user-actions">
+                <!-- 로그인 상태 -->
+                <div th:if="${session.userId != null}">
+                    <span class="user-name" th:text="${session.userName} + '님'">사용자님</span>
+                    <a href="/mypage" class="text-button mypage-btn">마이페이지</a>
+                    <a href="/logout" class="text-button logout-btn">로그아웃</a>
+                </div>
+                
+                <!-- 비로그인 상태 -->
+                <div th:unless="${session.userId != null}">
+                    <a href="/login" class="text-button login-btn">로그인</a>
+                    <a href="/signup" class="text-button signup-btn">회원가입</a>
+                </div>
+                
+                <div class="dropdown">
+                    <button class="lang_btn">번역</button>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="changeLanguage('ko')" class="lang-option">
+                            <span class="fi fi-kr"></span> 한국어
+                        </a>
+                        <a href="#" onclick="changeLanguage('en')" class="lang-option">
+                            <span class="fi fi-us"></span> English
+                        </a>
+                        <a href="#" onclick="changeLanguage('ja')" class="lang-option">
+                            <span class="fi fi-jp"></span> 日本語
+                        </a>
+                        <a href="#" onclick="changeLanguage('zh')" class="lang-option">
+                            <span class="fi fi-cn"></span> 中文
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        // 언어 변경 함수
+        function changeLanguage(lang) {
+            localStorage.setItem('selectedLanguage', lang);
+            location.reload();
+        }
+
+        // 로고 호버 효과
+        document.addEventListener('DOMContentLoaded', function() {
+            const logo = document.querySelector('.logo');
+            if (logo) {
+                logo.addEventListener('mouseover', function() {
+                    this.classList.add('logo-hover');
+                });
+
+                logo.addEventListener('mouseout', function() {
+                    this.classList.remove('logo-hover');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

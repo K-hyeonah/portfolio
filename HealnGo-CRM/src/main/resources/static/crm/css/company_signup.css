@@ -1,0 +1,585 @@
+/* 전체 컨테이너 */
+.signup-container {
+    display: flex;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 왼쪽 사이드바 */
+.signup-sidebar {
+    width: 40%;
+    background: linear-gradient(135deg, #3F8CFF 0%, #1e40af 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.sidebar-content {
+    width: 80%;
+    max-width: 400px;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.logo-img {
+    height: 60px;
+    margin-bottom: 40px;
+}
+
+.logo-text {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.progress-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+}
+
+.step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 40px;
+    width: 2px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.step.completed::after {
+    background: white;
+}
+
+.step-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.step-circle.active {
+    background: white;
+    border-color: white;
+}
+
+.step-circle.completed {
+    background: white;
+    border-color: white;
+}
+
+.step-circle.completed::before {
+    content: '✓';
+    color: #3F8CFF;
+    font-weight: bold;
+}
+
+.step-number {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.step-circle.active .step-number,
+.step-circle.completed .step-number {
+    color: #3F8CFF;
+}
+
+.step-text {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* 오른쪽 메인 컨텐츠 */
+.signup-main {
+    width: 60%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.step-content {
+    width: 100%;
+    max-width: 500px;
+    display: none;
+}
+
+.step-content.active {
+    display: block;
+}
+
+.step-header {
+    margin-bottom: 40px;
+}
+
+.step-indicator {
+    font-size: 14px;
+    color: #3F8CFF;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.step-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+/* 폼 스타일 */
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.form-group input,
+.form-group select {
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s ease;
+    background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #3F8CFF;
+}
+
+/* 사용자 유형 선택 */
+.user-type-selection {
+    display: flex;
+    gap: 20px;
+    padding: 10px 0;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 12px 20px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+
+.radio-option:hover {
+    border-color: #3F8CFF;
+    background: #f0f7ff;
+}
+
+.radio-option input[type="radio"] {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.radio-option input[type="radio"]:checked + .radio-label {
+    font-weight: 600;
+    color: #3F8CFF;
+}
+
+.radio-option:has(input[type="radio"]:checked) {
+    border-color: #3F8CFF;
+    background: #f0f7ff;
+}
+
+.radio-label {
+    font-size: 16px;
+    color: #374151;
+    cursor: pointer;
+}
+
+/* 인증번호 입력 */
+.verification-code {
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* 전화번호 입력 그룹 */
+.phone-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.country-code {
+    width: 80px;
+    padding: 12px 8px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.phone-number {
+    flex: 1;
+}
+
+/* SMS 전송 버튼 */
+.btn-send-sms {
+    background: linear-gradient(135deg, #3F8CFF 0%, #1e40af 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    min-width: 80px;
+}
+
+.btn-send-sms:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(63, 140, 255, 0.3);
+}
+
+.btn-send-sms:disabled {
+    background: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* SMS 정보 */
+.sms-info {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #1e40af;
+}
+
+.sms-info i {
+    color: #3F8CFF;
+}
+
+/* 비밀번호 입력 그룹 */
+.password-input-group {
+    position: relative;
+}
+
+.password-input {
+    width: 100%;
+    padding-right: 45px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #6b7280;
+    transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+    color: #3F8CFF;
+}
+
+/* 드롭다운 */
+.dropdown-container {
+    position: relative;
+}
+
+.dropdown-container select {
+    appearance: none;
+    padding-right: 45px;
+}
+
+.dropdown-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    pointer-events: none;
+}
+
+/* 팀원 초대 섹션 */
+.team-members-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.member-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.member-email {
+    width: 100%;
+}
+
+.btn-add-member {
+    background: none;
+    border: none;
+    color: #3F8CFF;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 0;
+    text-align: left;
+    transition: color 0.2s ease;
+}
+
+.btn-add-member:hover {
+    color: #1e40af;
+}
+
+.members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.member-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.member-email-text {
+    color: #374151;
+    font-size: 14px;
+}
+
+.btn-remove-member {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-remove-member:hover {
+    background: #fef2f2;
+}
+
+/* 버튼 스타일 */
+.form-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 40px;
+}
+
+.btn-previous {
+    background: white;
+    color: #3F8CFF;
+    border: 2px solid #e5e7eb;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-previous:hover {
+    border-color: #3F8CFF;
+    background: #eff6ff;
+}
+
+.btn-next,
+.btn-start {
+    background: linear-gradient(135deg, #3F8CFF 0%, #1e40af 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.btn-next:hover,
+.btn-start:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(63, 140, 255, 0.3);
+}
+
+/* 성공 페이지 */
+.success-page {
+    text-align: center;
+}
+
+.success-illustration {
+    margin-bottom: 40px;
+}
+
+.success-image {
+    max-width: 300px;
+    height: auto;
+}
+
+.success-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 40px 0;
+}
+
+.btn-start {
+    margin: 0 auto;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .signup-container {
+        flex-direction: column;
+    }
+    
+    .signup-sidebar {
+        width: 100%;
+        min-height: 200px;
+        padding: 20px;
+    }
+    
+    .sidebar-content {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .sidebar-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    
+    .progress-steps {
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .step {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .step:not(:last-child)::after {
+        display: none;
+    }
+    
+    .step-text {
+        font-size: 12px;
+        text-align: center;
+    }
+    
+    .signup-main {
+        width: 100%;
+        padding: 20px;
+    }
+    
+    .step-title {
+        font-size: 24px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-next,
+    .btn-start {
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Textarea 스타일 */
+.company-introduction {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all 0.3s ease;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.company-introduction:focus {
+    outline: none;
+    border-color: #3F8CFF;
+    box-shadow: 0 0 0 3px rgba(63, 140, 255, 0.1);
+}
+
+@media (max-width: 480px) {
+    .phone-input-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .country-code {
+        width: 100%;
+    }
+    
+    .btn-send-sms {
+        width: 100%;
+        padding: 14px 20px;
+        font-size: 16px;
+    }
+}

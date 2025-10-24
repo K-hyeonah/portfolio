@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의 & 채팅 - 힝거 피부과</title>
+    
+    <!-- CSS 파일들 -->
+    <link rel="stylesheet" href="/crm/css/company_sidebar.css">
+    <link rel="stylesheet" href="/crm/css/company_header.css">
+    <link rel="stylesheet" href="/crm/css/company_inquiry_chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- 사이드바 -->
+        <div th:replace="common/company_sidebar :: company_sidebar"></div>
+        
+        <!-- 메인 콘텐츠 -->
+        <div class="main-content">
+            <!-- 헤더 -->
+            <div th:replace="common/company_header :: company_header"></div>
+            
+            <!-- 메인 콘텐츠 -->
+            <div class="inquiry-main-content">
+                <h2 class="inquiry-page-title">문의 & 채팅</h2>
+                
+                <!-- 채팅 레이아웃 -->
+                <div class="inquiry-chat-container">
+                    <!-- 문의 목록 사이드바 -->
+                    <div class="inquiry-list-sidebar">
+                        <div class="inquiry-list-header">
+                            <div class="inquiry-list-title">대화 목록</div>
+
+                            <div class="inquiry-filter-tabs">
+                                <button class="inquiry-filter-tab active" data-filter="all">전체</button>
+                                <button class="inquiry-filter-tab" data-filter="new">신규</button>
+                                <button class="inquiry-filter-tab" data-filter="in-progress">진행중</button>
+                                <button class="inquiry-filter-tab" data-filter="resolved">완료</button>
+                            </div>
+
+                        </div>
+                        <div class="inquiry-list-content" id="threadList"><!-- 목록 동적 렌더링 --></div>
+                    </div>
+
+                    <!-- 채팅 영역 -->
+                    <div class="inquiry-chat-area">
+                        <div class="inquiry-chat-header">
+                            <div class="chat-peer">
+                                <div class="meta">
+                                    <h3 id="peerTitle">대화를 선택하세요</h3>
+                                    <p id="peerSub">-</p>
+                                </div>
+                            </div>
+                            <div class="chat-actions">
+                                <button class="inquiry-chat-action-btn" id="btnMarkDone" disabled>상담 완료</button>
+                                <button class="inquiry-chat-action-btn primary" id="btnReserve" disabled>예약하기</button>
+                            </div>
+                        </div>
+
+                        <div class="inquiry-chat-messages" id="messageList">
+                            <div class="inquiry-empty" id="emptyHint">왼쪽에서 대화를 선택하세요.</div>
+                        </div>
+
+                        <div class="inquiry-chat-input-area">
+                            <textarea class="inquiry-chat-input" id="inputMessage" placeholder="메시지를 입력하세요..." rows="1" disabled></textarea>
+                            <button class="inquiry-chat-send-btn" id="btnSend">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script th:inline="javascript">
+        // 세션에서 회사 ID 주입
+        /*<![CDATA[*/
+        window.CURRENT_COMPANY_ID = /*[[${session.companyId}]]*/ 1;
+        window.CSRF_HEADER = 'X-CSRF-TOKEN'; // CSRF가 비활성화되어 있지만 유지
+        window.CSRF_TOKEN = '';
+        
+        console.log('현재 회사 ID:', window.CURRENT_COMPANY_ID);
+        /*]]>*/
+    </script>
+    <!-- WebSocket 라이브러리 -->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script src="/crm/js/company_sidebar.js"></script>
+    <script src="/crm/js/company_header.js"></script>
+    <script src="/crm/js/company_inquiry_chat.js"></script>
+</body>
+</html>

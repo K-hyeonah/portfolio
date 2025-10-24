@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>서비스 상세 - HealnGo</title>
+    <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/resources/css/service_detail.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div th:replace="~{common/header :: header}"></div>
+
+<div class="service-detail-container">
+    <!-- 서비스 상세 정보 -->
+    <div class="service-detail-content">
+        <!-- 이미지 섹션 -->
+        <div class="service-image-section">
+            <div class="main-image">
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                    <p>서비스 이미지</p>
+                </div>
+            </div>
+            <div class="thumbnail-images">
+                <div class="thumbnail active">
+                    <i class="fas fa-image"></i>
+                </div>
+                <div class="thumbnail">
+                    <i class="fas fa-image"></i>
+                </div>
+                <div class="thumbnail">
+                    <i class="fas fa-image"></i>
+                </div>
+                <div class="thumbnail">
+                    <i class="fas fa-image"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- 정보 섹션 -->
+        <div class="service-info-section">
+            <div class="breadcrumb">
+                <a href="/">홈</a>
+                <span>/</span>
+                <a href="/list" id="hospital-link">병원</a>
+                <span>/</span>
+                <span id="service-name-breadcrumb">서비스</span>
+            </div>
+
+            <h1 class="service-title" id="service-title">서비스 제목</h1>
+            
+            <div class="service-meta">
+                <div class="meta-item">
+                    <i class="fas fa-hospital"></i>
+                    <span id="hospital-name">병원명</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-tags"></i>
+                    <span id="service-category">카테고리</span>
+                </div>
+            </div>
+
+            <div class="service-tags" id="service-tags">
+                <!-- 태그들이 여기에 동적으로 추가됩니다 -->
+            </div>
+
+            <div class="service-price-section">
+                <div class="price-label">서비스 가격</div>
+                <div class="price-value" id="service-price">0원</div>
+                <div class="price-details">
+                    <span id="vat-info">VAT 포함</span>
+                    <span class="divider">|</span>
+                    <span id="refund-info">환불 가능</span>
+                </div>
+            </div>
+
+            <div class="service-period" id="service-period">
+                <i class="fas fa-calendar-alt"></i>
+                <span>제공 기간: <strong id="service-dates">2024-01-01 ~ 2024-12-31</strong></span>
+            </div>
+
+            <div class="service-target" id="service-target">
+                <i class="fas fa-users"></i>
+                <span>대상: <strong id="gender-target">남녀공용</strong></span>
+            </div>
+
+            <div class="service-actions">
+                <button class="btn-favorite" onclick="toggleServiceFavorite()">
+                    <i class="far fa-heart"></i>
+                    <span>찜하기</span>
+                </button>
+                <button class="btn-reservation" onclick="goToReservation()">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>예약하기</span>
+                </button>
+                <button class="btn-inquiry" onclick="goToInquiry()">
+                    <i class="fas fa-question-circle"></i>
+                    <span>문의하기</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상세 설명 섹션 -->
+    <div class="service-description-section">
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('description')">
+                <i class="fas fa-info-circle"></i>
+                상세 정보
+            </button>
+            <button class="tab" onclick="switchTab('reviews')">
+                <i class="fas fa-star"></i>
+                리뷰
+            </button>
+            <button class="tab" onclick="switchTab('hospital')">
+                <i class="fas fa-hospital"></i>
+                병원 정보
+            </button>
+        </div>
+
+        <div class="tab-content">
+            <!-- 상세 정보 탭 -->
+            <div class="tab-panel active" id="description-panel">
+                <h3>서비스 설명</h3>
+                <div class="description-content" id="service-description">
+                    <p>서비스에 대한 상세 설명이 표시됩니다.</p>
+                </div>
+
+                <div class="service-features">
+                    <h4>서비스 특징</h4>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> 전문 의료진의 체계적인 상담</li>
+                        <li><i class="fas fa-check-circle"></i> 최신 장비를 활용한 정밀 시술</li>
+                        <li><i class="fas fa-check-circle"></i> 개인 맞춤형 케어 프로그램</li>
+                        <li><i class="fas fa-check-circle"></i> 사후 관리 서비스 제공</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 리뷰 탭 -->
+            <div class="tab-panel" id="reviews-panel" style="display: none;">
+                <div class="reviews-summary">
+                    <div class="rating-overview">
+                        <div class="rating-score" th:text="${averageRating != null ? #numbers.formatDecimal(averageRating, 1, 1) : '0.0'}">0.0</div>
+                        <div class="rating-stars" th:attr="data-rating=${averageRating}">
+                            <i th:each="star : ${#numbers.sequence(1, 5)}" 
+                               th:class="${star <= averageRating ? 'fas fa-star' : (star - 0.5 <= averageRating ? 'fas fa-star-half-alt' : 'far fa-star')}"></i>
+                        </div>
+                        <div class="rating-count" th:text="${reviewCount != null ? reviewCount + '개의 리뷰' : '0개의 리뷰'}">0개의 리뷰</div>
+                    </div>
+                </div>
+
+                <div class="reviews-list">
+                    <!-- 리뷰가 없는 경우 -->
+                    <div th:if="${reviews == null || #lists.isEmpty(reviews)}" class="no-reviews">
+                        <i class="fas fa-comment-slash" style="font-size: 48px; color: #ccc; margin-bottom: 16px;"></i>
+                        <p>아직 작성된 리뷰가 없습니다.</p>
+                    </div>
+                    
+                    <!-- 리뷰 목록 -->
+                    <div th:each="review : ${reviews}" class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="reviewer-details">
+                                    <div class="reviewer-name" th:text="${review.userName != null ? review.userName : '익명'}">익명</div>
+                                    <div class="review-date" th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd')}">2024-01-01</div>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <i th:each="star : ${#numbers.sequence(1, 5)}" 
+                                   th:class="${star <= review.rating ? 'fas fa-star' : 'far fa-star'}"></i>
+                            </div>
+                        </div>
+                        <div class="review-title" th:if="${review.title != null && !#strings.isEmpty(review.title)}" 
+                             th:text="${review.title}" style="font-weight: 600; margin-bottom: 8px;">리뷰 제목</div>
+                        <div class="review-content" th:text="${review.content}">리뷰 내용</div>
+                        <div class="review-image" th:if="${review.imageUrl != null}">
+                            <img th:src="${review.imageUrl}" alt="리뷰 이미지" style="max-width: 300px; border-radius: 8px; margin-top: 12px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 병원 정보 탭 -->
+            <div class="tab-panel" id="hospital-panel" style="display: none;">
+                <h3 id="hospital-name-detail">병원명</h3>
+                
+                <div class="hospital-info-table">
+                    <table>
+                        <tr>
+                            <th><i class="fas fa-map-marker-alt"></i> 주소</th>
+                            <td id="hospital-address">병원 주소</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-phone"></i> 연락처</th>
+                            <td id="hospital-phone">연락처 정보</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-globe"></i> 홈페이지</th>
+                            <td id="hospital-website">홈페이지 정보</td>
+                        </tr>
+                        <tr>
+                            <th><i class="fas fa-language"></i> 대상 국가</th>
+                            <td id="target-country">한국</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="hospital-map">
+                    <h4>위치</h4>
+                    <div id="map" class="map-container">
+                        <div class="map-placeholder">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <p>지도 로드 중...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 관련 서비스 섹션 -->
+    <div class="related-services-section">
+        <h3>이 병원의 다른 서비스</h3>
+        <div class="related-services-grid" id="related-services">
+            <!-- 관련 서비스들이 여기에 동적으로 추가됩니다 -->
+        </div>
+    </div>
+</div>
+
+<script src="/resources/js/service_detail.js"></script>
+
+<div th:replace="~{common/footer :: footer}"></div>
+</body>
+</html>
+

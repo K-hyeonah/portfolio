@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마케팅 - HealnGo</title>
+    <link rel="stylesheet" href="/crm/css/company_sidebar.css">
+    <link rel="stylesheet" href="/crm/css/company_header.css">
+    <link rel="stylesheet" href="/crm/css/company_marketing.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- 사이드바 -->
+    <div th:replace="common/company_sidebar :: company_sidebar"></div>
+    
+    <!-- 메인 콘텐츠 -->
+    <div class="main-content">
+        <!-- 헤더 -->
+        <div th:replace="common/company_header :: company_header"></div>
+        
+        <!-- 페이지 타이틀 -->
+        <div class="marketing-header">
+            <h1 class="marketing-title">
+                <i class="fas fa-bullhorn"></i>
+                마케팅
+            </h1>
+            <p class="marketing-subtitle">프로모션, 쿠폰, 노출 관리를 한 곳에서</p>
+        </div>
+        
+        <!-- 탭 네비게이션 -->
+        <div class="marketing-tabs">
+            <ul class="tab-list">
+                <li class="tab-item active" data-tab="overview">개요</li>
+                <li class="tab-item" data-tab="placement">노출 관리</li>
+                <li class="tab-item" data-tab="coupons">쿠폰</li>
+                <li class="tab-item" data-tab="messages">메시지</li>
+                <li class="tab-item" data-tab="assets">에셋</li>
+                <li class="tab-item" data-tab="analytics">분석</li>
+                <li class="tab-item" data-tab="help">도움말</li>
+            </ul>
+        </div>
+        
+        <!-- 탭 콘텐츠 영역 -->
+        <div class="marketing-content-area">
+            <!-- 탭1: 개요 (Overview) -->
+            <div id="overview-tab" class="tab-content active">
+                <!-- KPI 카드 -->
+                <div class="kpi-cards">
+                    <div class="kpi-card">
+                        <div class="kpi-icon"><i class="fas fa-eye"></i></div>
+                        <div class="kpi-content">
+                            <div class="kpi-label">노출수</div>
+                            <div class="kpi-value" th:text="${#numbers.formatInteger(totalImpressions, 0, 'COMMA')}">0</div>
+                            <div class="kpi-change" style="font-size: 12px; color: #999; margin-top: 5px;">
+                                승인된 노출 요청
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon"><i class="fas fa-mouse-pointer"></i></div>
+                        <div class="kpi-content">
+                            <div class="kpi-label">클릭수</div>
+                            <div class="kpi-value" th:text="${#numbers.formatInteger(totalClicks, 0, 'COMMA')}">0</div>
+                            <div class="kpi-change" style="font-size: 12px; color: #27ae60; margin-top: 5px;">
+                                <i class="fas fa-arrow-up"></i> 최근 30일
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon"><i class="fas fa-calendar-check"></i></div>
+                        <div class="kpi-content">
+                            <div class="kpi-label">예약수</div>
+                            <div class="kpi-value" th:text="${#numbers.formatInteger(totalReservations, 0, 'COMMA')}">0</div>
+                            <div class="kpi-change" style="font-size: 12px; color: #999; margin-top: 5px;">
+                                전체 예약
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon"><i class="fas fa-hospital"></i></div>
+                        <div class="kpi-content">
+                            <div class="kpi-label">의료서비스</div>
+                            <div class="kpi-value" th:text="${#numbers.formatInteger(totalMedicalServices, 0, 'COMMA')}">0</div>
+                            <div class="kpi-change" style="font-size: 12px; color: #999; margin-top: 5px;">
+                                등록된 서비스
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 차트 및 리스트 -->
+                <div class="overview-grid">
+                    <div class="chart-card">
+                        <h3 class="card-title">클릭 추이 (최근 30일)</h3>
+                        <canvas id="trendsChart"></canvas>
+                    </div>
+                    <div class="list-card">
+                        <h3 class="card-title">등록된 의료서비스</h3>
+                        <div class="top-content-list">
+                            <div th:if="${medicalServices != null and !medicalServices.isEmpty()}">
+                                <div th:each="service, iterStat : ${medicalServices}" 
+                                     th:if="${iterStat.index < 5}" 
+                                     class="top-content-item">
+                                    <span class="rank" th:text="${iterStat.index + 1}">1</span>
+                                    <span class="name" th:text="${service.name}">서비스명</span>
+                                    <span class="clicks" th:text="${service.price != null ? #numbers.formatDecimal(service.price, 0, 0) + '원' : '-'}">0원</span>
+                                    <span class="conversion" 
+                                          th:text="${service.serviceCategory != null ? service.serviceCategory : '-'}"
+                                          style="font-size: 12px; color: #666;">카테고리</span>
+                                </div>
+                            </div>
+                            <div th:if="${medicalServices == null or medicalServices.isEmpty()}" 
+                                 style="text-align: center; padding: 40px 20px; color: #999;">
+                                <i class="fas fa-hospital" style="font-size: 48px; margin-bottom: 10px; opacity: 0.3;"></i>
+                                <p style="margin: 0;">등록된 의료서비스가 없습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 빠른 실행 -->
+                <div class="quick-actions">
+                    <button class="action-btn primary" onclick="switchTab('placement')">
+                        <i class="fas fa-bullseye"></i>
+                        노출 요청
+                    </button>
+                    <button class="action-btn success" onclick="switchTab('coupons')">
+                        <i class="fas fa-ticket-alt"></i>
+                        쿠폰 생성
+                    </button>
+                    <button class="action-btn info" onclick="switchTab('messages')">
+                        <i class="fas fa-paper-plane"></i>
+                        메시지 발송 요청
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 탭2: 노출 관리 (Placement) -->
+            <div id="placement-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2 class="tab-title">노출 관리</h2>
+                    <button class="btn-new" onclick="openPlacementModal()">
+                        <i class="fas fa-plus"></i>
+                        새 노출 요청
+                    </button>
+                </div>
+                
+                <!-- 필터 바 -->
+                <div class="filter-bar">
+                    <select class="filter-select" id="placementStatusFilter">
+                        <option value="all">전체 상태</option>
+                        <option value="approved">승인완료</option>
+                        <option value="pending">대기중</option>
+                        <option value="rejected">반려</option>
+                    </select>
+                    <select class="filter-select" id="placementSlotFilter">
+                        <option value="all">전체 슬롯</option>
+                        <option value="home-hero">홈 히어로</option>
+                        <option value="home-card">홈 카드</option>
+                        <option value="category">카테고리</option>
+                        <option value="detail">상세</option>
+                    </select>
+                    <input type="date" class="filter-date" id="placementStartDate">
+                    <input type="date" class="filter-date" id="placementEndDate">
+                    <input type="text" class="filter-search" placeholder="검색...">
+                </div>
+                
+                <!-- 노출 요청 테이블 -->
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>대상</th>
+                                <th>슬롯 위치</th>
+                                <th>기간</th>
+                                <th>랜딩 URL</th>
+                                <th>상태</th>
+                                <th>우선순위</th>
+                                <th>클릭수</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="placement : ${placements}">
+                                <td th:text="${placement.target}">브이라인 리프팅</td>
+                                <td><span class="slot-badge" th:text="${placement.slot}">홈 히어로</span></td>
+                                <td><span th:text="${placement.startDate}">2025-10-01</span> ~ <span th:text="${placement.endDate}">2025-10-31</span></td>
+                                <td th:text="${placement.landingUrl}">https://example.com</td>
+                                <td>
+                                    <span class="status-badge" 
+                                          th:classappend="${placement.approvalStatus == T(com.example.ApiRound.entity.AdminEvent.ApprovalStatus).APPROVED} ? 'approved' : (${placement.approvalStatus == T(com.example.ApiRound.entity.AdminEvent.ApprovalStatus).PENDING} ? 'pending' : 'rejected')"
+                                          th:text="${placement.approvalStatus}">승인완료</span>
+                                </td>
+                                <td>
+                                    <span class="priority-badge" 
+                                          th:classappend="${placement.priority == T(com.example.ApiRound.entity.AdminEvent.Priority).HIGH} ? 'high' : 'normal'"
+                                          th:text="${placement.priority}">높음</span>
+                                </td>
+                                <td th:text="${#numbers.formatInteger(placement.clicks, 0, 'COMMA')}">2,450</td>
+                                <td>
+                                    <button class="btn-sm" th:onclick="'viewPlacement(' + ${placement.id} + ')'"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-sm" th:onclick="'editPlacement(' + ${placement.id} + ')'"><i class="fas fa-edit"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 탭3: 쿠폰 (Coupons) -->
+            <div id="coupons-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2 class="tab-title">쿠폰 관리</h2>
+                    <button class="btn-new" onclick="openCouponModal()">
+                        <i class="fas fa-plus"></i>
+                        쿠폰 만들기
+                    </button>
+                </div>
+                
+                <!-- 쿠폰 테이블 -->
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>쿠폰명</th>
+                                <th>유형</th>
+                                <th>할인값</th>
+                                <th>최소결제금액</th>
+                                <th>유효기간</th>
+                                <th>발급한도</th>
+                                <th>상태</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="coupon : ${coupons}">
+                                <td class="font-weight-bold" th:text="${coupon.name}">가을맞이 10% 할인</td>
+                                <td th:text="${coupon.couponType}">PERCENT</td>
+                                <td th:text="${coupon.discountValue}">10</td>
+                                <td th:text="${coupon.minPaymentAmount != null ? #numbers.formatInteger(coupon.minPaymentAmount, 0, 'COMMA') + '원' : '-'}">-</td>
+                                <td>
+                                    <span th:text="${coupon.validFrom}">2025-10-01</span> ~ 
+                                    <span th:text="${coupon.validUntil}">2025-10-31</span>
+                                </td>
+                                <td th:text="${coupon.issueLimit != null ? #numbers.formatInteger(coupon.issueLimit, 0, 'COMMA') : '무제한'}">500</td>
+                                <td>
+                                    <span class="status-badge" 
+                                          th:classappend="${coupon.approvalStatus == T(com.example.ApiRound.entity.Marketing.ApprovalStatus).APPROVED} ? 'approved' : (${coupon.approvalStatus == T(com.example.ApiRound.entity.Marketing.ApprovalStatus).PENDING} ? 'pending' : 'rejected')"
+                                          th:text="${coupon.approvalStatus}">PENDING</span>
+                                </td>
+                                <td>
+                                    <button class="btn-sm" th:onclick="'editCoupon(' + ${coupon.id} + ')'"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-sm danger" th:onclick="'deleteCoupon(' + ${coupon.id} + ')'"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 탭4: 메시지 (Messages) -->
+            <div id="messages-tab" class="tab-content">
+                <div class="message-form-wrapper">
+                    <h2 class="tab-title" style="margin-bottom: 30px; text-align: center;">메시지 발송</h2>
+                    <form class="message-form" onsubmit="submitMessage(event)">
+                        <div class="form-section">
+                            <h3 class="section-title">발송 대상</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">세그먼트 선택</label>
+                                    <select class="form-select" name="targetSegment" id="targetSegment">
+                                        <option value="ALL">전체 고객</option>
+                                        <option value="RECENT_30DAYS">최근 30일 예약 고객</option>
+                                        <option value="VIP">VIP 고객</option>
+                                        <option value="INACTIVE">장기 미방문 고객</option>
+                                        <option value="FIRST_TIME">첫 방문 고객</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">발송 채널</label>
+                                    <select class="form-select" name="targetChannel" id="targetChannel">
+                                        <option value="PUSH">앱 푸시</option>
+                                        <option value="EMAIL">이메일</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h3 class="section-title">메시지 내용</h3>
+                            <div class="form-group">
+                                <label class="form-label">제목 <span style="color: red;">*</span></label>
+                                <input type="text" class="form-input" name="title" id="messageTitle" placeholder="메시지 제목" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">본문 <span style="color: red;">*</span></label>
+                                <textarea class="form-textarea" name="content" id="messageContent" rows="5" placeholder="메시지 본문을 입력하세요" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">링크 URL (선택)</label>
+                                <input type="url" class="form-input" name="linkUrl" id="linkUrl" placeholder="https://">
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <h3 class="section-title">발송 설정</h3>
+                            <div class="form-group">
+                                <label class="form-label">발송 시점</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="sendTime" value="IMMEDIATE" checked onchange="toggleScheduledTime()"> 즉시 발송</label>
+                                    <label><input type="radio" name="sendTime" value="SCHEDULED" onchange="toggleScheduledTime()"> 예약 발송</label>
+                                </div>
+                                <input type="datetime-local" class="form-input" name="scheduledAt" id="scheduledTime" style="display:none; margin-top:10px;">
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-preview" onclick="previewMessage()">미리보기</button>
+                            <button type="submit" class="btn-submit">발송 요청</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- 탭5: 에셋 (Assets) -->
+            <div id="assets-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2 class="tab-title">에셋 라이브러리</h2>
+                    <button class="btn-new" onclick="openAssetUpload()">
+                        <i class="fas fa-upload"></i>
+                        파일 업로드
+                    </button>
+                </div>
+                
+                <!-- 에셋 탭 -->
+                <div class="asset-tabs">
+                    <button class="asset-tab-btn active" data-asset-tab="images">이미지</button>
+                    <button class="asset-tab-btn" data-asset-tab="videos">동영상</button>
+                    <button class="asset-tab-btn" data-asset-tab="templates">문구 템플릿</button>
+                </div>
+                
+                <!-- 배너 규격 가이드 -->
+                <div class="banner-guide">
+                    <h4><i class="fas fa-info-circle"></i> 배너 규격 가이드</h4>
+                    <ul>
+                        <li><strong>홈 히어로:</strong> 1920×560px</li>
+                        <li><strong>홈 카드:</strong> 600×220px</li>
+                        <li><strong>카테고리:</strong> 800×300px</li>
+                        <li><strong>상세:</strong> 1200×400px</li>
+                    </ul>
+                </div>
+                
+                <!-- 에셋 그리드 -->
+                <div class="assets-grid" id="imagesTab">
+                    <!-- 이미지: placement의 배너 이미지만 표시 -->
+                    <div th:each="placement : ${placements}" th:if="${placement.bannerImagePath != null}">
+                        <div class="asset-item">
+                            <div class="asset-thumbnail">
+                                <img th:src="${placement.bannerImagePath}" alt="Banner" onerror="this.src='/resources/images/default-banner.jpg'">
+                            </div>
+                            <div class="asset-info">
+                                <div class="asset-name" th:text="${placement.target + ' - ' + placement.slot}">브이라인 - 홈 히어로</div>
+                                <div class="asset-meta" th:text="${placement.slot + ' • ' + placement.startDate}">홈 히어로 • 2025-10-01</div>
+                            </div>
+                            <div class="asset-actions">
+                                <button class="btn-icon" th:onclick="'viewPlacement(' + ${placement.id} + ')'"><i class="fas fa-eye"></i></button>
+                                <button class="btn-icon" th:onclick="'deleteAsset(' + ${placement.id} + ', \\'placement\\')'"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 데이터가 없을 때 -->
+                    <div th:if="${placements.isEmpty()}" class="empty-state">
+                        <i class="fas fa-image" style="font-size: 48px; color: #ccc; margin-bottom: 10px;"></i>
+                        <p>등록된 이미지가 없습니다.</p>
+                        <p style="font-size: 14px; color: #999;">노출 요청 시 배너 이미지를 업로드하세요.</p>
+                    </div>
+                </div>
+                
+                <!-- 동영상 탭 (추후 구현) -->
+                <div class="assets-grid" id="videosTab" style="display:none;">
+                    <div class="empty-state">
+                        <i class="fas fa-video" style="font-size: 48px; color: #ccc; margin-bottom: 10px;"></i>
+                        <p>등록된 동영상이 없습니다.</p>
+                    </div>
+                </div>
+                
+                <!-- 문구 템플릿 탭 -->
+                <div class="assets-grid" id="templatesTab" style="display:none;">
+                    <!-- 쿠폰 설명 템플릿 -->
+                    <div th:each="coupon : ${coupons}" th:if="${coupon.description != null && !#strings.isEmpty(coupon.description)}">
+                        <div class="asset-item template-item">
+                            <div class="template-preview">
+                                <i class="fas fa-file-alt" style="font-size: 40px; color: #3498db;"></i>
+                            </div>
+                            <div class="asset-info">
+                                <div class="asset-name" th:text="${coupon.name}">쿠폰 템플릿</div>
+                                <div class="asset-meta" th:text="${#strings.abbreviate(coupon.description, 50)}">설명...</div>
+                            </div>
+                            <div class="asset-actions">
+                                <button class="btn-icon" th:onclick="'viewCouponTemplate(' + ${coupon.id} + ')'"><i class="fas fa-eye"></i></button>
+                                <button class="btn-icon" th:onclick="'editCoupon(' + ${coupon.id} + ')'"><i class="fas fa-edit"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 데이터가 없을 때 -->
+                    <div th:if="${coupons.isEmpty()}" class="empty-state">
+                        <i class="fas fa-file-alt" style="font-size: 48px; color: #ccc; margin-bottom: 10px;"></i>
+                        <p>등록된 문구 템플릿이 없습니다.</p>
+                        <p style="font-size: 14px; color: #999;">쿠폰 생성 시 설명을 입력하세요.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 탭6: 분석 (Analytics) -->
+            <div id="analytics-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2 class="tab-title">성과 분석</h2>
+                    <div class="export-buttons">
+                        <button class="btn-export"><i class="fas fa-file-csv"></i> CSV</button>
+                        <button class="btn-export"><i class="fas fa-file-excel"></i> XLSX</button>
+                    </div>
+                </div>
+                
+                <!-- 퍼널 차트 -->
+                <div class="chart-card">
+                    <h3 class="card-title">마케팅 퍼널</h3>
+                    <canvas id="funnelChart"></canvas>
+                </div>
+                
+                <!-- 슬롯별 성과 -->
+                <div class="chart-card">
+                    <h3 class="card-title">슬롯별 성과</h3>
+                    <canvas id="slotPerformanceChart"></canvas>
+                </div>
+                
+                <!-- 상세 데이터 테이블 -->
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>대상</th>
+                                <th>슬롯</th>
+                                <th>조회</th>
+                                <th>클릭</th>
+                                <th>예약</th>
+                                <th>전환율</th>
+                                <th>쿠폰 사용</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>브이라인 리프팅</td>
+                                <td>홈 히어로</td>
+                                <td>78,450</td>
+                                <td>2,450</td>
+                                <td>78</td>
+                                <td>3.2%</td>
+                                <td>23</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 탭7: 도움말 (Help) -->
+            <div id="help-tab" class="tab-content">
+                <div class="help-tabs">
+                    <button class="help-tab-btn active" data-help-tab="guide">운영가이드</button>
+                    <button class="help-tab-btn" data-help-tab="policy">승인정책</button>
+                    <button class="help-tab-btn" data-help-tab="inquiry">문의등록</button>
+                    <button class="help-tab-btn" data-help-tab="history">이전문의내역</button>
+                </div>
+                
+                <!-- 운영가이드 -->
+                <div id="guideTab" class="help-content active">
+                    <div class="guide-card">
+                        <h3>노출 슬롯 안내</h3>
+                        <ul>
+                            <li><strong>홈 히어로:</strong> 메인 페이지 상단 대형 배너 (최대 노출 효과)</li>
+                            <li><strong>홈 카드:</strong> 메인 페이지 카드형 섹션</li>
+                            <li><strong>카테고리:</strong> 카테고리 페이지 상단</li>
+                            <li><strong>상세:</strong> 서비스 상세 페이지</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 승인정책 -->
+                <div id="policyTab" class="help-content">
+                    <div class="guide-card">
+                        <h3>노출 승인 정책</h3>
+                        <ul>
+                            <li>홈 히어로 슬롯: 영업일 기준 3일 이내 검토</li>
+                            <li>허위·과장 광고는 즉시 반려</li>
+                            <li>이미지 규격 미준수 시 반려</li>
+                            <li>경쟁사 비방 콘텐츠 금지</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 문의등록 -->
+                <div id="inquiryTab" class="help-content">
+                    <form class="inquiry-form">
+                        <div class="form-group">
+                            <label class="form-label">제목</label>
+                            <input type="text" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">유형</label>
+                            <select class="form-select">
+                                <option>노출</option>
+                                <option>쿠폰</option>
+                                <option>메시지</option>
+                                <option>정책</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">내용</label>
+                            <textarea class="form-textarea" rows="5"></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">등록</button>
+                    </form>
+                </div>
+                
+                <!-- 이전문의내역 -->
+                <div id="historyTab" class="help-content">
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>제목</th>
+                                    <th>유형</th>
+                                    <th>상태</th>
+                                    <th>등록일</th>
+                                    <th>담당자</th>
+                                    <th>마지막답변</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>홈 배너 승인 기간 문의</td>
+                                    <td>노출</td>
+                                    <td><span class="status-badge approved">완료</span></td>
+                                    <td>2025-09-20</td>
+                                    <td>운영팀</td>
+                                    <td>2025-09-21</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 노출 요청 모달 -->
+    <div id="placementModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>새 노출 요청</h3>
+                <button class="modal-close" onclick="closePlacementModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="placementForm" onsubmit="submitPlacement(event)">
+                    <div class="form-group">
+                        <label class="form-label">대상 선택</label>
+                        <input type="text" class="form-input" name="target" 
+                               placeholder="서비스/이벤트 검색..." required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">노출 슬롯 *</label>
+                        <select class="form-select" name="slot" required>
+                            <option value="">선택해주세요</option>
+                            <option value="HOME_HERO">홈 히어로</option>
+                            <option value="HOME_CARD">홈 카드</option>
+                            <option value="CATEGORY">카테고리</option>
+                            <option value="DETAIL">상세</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">시작일 *</label>
+                            <input type="date" class="form-input" name="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">종료일 *</label>
+                            <input type="date" class="form-input" name="endDate" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">우선순위 *</label>
+                        <select class="form-select" name="priority" required>
+                            <option value="NORMAL">보통</option>
+                            <option value="HIGH">높음</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">랜딩 URL</label>
+                        <input type="url" class="form-input" name="landingUrl" placeholder="https://">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">배너 이미지</label>
+                        <input type="file" class="form-input" name="bannerImage" 
+                               id="bannerImageInput" accept="image/*">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closePlacementModal()">취소</button>
+                        <button type="submit" class="btn-primary">승인요청</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 쿠폰 생성 모달 -->
+    <div id="couponModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>쿠폰 만들기</h3>
+                <button class="modal-close" onclick="closeCouponModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="couponForm" onsubmit="submitCoupon(event)">
+                    <div class="form-group">
+                        <label class="form-label">쿠폰명 *</label>
+                        <input type="text" class="form-input" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">설명</label>
+                        <input type="text" class="form-input" name="description">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">유형 *</label>
+                            <select class="form-select" name="couponType" required>
+                                <option value="PERCENT">정율 (%)</option>
+                                <option value="AMOUNT">정액 (원)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">할인값 *</label>
+                            <input type="number" class="form-input" name="discountValue" 
+                                   step="0.01" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">최소 결제 금액</label>
+                        <input type="number" class="form-input" name="minPaymentAmount" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">발급 한도</label>
+                        <input type="number" class="form-input" name="issueLimit" 
+                               placeholder="전체 발급 수" min="1">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">유효 시작일 *</label>
+                            <input type="date" class="form-input" name="validFrom" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">유효 종료일 *</label>
+                            <input type="date" class="form-input" name="validUntil" required>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeCouponModal()">취소</button>
+                        <button type="submit" class="btn-primary">쿠폰 생성</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Placement 미리보기 모달 -->
+    <div id="placementViewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>노출 요청 상세</h2>
+                <button class="modal-close" onclick="closePlacementViewModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="view-section">
+                    <div class="view-row">
+                        <span class="view-label">대상:</span>
+                        <span class="view-value" id="view-target"></span>
+                    </div>
+                    <div class="view-row">
+                        <span class="view-label">슬롯 위치:</span>
+                        <span class="view-value" id="view-slot"></span>
+                    </div>
+                    <div class="view-row">
+                        <span class="view-label">시작일:</span>
+                        <span class="view-value" id="view-startDate"></span>
+                    </div>
+                    <div class="view-row">
+                        <span class="view-label">종료일:</span>
+                        <span class="view-value" id="view-endDate"></span>
+                    </div>
+                    <div class="view-row">
+                        <span class="view-label">우선순위:</span>
+                        <span class="view-value" id="view-priority"></span>
+                    </div>
+                    <div class="view-row">
+                        <span class="view-label">랜딩 URL:</span>
+                        <span class="view-value" id="view-landingUrl"></span>
+                    </div>
+                    <div class="view-row">
+                        <span class="view-label">배너 이미지:</span>
+                        <span class="view-value" id="view-bannerImage"></span>
+                    </div>
+                    <div class="view-row">
+                        <span class="view-label">상태:</span>
+                        <span class="view-value" id="view-status"></span>
+                    </div>
+                    <div class="view-row">
+                        <span class="view-label">클릭수:</span>
+                        <span class="view-value" id="view-clicks"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" onclick="closePlacementViewModal()">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Placement 수정 모달 -->
+    <div id="placementEditModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>노출 요청 수정</h2>
+                <button class="modal-close" onclick="closePlacementEditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="placementEditForm" onsubmit="updatePlacement(event)">
+                    <input type="hidden" id="edit-id" name="id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">대상 *</label>
+                            <select class="form-select" id="edit-target" name="target" required>
+                                <option value="">선택하세요</option>
+                                <option value="브이라인 리프팅">브이라인 리프팅</option>
+                                <option value="콧대 성형">콧대 성형</option>
+                                <option value="눈썹 문신">눈썹 문신</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">슬롯 위치 *</label>
+                            <select class="form-select" id="edit-slot" name="slot" required>
+                                <option value="">선택하세요</option>
+                                <option value="HOME_HERO">홈 히어로</option>
+                                <option value="HOME_CARD">홈 카드</option>
+                                <option value="CATEGORY">카테고리</option>
+                                <option value="DETAIL">상세 페이지</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">시작일 *</label>
+                            <input type="date" class="form-input" id="edit-startDate" name="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">종료일 *</label>
+                            <input type="date" class="form-input" id="edit-endDate" name="endDate" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">우선순위 *</label>
+                            <select class="form-select" id="edit-priority" name="priority" required>
+                                <option value="NORMAL">일반</option>
+                                <option value="HIGH">높음</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">랜딩 URL</label>
+                            <input type="url" class="form-input" id="edit-landingUrl" name="landingUrl" 
+                                   placeholder="https://example.com/landing">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closePlacementEditModal()">취소</button>
+                        <button type="submit" class="btn-primary">수정 완료</button>
+                        <button type="button" class="btn-danger" onclick="deletePlacement()">삭제</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Coupon 수정 모달 -->
+    <div id="couponEditModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>쿠폰 수정</h2>
+                <button class="modal-close" onclick="closeCouponEditModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="couponEditForm" onsubmit="updateCoupon(event)">
+                    <input type="hidden" id="coupon-edit-id" name="id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">쿠폰명 *</label>
+                            <input type="text" class="form-input" id="coupon-edit-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">쿠폰 유형 *</label>
+                            <select class="form-select" id="coupon-edit-type" name="couponType" required>
+                                <option value="PERCENT">정율 할인</option>
+                                <option value="AMOUNT">정액 할인</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">할인값 *</label>
+                            <input type="number" class="form-input" id="coupon-edit-discount" name="discountValue" 
+                                   placeholder="정율: 10 (%), 정액: 5000 (원)" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">최소 결제 금액</label>
+                            <input type="number" class="form-input" id="coupon-edit-minPayment" name="minPaymentAmount" 
+                                   placeholder="예: 30000" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">설명</label>
+                        <textarea class="form-input" id="coupon-edit-description" name="description" rows="3" 
+                                  placeholder="쿠폰 설명을 입력하세요"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">발급 한도</label>
+                        <input type="number" class="form-input" id="coupon-edit-issueLimit" name="issueLimit" 
+                               placeholder="전체 발급 수" min="1">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">유효 시작일 *</label>
+                            <input type="date" class="form-input" id="coupon-edit-validFrom" name="validFrom" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">유효 종료일 *</label>
+                            <input type="date" class="form-input" id="coupon-edit-validUntil" name="validUntil" required>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeCouponEditModal()">취소</button>
+                        <button type="submit" class="btn-primary">수정 완료</button>
+                        <button type="button" class="btn-danger" onclick="deleteCoupon()">삭제</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // 서버에서 전달받은 클릭 차트 데이터
+        const serverClickChartData = /*[[${clickChartData}]]*/ [];
+        console.log('클릭 차트 데이터:', serverClickChartData);
+        /*]]>*/
+    </script>
+    <script src="/crm/js/company_sidebar.js"></script>
+    <script src="/crm/js/company_header.js"></script>
+    <script src="/crm/js/company_marketing.js"></script>
+</body>
+</html>
+

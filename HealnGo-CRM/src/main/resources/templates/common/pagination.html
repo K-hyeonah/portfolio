@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagination Fragment</title>
+</head>
+<body>
+
+<!-- Pagination Fragment -->
+<div th:fragment="pagination" class="pagination list-pagination" th:if="${totalPages > 1}">
+    <!-- ① 카테고리(전국) 모드 -->
+    <div th:if="${mode == 'category'}">
+        <a th:if="${pageNo > 1}" th:href="@{/list/category/{category}(category=${category}, pageNo=1, amount=${amount})}" class="page-link">&laquo;</a>
+        <a th:if="${pageNo > 1}" th:href="@{/list/category/{category}(category=${category}, pageNo=${pageNo - 1}, amount=${amount})}" class="page-link">&lt;</a>
+        
+        <a th:each="p : ${#numbers.sequence(startPage, endPage)}" 
+           th:href="@{/list/category/{category}(category=${category}, pageNo=${p}, amount=${amount})}" 
+           th:class="'page-link' + (${p == pageNo} ? ' active' : '')" 
+           th:text="${p}">1</a>
+        
+        <a th:if="${pageNo < totalPages}" th:href="@{/list/category/{category}(category=${category}, pageNo=${pageNo + 1}, amount=${amount})}" class="page-link">&gt;</a>
+        <a th:if="${pageNo < totalPages}" th:href="@{/list/category/{category}(category=${category}, pageNo=${totalPages}, amount=${amount})}" class="page-link">&raquo;</a>
+    </div>
+
+    <!-- ② 지역+카테고리 검색 모드 -->
+    <div th:unless="${mode == 'category'}">
+        <a th:if="${pageNo > 1}" th:href="@{/list(region=${region}, subRegion=${subRegion}, category=${category}, pageNo=1, amount=${amount})}" class="page-link">&laquo;</a>
+        <a th:if="${pageNo > 1}" th:href="@{/list(region=${region}, subRegion=${subRegion}, category=${category}, pageNo=${pageNo - 1}, amount=${amount})}" class="page-link">&lt;</a>
+        
+        <a th:each="p : ${#numbers.sequence(startPage, endPage)}" 
+           th:href="@{/list(region=${region}, subRegion=${subRegion}, category=${category}, pageNo=${p}, amount=${amount})}" 
+           th:class="'page-link' + (${p == pageNo} ? ' active' : '')" 
+           th:text="${p}">1</a>
+        
+        <a th:if="${pageNo < totalPages}" th:href="@{/list(region=${region}, subRegion=${subRegion}, category=${category}, pageNo=${pageNo + 1}, amount=${amount})}" class="page-link">&gt;</a>
+        <a th:if="${pageNo < totalPages}" th:href="@{/list(region=${region}, subRegion=${subRegion}, category=${category}, pageNo=${totalPages}, amount=${amount})}" class="page-link">&raquo;</a>
+    </div>
+</div>
+
+<!-- Generic Pagination Fragment for other pages -->
+<div th:fragment="generic-pagination" class="pagination" th:if="${totalPages >= 1}">
+    <a th:if="${pageNo > 1}" th:href="${baseUrl + '?pageNo=1' + (amount != null ? '&amount=' + amount : '')}" class="page-link">&laquo;</a>
+    <a th:if="${pageNo > 1}" th:href="${baseUrl + '?pageNo=' + (pageNo - 1) + (amount != null ? '&amount=' + amount : '')}" class="page-link">&lt;</a>
+    
+    <a th:each="p : ${#numbers.sequence(startPage, endPage)}" 
+       th:href="${baseUrl + '?pageNo=' + p + (amount != null ? '&amount=' + amount : '')}" 
+       th:class="'page-link' + (${p == pageNo} ? ' active' : '')" 
+       th:text="${p}">1</a>
+    
+    <a th:if="${pageNo < totalPages}" th:href="${baseUrl + '?pageNo=' + (pageNo + 1) + (amount != null ? '&amount=' + amount : '')}" class="page-link">&gt;</a>
+    <a th:if="${pageNo < totalPages}" th:href="${baseUrl + '?pageNo=' + totalPages + (amount != null ? '&amount=' + amount : '')}" class="page-link">&raquo;</a>
+</div>
+
+</body>
+</html>
